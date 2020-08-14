@@ -6,9 +6,7 @@ import android.content.pm.PackageManager
 import android.location.LocationManager
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.os.StrictMode
 import android.util.Log
-import androidx.preference.PreferenceManager
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -16,9 +14,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.navigation.fragment.findNavController
-import com.example.osmdroidexample.KartverketWMSTileSource
 import com.example.osmdroidexample.R
-import com.example.osmdroidexample.ui.downloadedtiles.DownloadedTilesFragment
 import kotlinx.android.synthetic.main.main_fragment.*
 
 import org.osmdroid.config.Configuration
@@ -28,24 +24,14 @@ import org.osmdroid.events.ScrollEvent
 import org.osmdroid.events.ZoomEvent
 import org.osmdroid.library.BuildConfig
 import org.osmdroid.tileprovider.cachemanager.CacheManager
-import org.osmdroid.tileprovider.modules.GEMFFileArchive
-import org.osmdroid.tileprovider.modules.MapTileFilesystemProvider
-import org.osmdroid.tileprovider.modules.TileWriter
-import org.osmdroid.tileprovider.tilesource.TileSourceFactory
+import org.osmdroid.tileprovider.modules.SqliteArchiveTileWriter
 import org.osmdroid.tileprovider.tilesource.*
-import org.osmdroid.tileprovider.util.SimpleRegisterReceiver
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.util.MapTileIndex
-import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
-import org.osmdroid.wms.WMSEndpoint
-import org.osmdroid.wms.WMSParser
-import org.osmdroid.wms.WMSTileSource
-import java.io.InputStream
-import java.net.HttpURLConnection
-import java.net.URL
+import java.io.File
 
 class MainFragment : Fragment() {
 
@@ -79,10 +65,6 @@ class MainFragment : Fragment() {
             this.findNavController().navigate(
                 R.id.action_mainFragment_to_downloadedTilesFragment
             )
-        }
-
-        saveTileButton.setOnClickListener { v ->
-            Toast.makeText(context, "Save-button Clicked", Toast.LENGTH_LONG).show()
         }
 
         locationManager = this.context?.applicationContext?.getSystemService(Context.LOCATION_SERVICE) as LocationManager
@@ -183,9 +165,59 @@ class MainFragment : Fragment() {
 
         cacheManager = CacheManager(mapView)
 
-        val possibleNumOfTiles = cacheManager?.possibleTilesInArea(mapView.boundingBox, 10, 14)
+        saveTileButton.setOnClickListener { v ->
+            //Toast.makeText(context, "Save-button Clicked", Toast.LENGTH_LONG).show()
 
-        Log.d("#######", "possibleNumOfTiles="+possibleNumOfTiles)
+            val possibleNumOfTiles = cacheManager?.possibleTilesInArea(mapView.boundingBox, mapView.zoomLevelDouble.toInt(), 20) ?: 0
+            Toast.makeText(context, "#Tiles="+possibleNumOfTiles, Toast.LENGTH_LONG).show()
+
+            //TODO: Warn & confirm if users tries to download a large number of tiles! (show space usage?)
+            if (possibleNumOfTiles > 10000) {
+                Toast.makeText(context, ">10000 tiles, use smaller area", Toast.LENGTH_LONG).show()
+            } else {
+                //TODO: Download map tiles to storage
+                val mapAreaFileName = mapNameEditText.text.toString()
+
+                //val storageLocation = context?.getExternalFilesDir("database")
+                //val storageLocation = context?.filesDir?.absolutePath
+
+                //val mapArchivePath = "${storageLocation}/map_areas/${mapAreaFileName}.sqlite"
+                val mapArchiveFile = context?.getDatabasePath("map_area_$mapAreaFileName")
+                val mapArchivePath = mapArchiveFile.toString()
+
+                Log.d("#######", "Store map-area at: " + mapArchivePath)
+
+                val writer = SqliteArchiveTileWriter(mapArchivePath)
+                val cacheManagerSqlliteArchive = CacheManager(mapView, writer)
+
+                cacheManagerSqlliteArchive.downloadAreaAsync(context, mapView.boundingBox, mapView.zoomLevelDouble.toInt(), 20, object : CacheManager.CacheManagerCallback {
+                    override fun downloadStarted() {
+                    }
+
+                    override fun updateProgress(
+                        progress: Int,
+                        currentZoomLevel: Int,
+                        zoomMin: Int,
+                        zoomMax: Int
+                    ) {
+                    }
+
+                    override fun setPossibleTilesInArea(total: Int) {
+                    }
+
+                    override fun onTaskComplete() {
+                        Toast.makeText(context, "Downloaded!", Toast.LENGTH_LONG).show()
+                    }
+
+                    override fun onTaskFailed(errors: Int) {
+                    }
+
+                })
+
+            }
+
+        }
+
 
     }
 

@@ -24,10 +24,13 @@
         android:id="@+id/mapView"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/saveTileButton" />
+        app:layout_constraintTop_toBottomOf="@+id/mapNameEditText"
+        app:layout_constraintVertical_bias="1.0" />
 
     <Button
         android:id="@+id/saveTileButton"
@@ -47,5 +50,18 @@
         app:layout_constraintBottom_toBottomOf="@+id/saveTileButton"
         app:layout_constraintEnd_toStartOf="@+id/saveTileButton"
         app:layout_constraintTop_toTopOf="@+id/saveTileButton" />
+
+    <EditText
+        android:id="@+id/mapNameEditText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:hint="Navn På Lagret Kart"
+        android:inputType="textPersonName"
+        android:text="Name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tilesListButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
