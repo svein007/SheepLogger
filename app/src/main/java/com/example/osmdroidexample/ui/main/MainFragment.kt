@@ -15,6 +15,7 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.navigation.fragment.findNavController
 import com.example.osmdroidexample.R
+import com.example.osmdroidexample.map.MapAreaManager
 import kotlinx.android.synthetic.main.main_fragment.*
 
 import org.osmdroid.config.Configuration
@@ -68,48 +69,7 @@ class MainFragment : Fragment() {
         locationOverlay = MyLocationNewOverlay(GpsMyLocationProvider(context), mapView)
         locationOverlay?.enableMyLocation()
 
-        val tileSource = object : OnlineTileSourceBase("Kartverket - Norge Topografisk", 0,
-                20, 256, "",
-                //arrayOf("https://wms.geonorge.no/skwms1/wms.bakgrunnskart_havarealverktoey?service=WMS")) {
-                //arrayOf("https://wms.geonorge.no/skwms1/wms.dybderelieffpolar_v02")) {
-
-                // VIRKER... men må nok bruke WSM-url (cache er raskere men ikke like bra resolution)
-                arrayOf("https://opencache.statkart.no/gatekeeper/gk/gk.open_gmaps")) {
-
-                // https://openwms.statkart.no/skwms1/wms.norges_grunnkart?request=GetCapabilities&service=WMS
-                // https://openwms.statkart.no/skwms1/wms.topo4?service=wms&Version=1.0.0&request=GetMap&layers=topo4_WMS&SRS=EPSG:25833&bbox=-127998,6377920,1145510,7976800&format=image/png&width=256&height=256
-
-            override fun getTileURLString(pMapTileIndex: Long): String {
-                return (baseUrl + "?"
-                        + "layers=topo4&"
-                        + "zoom=" + MapTileIndex.getZoom(pMapTileIndex) + "&"
-                        + "y=" + MapTileIndex.getY(pMapTileIndex) + "&"
-                        + "x=" + MapTileIndex.getX(pMapTileIndex))
-            }
-        }
-
-        /* WORKING, but pixelated when zoomed far in...
-
-        val wmsTileSource = KartverketWMSTileSource("Kartverket - Norge Topografisk",
-            2, 20, 256, "png",
-            arrayOf("https://openwms.statkart.no/skwms1/wms.topo4"), "topo4_WMS",
-            "1.0.0",
-            "EPSG:25833"
-        )
-         */
-
-        //Log.d("########", wmsTileSource.getTileURLString(1))
-
-        //val tileWriter = TileWriter()
-        //val fileSystemProvider = MapTileFilesystemProvider(registerReciever, tileSource)
-
-        // GEMFFileArchive.getGEMFFileArchive(mGemfArchiveFilename)
-        /*
-        val wmstilesource = WMSTileSource("WMS Kartverket Norge Grunnkart",
-                arrayOf("https://opencache.statkart.no/gatekeeper/gk/gk.open_gmaps?layers=norges_grunnkart&zoom={z}&x={x}&y={y}"),
-                "landareal","1.0.0","GetMap","default",4)
-        */
-        //mapView.setTileSource(TileSourceFactory.MAPNIK)
+        val tileSource = MapAreaManager.getOnlineTileSource()
 
         val position = GeoPoint(65.0, 14.0)
 
