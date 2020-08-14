@@ -10,6 +10,15 @@
         android:id="@+id/mainFragment"
         android:name="com.example.osmdroidexample.ui.main.MainFragment"
         android:label="main_fragment"
-        tools:layout="@layout/main_fragment" />
+        tools:layout="@layout/main_fragment" >
+        <action
+            android:id="@+id/action_mainFragment_to_downloadedTilesFragment"
+            app:destination="@id/downloadedTilesFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/downloadedTilesFragment"
+        android:name="com.example.osmdroidexample.ui.downloadedtiles.DownloadedTilesFragment"
+        android:label="downloaded_tiles_fragment"
+        tools:layout="@layout/downloaded_tiles_fragment" />
 
 </navigation>

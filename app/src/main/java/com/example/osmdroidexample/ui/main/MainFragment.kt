@@ -13,9 +13,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
+import androidx.navigation.fragment.findNavController
 import com.example.osmdroidexample.KartverketWMSTileSource
 import com.example.osmdroidexample.R
+import com.example.osmdroidexample.ui.downloadedtiles.DownloadedTilesFragment
 import kotlinx.android.synthetic.main.main_fragment.*
 
 import org.osmdroid.config.Configuration
@@ -24,6 +27,7 @@ import org.osmdroid.events.MapListener
 import org.osmdroid.events.ScrollEvent
 import org.osmdroid.events.ZoomEvent
 import org.osmdroid.library.BuildConfig
+import org.osmdroid.tileprovider.cachemanager.CacheManager
 import org.osmdroid.tileprovider.modules.GEMFFileArchive
 import org.osmdroid.tileprovider.modules.MapTileFilesystemProvider
 import org.osmdroid.tileprovider.modules.TileWriter
@@ -51,6 +55,8 @@ class MainFragment : Fragment() {
 
     private lateinit var viewModel: MainViewModel
 
+    private var cacheManager: CacheManager? = null
+
     private var locationManager: LocationManager? = null
     private var locationOverlay: MyLocationNewOverlay? = null
 
@@ -68,6 +74,16 @@ class MainFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
         // TODO: Use the ViewModel
+
+        tilesListButton.setOnClickListener { v ->
+            this.findNavController().navigate(
+                R.id.action_mainFragment_to_downloadedTilesFragment
+            )
+        }
+
+        saveTileButton.setOnClickListener { v ->
+            Toast.makeText(context, "Save-button Clicked", Toast.LENGTH_LONG).show()
+        }
 
         locationManager = this.context?.applicationContext?.getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
@@ -164,6 +180,12 @@ class MainFragment : Fragment() {
         }
 
         mapView.overlays.add(locationOverlay)
+
+        cacheManager = CacheManager(mapView)
+
+        val possibleNumOfTiles = cacheManager?.possibleTilesInArea(mapView.boundingBox, 10, 14)
+
+        Log.d("#######", "possibleNumOfTiles="+possibleNumOfTiles)
 
     }
 
