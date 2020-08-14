@@ -1,4 +1,4 @@
-package com.example.osmdroidexample
+package com.example.osmdroidexample.ui.trip
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel

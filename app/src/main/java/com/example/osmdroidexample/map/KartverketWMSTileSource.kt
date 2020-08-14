@@ -1,4 +1,4 @@
-package com.example.osmdroidexample
+package com.example.osmdroidexample.map
 
 import org.osmdroid.tileprovider.tilesource.OnlineTileSourceBase
 import org.osmdroid.util.BoundingBox
@@ -48,7 +48,24 @@ open class KartverketWMSTileSource(
         var ORIG_Y = 1
 
         fun tile2boundingBox(x: Int, y: Int, zoom: Int): BoundingBox {
-            return BoundingBox(tile2lat(y, zoom), tile2lon(x + 1, zoom), tile2lat(y + 1, zoom), tile2lon(x, zoom))
+            return BoundingBox(
+                tile2lat(
+                    y,
+                    zoom
+                ),
+                tile2lon(
+                    x + 1,
+                    zoom
+                ),
+                tile2lat(
+                    y + 1,
+                    zoom
+                ),
+                tile2lon(
+                    x,
+                    zoom
+                )
+            )
         }
 
         private fun tile2lon(x: Int, z: Int): Double {
@@ -65,7 +82,12 @@ open class KartverketWMSTileSource(
 
     override fun getTileURLString(pMapTileIndex: Long): String {
 
-        val bbox = tile2boundingBox(MapTileIndex.getX(pMapTileIndex), MapTileIndex.getY(pMapTileIndex), MapTileIndex.getZoom(pMapTileIndex))
+        val bbox =
+            tile2boundingBox(
+                MapTileIndex.getX(pMapTileIndex),
+                MapTileIndex.getY(pMapTileIndex),
+                MapTileIndex.getZoom(pMapTileIndex)
+            )
         //val bbox = getBoundingBox(MapTileIndex.getX(pMapTileIndex), MapTileIndex.getY(pMapTileIndex), MapTileIndex.getZoom(pMapTileIndex))
 
         val tileUrlStr = WMS_FORMAT_STRING.format(baseUrl, version, layers, srs,

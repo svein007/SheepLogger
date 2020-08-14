@@ -26,7 +26,7 @@
     </fragment>
     <fragment
         android:id="@+id/tripFragment"
-        android:name="com.example.osmdroidexample.TripFragment"
+        android:name="com.example.osmdroidexample.ui.trip.TripFragment"
         android:label="trip_fragment"
         tools:layout="@layout/trip_fragment" >
         <argument

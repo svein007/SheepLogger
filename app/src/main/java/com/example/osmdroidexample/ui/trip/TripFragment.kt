@@ -1,4 +1,4 @@
-package com.example.osmdroidexample
+package com.example.osmdroidexample.ui.trip
 
 import android.Manifest
 import android.content.Context
@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import com.example.osmdroidexample.R
 import com.example.osmdroidexample.databinding.TripFragmentBinding
 import kotlinx.android.synthetic.main.trip_fragment.*
 import org.osmdroid.tileprovider.modules.OfflineTileProvider
