@@ -10,14 +10,10 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.example.osmdroidexample.R
+import com.example.osmdroidexample.map.MapAreaManager
 import kotlinx.android.synthetic.main.downloaded_tiles_fragment.*
 
 class DownloadedTilesFragment : Fragment() {
-
-    companion object {
-        fun newInstance() =
-            DownloadedTilesFragment()
-    }
 
     private lateinit var viewModel: DownloadedTilesViewModel
 
@@ -33,16 +29,13 @@ class DownloadedTilesFragment : Fragment() {
         viewModel = ViewModelProviders.of(this).get(DownloadedTilesViewModel::class.java)
         // TODO: Use the ViewModel
 
-        val mapArchiveFilesPath = context?.databaseList() // All DB-Files
+        val mapArchiveFilesPath = MapAreaManager.getStoredMapAreas(requireContext())
 
-        Log.d("########", mapArchiveFilesPath?.get(0).toString())
-
-        mapAreaFilesTextView.text = mapArchiveFilesPath?.joinToString(separator = ", ") ?: ""
-
+        mapAreaFilesTextView.text = mapArchiveFilesPath.joinToString(separator = ", \n")
 
         navigateToTripButton.setOnClickListener { v ->
             val mapAreaString = mapAreaNameEditText.text.toString()
-            if ("map_area_${mapAreaString}.sqlite" in mapArchiveFilesPath!!) { //TODO: FIX
+            if ("map_area_${mapAreaString}.sqlite" in mapArchiveFilesPath) { //TODO: FIX
                 findNavController().navigate(
                     DownloadedTilesFragmentDirections.actionDownloadedTilesFragmentToTripFragment(mapAreaString)
                 )

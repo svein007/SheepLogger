@@ -35,10 +35,6 @@ import java.io.File
 
 class MainFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = MainFragment()
-    }
-
     private lateinit var viewModel: MainViewModel
 
     private var cacheManager: CacheManager? = null

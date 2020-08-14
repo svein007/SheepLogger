@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.location.LocationManager
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -76,12 +77,18 @@ class TripFragment : Fragment() {
             try {
                 //TODO: Offload to parallel async task
                 val tileSourceString = offlineTileProvider.archives[0].tileSources.iterator().next()
-                mapView.setTileSource(FileBasedTileSource.getSource(tileSourceString))
+                val tileSource = FileBasedTileSource.getSource(tileSourceString)
+
+                Log.d("#######", "TileSource: ${tileSource.minimumZoomLevel}---${tileSource.maximumZoomLevel}")
+
+                mapView.setTileSource(tileSource)
             } catch (e: Exception) {
                 mapView.setTileSource(TileSourceFactory.DEFAULT_TILE_SOURCE)
             }
 
         }
+
+        Log.d("#######", "TileProvider: ${mapView.tileProvider.minimumZoomLevel}---${mapView.tileProvider.maximumZoomLevel}")
 
         mapView.controller.zoomTo(15.0)
 
