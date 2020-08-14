@@ -4,13 +4,15 @@ import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
 import android.location.LocationManager
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
+import com.example.osmdroidexample.databinding.TripFragmentBinding
 import kotlinx.android.synthetic.main.trip_fragment.*
 import org.osmdroid.tileprovider.modules.OfflineTileProvider
 import org.osmdroid.tileprovider.tilesource.FileBasedTileSource
@@ -24,25 +26,32 @@ import java.lang.Exception
 
 class TripFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = TripFragment()
-    }
-
     private lateinit var viewModel: TripViewModel
+    private lateinit var binding: TripFragmentBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.trip_fragment, container, false)
+
+        binding = DataBindingUtil.inflate(
+            inflater, R.layout.trip_fragment, container, false)
+
+        val viewModelFactory = TripViewModelFactory(requireNotNull(this.activity).application)
+
+        viewModel = ViewModelProvider(
+            this, viewModelFactory)[TripViewModel::class.java]
+
+
+        binding.lifecycleOwner = viewLifecycleOwner
+
+        return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(TripViewModel::class.java)
         // TODO: Use the ViewModel
 
-        val application = requireNotNull(this.activity).application
         val arguments = TripFragmentArgs.fromBundle(requireArguments())
 
         val mapAreaString = "map_area_${arguments.mapAreaString}.sqlite"

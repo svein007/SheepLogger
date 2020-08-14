@@ -1,7 +1,8 @@
 package com.example.osmdroidexample
 
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 
-class TripViewModel : ViewModel() {
+class TripViewModel(application: Application) : AndroidViewModel(application) {
     // TODO: Implement the ViewModel
 }
