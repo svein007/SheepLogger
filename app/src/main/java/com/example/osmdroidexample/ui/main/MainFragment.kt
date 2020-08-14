@@ -122,8 +122,6 @@ class MainFragment : Fragment() {
         cacheManager = CacheManager(mapView)
 
         saveTileButton.setOnClickListener { v ->
-            //Toast.makeText(context, "Save-button Clicked", Toast.LENGTH_LONG).show()
-
             val possibleNumOfTiles = cacheManager?.possibleTilesInArea(mapView.boundingBox, mapView.zoomLevelDouble.toInt(), 20) ?: 0
             Toast.makeText(context, "#Tiles="+possibleNumOfTiles, Toast.LENGTH_LONG).show()
 
@@ -131,49 +129,12 @@ class MainFragment : Fragment() {
             if (possibleNumOfTiles > 10000) {
                 Toast.makeText(context, ">10000 tiles, use smaller area", Toast.LENGTH_LONG).show()
             } else {
-                //TODO: Download map tiles to storage
                 val mapAreaFileName = mapNameEditText.text.toString()
 
-                //val storageLocation = context?.getExternalFilesDir("database")
-                //val storageLocation = context?.filesDir?.absolutePath
-
-                //val mapArchivePath = "${storageLocation}/map_areas/${mapAreaFileName}.sqlite"
-                val mapArchiveFile = context?.getDatabasePath("map_area_$mapAreaFileName.sqlite")
-                val mapArchivePath = mapArchiveFile.toString()
-
-                Log.d("#######", "Store map-area at: " + mapArchivePath)
-
-                val writer = SqliteArchiveTileWriter(mapArchivePath)
-                val cacheManagerSqlliteArchive = CacheManager(mapView, writer)
-
-                cacheManagerSqlliteArchive.downloadAreaAsync(context, mapView.boundingBox, mapView.zoomLevelDouble.toInt(), 20, object : CacheManager.CacheManagerCallback {
-                    override fun downloadStarted() {
-                    }
-
-                    override fun updateProgress(
-                        progress: Int,
-                        currentZoomLevel: Int,
-                        zoomMin: Int,
-                        zoomMax: Int
-                    ) {
-                    }
-
-                    override fun setPossibleTilesInArea(total: Int) {
-                    }
-
-                    override fun onTaskComplete() {
-                        Toast.makeText(context, "Downloaded!", Toast.LENGTH_LONG).show()
-                    }
-
-                    override fun onTaskFailed(errors: Int) {
-                    }
-
-                })
-
+                MapAreaManager.storeMapArea(requireContext(), mapView, mapAreaFileName)
             }
 
         }
-
 
     }
 

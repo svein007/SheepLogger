@@ -82,6 +82,7 @@ class TripFragment : Fragment() {
                 Log.d("#######", "TileSource: ${tileSource.minimumZoomLevel}---${tileSource.maximumZoomLevel}")
 
                 mapView.setTileSource(tileSource)
+                mapView.controller.zoomTo(tileSource.maximumZoomLevel.toDouble())
             } catch (e: Exception) {
                 mapView.setTileSource(TileSourceFactory.DEFAULT_TILE_SOURCE)
             }
@@ -89,8 +90,6 @@ class TripFragment : Fragment() {
         }
 
         Log.d("#######", "TileProvider: ${mapView.tileProvider.minimumZoomLevel}---${mapView.tileProvider.maximumZoomLevel}")
-
-        mapView.controller.zoomTo(15.0)
 
         val locationOverlay = MyLocationNewOverlay(GpsMyLocationProvider(context), mapView)
         locationOverlay.enableMyLocation()

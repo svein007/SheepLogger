@@ -1,8 +1,13 @@
 package com.example.osmdroidexample.map
 
 import android.content.Context
+import android.util.Log
+import android.widget.Toast
+import org.osmdroid.tileprovider.cachemanager.CacheManager
+import org.osmdroid.tileprovider.modules.SqliteArchiveTileWriter
 import org.osmdroid.tileprovider.tilesource.OnlineTileSourceBase
 import org.osmdroid.util.MapTileIndex
+import org.osmdroid.views.MapView
 
 class MapAreaManager {
 
@@ -12,6 +17,43 @@ class MapAreaManager {
                 .filter { filename -> filename.startsWith("map_area") }
                 .filter { filename -> filename.endsWith(".sqlite") }
                 .toList()
+        }
+
+        fun storeMapArea(context: Context, mapView: MapView, mapAreaName: String) {
+            val mapAreaFilename = context.getDatabasePath("map_area_$mapAreaName.sqlite").toString()
+            Log.d("#######", "Should store map-area at: $mapAreaFilename")
+
+            val sqliteArchiveTileWriterCacheManager = CacheManager(mapView,
+                SqliteArchiveTileWriter(mapAreaFilename))
+
+            sqliteArchiveTileWriterCacheManager.downloadAreaAsync(context,
+                mapView.boundingBox,
+                mapView.zoomLevelDouble.toInt(),
+                mapView.maxZoomLevel.toInt(),
+                object : CacheManager.CacheManagerCallback {
+                    override fun downloadStarted() {
+                    }
+
+                    override fun updateProgress(
+                        progress: Int,
+                        currentZoomLevel: Int,
+                        zoomMin: Int,
+                        zoomMax: Int
+                    ) {
+                    }
+
+                    override fun setPossibleTilesInArea(total: Int) {
+                    }
+
+                    override fun onTaskComplete() {
+                        Toast.makeText(context, "Downloaded: $mapAreaName", Toast.LENGTH_LONG).show()
+                    }
+
+                    override fun onTaskFailed(errors: Int) {
+                    }
+                }
+            )
+
         }
 
         fun getOnlineTileSource(): OnlineTileSourceBase {
