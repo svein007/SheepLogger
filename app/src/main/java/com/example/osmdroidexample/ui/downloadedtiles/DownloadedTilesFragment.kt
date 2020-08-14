@@ -7,6 +7,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.navigation.fragment.findNavController
 import com.example.osmdroidexample.R
 import kotlinx.android.synthetic.main.downloaded_tiles_fragment.*
 
@@ -36,6 +38,18 @@ class DownloadedTilesFragment : Fragment() {
         Log.d("########", mapArchiveFilesPath?.get(0).toString())
 
         mapAreaFilesTextView.text = mapArchiveFilesPath?.joinToString(separator = ", ") ?: ""
+
+
+        navigateToTripButton.setOnClickListener { v ->
+            val mapAreaString = mapAreaNameEditText.text.toString()
+            if ("map_area_${mapAreaString}.sqlite" in mapArchiveFilesPath!!) { //TODO: FIX
+                findNavController().navigate(
+                    DownloadedTilesFragmentDirections.actionDownloadedTilesFragmentToTripFragment(mapAreaString)
+                )
+            } else {
+                Toast.makeText(context, "No such MapArea", Toast.LENGTH_LONG).show()
+            }
+        }
     }
 
 }

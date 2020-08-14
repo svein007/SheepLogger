@@ -19,6 +19,19 @@
         android:id="@+id/downloadedTilesFragment"
         android:name="com.example.osmdroidexample.ui.downloadedtiles.DownloadedTilesFragment"
         android:label="downloaded_tiles_fragment"
-        tools:layout="@layout/downloaded_tiles_fragment" />
+        tools:layout="@layout/downloaded_tiles_fragment" >
+        <action
+            android:id="@+id/action_downloadedTilesFragment_to_tripFragment"
+            app:destination="@id/tripFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/tripFragment"
+        android:name="com.example.osmdroidexample.TripFragment"
+        android:label="trip_fragment"
+        tools:layout="@layout/trip_fragment" >
+        <argument
+            android:name="mapAreaString"
+            app:argType="string" />
+    </fragment>
 
 </navigation>

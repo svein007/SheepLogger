@@ -130,7 +130,7 @@ class MainFragment : Fragment() {
         mapView.setScrollableAreaLimitLatitude(72.0, 55.0, 0)
         mapView.setScrollableAreaLimitLongitude(-2.0, 33.0, 0)
 
-        mapView.controller.setZoom(5.0)
+        mapView.controller.setZoom(15.0)
         mapView.controller.setCenter(position)
 
         textView.text = "Zoom = " + mapView.zoomLevelDouble
@@ -182,7 +182,7 @@ class MainFragment : Fragment() {
                 //val storageLocation = context?.filesDir?.absolutePath
 
                 //val mapArchivePath = "${storageLocation}/map_areas/${mapAreaFileName}.sqlite"
-                val mapArchiveFile = context?.getDatabasePath("map_area_$mapAreaFileName")
+                val mapArchiveFile = context?.getDatabasePath("map_area_$mapAreaFileName.sqlite")
                 val mapArchivePath = mapArchiveFile.toString()
 
                 Log.d("#######", "Store map-area at: " + mapArchivePath)
