@@ -15,6 +15,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.example.osmdroidexample.R
 import com.example.osmdroidexample.databinding.TripFragmentBinding
+import com.example.osmdroidexample.map.MapAreaManager
 import kotlinx.android.synthetic.main.trip_fragment.*
 import org.osmdroid.tileprovider.modules.OfflineTileProvider
 import org.osmdroid.tileprovider.tilesource.FileBasedTileSource
@@ -95,17 +96,8 @@ class TripFragment : Fragment() {
         locationOverlay.enableMyLocation()
         mapView.overlays.add(locationOverlay)
 
-        val locationManager = this.context?.applicationContext?.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-
-        if (ActivityCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED
-        ) {
-            mapView.controller.animateTo(GeoPoint(locationManager.getLastKnownLocation("gps")))
+        MapAreaManager.getLastKnownLocation(requireContext())?.let {
+            mapView.controller.animateTo(it)
         }
 
     }

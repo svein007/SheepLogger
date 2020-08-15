@@ -1,17 +1,39 @@
 package com.example.osmdroidexample.map
 
+import android.Manifest
 import android.content.Context
+import android.content.pm.PackageManager
+import android.location.LocationManager
 import android.util.Log
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
 import org.osmdroid.tileprovider.cachemanager.CacheManager
 import org.osmdroid.tileprovider.modules.SqliteArchiveTileWriter
 import org.osmdroid.tileprovider.tilesource.OnlineTileSourceBase
+import org.osmdroid.util.GeoPoint
 import org.osmdroid.util.MapTileIndex
 import org.osmdroid.views.MapView
 
 class MapAreaManager {
 
     companion object {
+
+        fun getLastKnownLocation(context: Context): GeoPoint? {
+            val locationManager = context.applicationContext.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+
+            if (ActivityCompat.checkSelfPermission(
+                    context,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                ) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                    context,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
+                return GeoPoint(locationManager.getLastKnownLocation("gps"))
+            }
+            return null
+        }
+
         fun getStoredMapAreas(context: Context): List<String> {
             return  context.databaseList()
                 .filter { filename -> filename.startsWith("map_area") }
