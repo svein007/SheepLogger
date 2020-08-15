@@ -29,7 +29,7 @@ class MapAreaManager {
                     Manifest.permission.ACCESS_COARSE_LOCATION
                 ) == PackageManager.PERMISSION_GRANTED
             ) {
-                return GeoPoint(locationManager.getLastKnownLocation("gps"))
+                return GeoPoint(locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER))
             }
             return null
         }

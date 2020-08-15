@@ -108,13 +108,8 @@ class MainFragment : Fragment() {
 
         mapView.overlays.add(marker)
 
-        if (ActivityCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED) {
-            val currentLocation = locationManager?.getLastKnownLocation(LocationManager.GPS_PROVIDER)
-            Log.d("#########", currentLocation.toString())
-            mapView.controller.animateTo( GeoPoint(currentLocation))
+        MapAreaManager.getLastKnownLocation(requireContext())?.let {
+            mapView.controller.animateTo(it)
         }
 
         mapView.overlays.add(locationOverlay)

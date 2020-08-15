@@ -1,16 +1,11 @@
 package com.example.osmdroidexample.ui.trip
 
-import android.Manifest
-import android.content.Context
-import android.content.pm.PackageManager
-import android.location.LocationManager
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.example.osmdroidexample.R
@@ -21,7 +16,6 @@ import org.osmdroid.tileprovider.modules.OfflineTileProvider
 import org.osmdroid.tileprovider.tilesource.FileBasedTileSource
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.tileprovider.util.SimpleRegisterReceiver
-import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
@@ -44,7 +38,6 @@ class TripFragment : Fragment() {
 
         viewModel = ViewModelProvider(
             this, viewModelFactory)[TripViewModel::class.java]
-
 
         binding.lifecycleOwner = viewLifecycleOwner
 
