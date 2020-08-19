@@ -12,9 +12,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.app.ActivityCompat
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.osmdroidexample.R
+import com.example.osmdroidexample.database.AppDatabase
+import com.example.osmdroidexample.database.entities.MapArea
+import com.example.osmdroidexample.databinding.MainFragmentBinding
 import com.example.osmdroidexample.map.MapAreaManager
 import kotlinx.android.synthetic.main.main_fragment.*
 
@@ -37,6 +41,7 @@ import java.io.File
 class MainFragment : Fragment() {
 
     private lateinit var viewModel: MainViewModel
+    private lateinit var binding: MainFragmentBinding
 
     private var cacheManager: CacheManager? = null
 
@@ -46,16 +51,29 @@ class MainFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
 
+        binding = DataBindingUtil.inflate(
+            inflater, R.layout.main_fragment, container, false
+        )
+
+        val application = requireNotNull(this.activity).application
+
+        val appDao = AppDatabase.getInstance(application).appDatabaseDao
+        val viewModelFactory = MainViewModelFactory(application, appDao)
+
+        viewModel = ViewModelProvider(
+            this, viewModelFactory
+        )[MainViewModel::class.java]
+
         // Configuration.getInstance().load(context?.applicationContext, PreferenceManager.getDefaultSharedPreferences(context?.applicationContext))
 
         Configuration.getInstance().userAgentValue = BuildConfig.APPLICATION_ID  // Required to do API calls to OSM servers
 
-        return inflater.inflate(R.layout.main_fragment, container, false)
+        return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
+        //viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
         // TODO: Use the ViewModel
 
         tilesListButton.setOnClickListener { v ->
@@ -127,6 +145,16 @@ class MainFragment : Fragment() {
                 val mapAreaFileName = mapNameEditText.text.toString()
 
                 MapAreaManager.storeMapArea(requireContext(), mapView, mapAreaFileName)
+
+                // TODO: store MapArea in AppDB (refactor w/ MapAreaManager to one method?)
+                val mapArea = MapArea(
+                    mapAreaName = mapAreaFileName,
+                    mapAreaMinZoom = mapView.minZoomLevel,
+                    mapAreaMaxZoom = mapView.maxZoomLevel,
+                    boundingBox = mapView.boundingBox
+                )
+
+                viewModel.storeMapArea(mapArea)
             }
 
         }

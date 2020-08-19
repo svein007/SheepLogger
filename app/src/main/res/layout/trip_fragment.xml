@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="tripViewModel"
+            type="com.example.osmdroidexample.ui.trip.TripViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

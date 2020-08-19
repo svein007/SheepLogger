@@ -51,4 +51,37 @@ class AppDatabaseTest {
         Assert.assertEquals("map_area_Oslo.sqlite", resultMapArea?.getSqliteFilename())
 
     }
+
+    @Test
+    @Throws(Exception::class)
+    fun insertAndGetMapAreaByName() {
+        val mapArea =
+            MapArea(mapAreaName = "Oslo")
+
+        val id = appDao.insert(mapArea)
+
+        val resultMapArea = appDao.getMapArea("Oslo")
+
+        Assert.assertEquals("Oslo", resultMapArea?.mapAreaName)
+        Assert.assertEquals("map_area_Oslo.sqlite", resultMapArea?.getSqliteFilename())
+
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun insertAndGetMapAreas() {
+        val mapArea =
+            MapArea(mapAreaName = "Oslo")
+
+        val mapArea2 =
+            MapArea(mapAreaName = "Bergen")
+
+        appDao.insert(mapArea)
+        appDao.insert(mapArea2)
+
+        val resultMapAreas = appDao.getMapAreas()
+
+        Assert.assertEquals(2, resultMapAreas.size)
+
+    }
 }

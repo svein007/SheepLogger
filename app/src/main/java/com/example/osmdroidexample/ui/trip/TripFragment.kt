@@ -7,8 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.osmdroidexample.R
+import com.example.osmdroidexample.database.AppDatabase
 import com.example.osmdroidexample.databinding.TripFragmentBinding
 import com.example.osmdroidexample.map.MapAreaManager
 import kotlinx.android.synthetic.main.trip_fragment.*
@@ -28,6 +30,7 @@ class TripFragment : Fragment() {
 
     private lateinit var viewModel: TripViewModel
     private lateinit var binding: TripFragmentBinding
+    private lateinit var arguments: TripFragmentArgs
 
     private val pinnedLocations = mutableListOf<GeoPoint>()
     private val gpsTrail = Polyline() // GPS trail of current trip
@@ -40,12 +43,31 @@ class TripFragment : Fragment() {
         binding = DataBindingUtil.inflate(
             inflater, R.layout.trip_fragment, container, false)
 
-        val viewModelFactory = TripViewModelFactory(requireNotNull(this.activity).application)
+        arguments = TripFragmentArgs.fromBundle(requireArguments())
+
+        val application = requireNotNull(this.activity).application
+
+        val appDao = AppDatabase.getInstance(application).appDatabaseDao
+        val viewModelFactory = TripViewModelFactory(
+            arguments.mapAreaString,
+            requireNotNull(this.activity).application,
+            appDao)
 
         viewModel = ViewModelProvider(
             this, viewModelFactory)[TripViewModel::class.java]
 
+        viewModel.mapArea.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                Log.d("#######", "MapArea: " + it.toString())
+                tripMapView.minZoomLevel = it.mapAreaMinZoom
+                tripMapView.maxZoomLevel = it.mapAreaMaxZoom
+                tripMapView.controller.zoomTo(it.mapAreaMinZoom)
+                tripMapView.controller.animateTo(it.boundingBox.centerWithDateLine)
+            }
+        })
+
         binding.lifecycleOwner = viewLifecycleOwner
+        binding.tripViewModel = viewModel
 
         return binding.root
     }
@@ -54,12 +76,10 @@ class TripFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         // TODO: Use the ViewModel
 
-        val arguments = TripFragmentArgs.fromBundle(requireArguments())
-
         val mapAreaString = "map_area_${arguments.mapAreaString}.sqlite"
 
         mapAreaNameTextView.text = mapAreaString
-        
+
         setupMapView(tripMapView, mapAreaString)
     }
 
@@ -79,8 +99,6 @@ class TripFragment : Fragment() {
                 val tileSourceString = offlineTileProvider.archives[0].tileSources.iterator().next()
                 val tileSource = FileBasedTileSource.getSource(tileSourceString)
 
-                Log.d("#######", "TileSource: ${tileSource.minimumZoomLevel}---${tileSource.maximumZoomLevel}")
-
                 mapView.setTileSource(tileSource)
                 mapView.controller.zoomTo(tileSource.maximumZoomLevel.toDouble())
             } catch (e: Exception) {
@@ -89,7 +107,6 @@ class TripFragment : Fragment() {
 
         }
 
-        Log.d("#######", "TileProvider: ${mapView.tileProvider.minimumZoomLevel}---${mapView.tileProvider.maximumZoomLevel}")
 
         val locationOverlay = MyLocationNewOverlay(GpsMyLocationProvider(context), mapView)
         locationOverlay.enableMyLocation()
@@ -101,6 +118,12 @@ class TripFragment : Fragment() {
 
         pinCurrentLocationButton.setOnClickListener {
             pinCurrentLocation()
+        }
+
+        Log.d("########", "######")
+        viewModel.mapArea.value?.let {
+            Log.d("########", it.boundingBox.centerWithDateLine.toString())
+            tripMapView.controller.animateTo(it.boundingBox.centerWithDateLine)
         }
 
         tripMapView.overlayManager.add(gpsTrail)

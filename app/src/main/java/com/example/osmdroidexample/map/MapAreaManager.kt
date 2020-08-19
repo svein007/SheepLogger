@@ -21,6 +21,7 @@ class MapAreaManager {
         fun getLastKnownLocation(context: Context): GeoPoint? {
             val locationManager = context.applicationContext.getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
+            // TODO: Ask for permission if not granted!
             if (ActivityCompat.checkSelfPermission(
                     context,
                     Manifest.permission.ACCESS_FINE_LOCATION
