@@ -1,14 +1,17 @@
 package com.example.osmdroidexample.ui.downloadedtiles
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.osmdroidexample.R
 import com.example.osmdroidexample.database.AppDatabase
 import com.example.osmdroidexample.databinding.DownloadedTilesFragmentBinding
@@ -40,6 +43,20 @@ class DownloadedTilesFragment : Fragment() {
 
         binding.lifecycleOwner = viewLifecycleOwner
         binding.downliadedTilesViewModel = viewModel
+
+        val adapter = MapAreaAdapter(MapAreaListItemListener {
+            Log.d("#####", "Cliked MapArea ID: $it")
+        })
+
+        binding.mapAreasRecyclerView.adapter = adapter
+
+        viewModel.mapAreas.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                adapter.submitList(it)
+            }
+        })
+
+        binding.mapAreasRecyclerView.addItemDecoration(DividerItemDecoration(application, DividerItemDecoration.VERTICAL))
 
         return binding.root
     }

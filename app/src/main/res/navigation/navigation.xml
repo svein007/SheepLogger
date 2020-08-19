@@ -9,8 +9,8 @@
     <fragment
         android:id="@+id/mainFragment"
         android:name="com.example.osmdroidexample.ui.main.MainFragment"
-        android:label="main_fragment"
-        tools:layout="@layout/main_fragment" >
+        android:label="Map"
+        tools:layout="@layout/main_fragment">
         <action
             android:id="@+id/action_mainFragment_to_downloadedTilesFragment"
             app:destination="@id/downloadedTilesFragment" />
@@ -18,8 +18,8 @@
     <fragment
         android:id="@+id/downloadedTilesFragment"
         android:name="com.example.osmdroidexample.ui.downloadedtiles.DownloadedTilesFragment"
-        android:label="downloaded_tiles_fragment"
-        tools:layout="@layout/downloaded_tiles_fragment" >
+        android:label="Map Areas"
+        tools:layout="@layout/downloaded_tiles_fragment">
         <action
             android:id="@+id/action_downloadedTilesFragment_to_tripFragment"
             app:destination="@id/tripFragment" />

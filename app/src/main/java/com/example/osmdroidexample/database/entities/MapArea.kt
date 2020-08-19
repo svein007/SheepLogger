@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 import org.osmdroid.util.BoundingBox
 
 @Entity(tableName = "map_area_table")
-class MapArea (
+data class MapArea (
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "map_area_id")
     var mapAreaId: Long = 0L,
