@@ -37,6 +37,8 @@ import org.osmdroid.views.overlay.Marker
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
 import java.io.File
+import kotlin.math.floor
+import kotlin.math.roundToInt
 
 class MainFragment : Fragment() {
 
@@ -149,7 +151,7 @@ class MainFragment : Fragment() {
                 // TODO: store MapArea in AppDB (refactor w/ MapAreaManager to one method?)
                 val mapArea = MapArea(
                     mapAreaName = mapAreaFileName,
-                    mapAreaMinZoom = mapView.minZoomLevel,
+                    mapAreaMinZoom = floor(mapView.zoomLevelDouble),
                     mapAreaMaxZoom = mapView.maxZoomLevel,
                     boundingBox = mapView.boundingBox
                 )
