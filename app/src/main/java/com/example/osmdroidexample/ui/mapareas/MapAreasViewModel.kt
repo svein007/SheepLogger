@@ -13,18 +13,6 @@ class MapAreasViewModel(
     private val appDao: AppDao
 ) : AndroidViewModel(application) {
 
-    val mapAreas: LiveData<List<MapArea>>
-
-    init {
-        mapAreas = appDao.getMapAreasLD()
-        Log.d("#####", "MapAreas: " + (mapAreas.value?.joinToString(separator = ", ") { mapArea -> mapArea.mapAreaName }
-            ?: ""))
-    }
-
-    /** Transformations **/
-
-    val mapAreasString = Transformations.map(mapAreas) {
-        return@map mapAreas.value?.joinToString(separator = ", ") { mapArea -> mapArea.mapAreaName } ?: "- Empty DB -"
-    }
+    val mapAreas: LiveData<List<MapArea>> = appDao.getMapAreasLD()
 
 }

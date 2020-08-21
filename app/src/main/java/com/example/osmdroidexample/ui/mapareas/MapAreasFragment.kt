@@ -41,8 +41,6 @@ class MapAreasFragment : Fragment() {
         binding.downliadedTilesViewModel = viewModel
 
         val adapter = MapAreaAdapter(MapAreaListItemListener {
-            Log.d("#####", "Clicked MapArea ID: $it")
-
             findNavController().navigate(
                 MapAreasFragmentDirections.actionDownloadedTilesFragmentToTripFragment(it)
             )
