@@ -17,7 +17,6 @@ class TripViewModel(
     val mapArea: LiveData<MapArea?>
 
     init {
-        Log.d("TripViewModel", "TripViewModel created!")
         mapArea = appDao.getMapAreaLD(mapAreaId)
         Log.d("TripViewModel", "MapArea: " + (mapArea.value?.mapAreaName ?: "???"))
     }
@@ -27,20 +26,5 @@ class TripViewModel(
     private var viewModelJob = Job()
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
 
-    /** ViewModel methods **/
-
-
-    override fun onCleared() {
-        super.onCleared()
-        Log.i("TripViewModel", "TripViewModel destroyed!")
-    }
-
-    /** Helpers **/
-
-    private suspend fun getMapAreaDb(mapAreaName: String): MapArea? {
-        return withContext(Dispatchers.IO) {
-            return@withContext appDao.getMapArea(mapAreaName)
-        }
-    }
 
 }

@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
@@ -19,7 +20,6 @@ import com.example.osmdroidexample.R
 import com.example.osmdroidexample.database.AppDatabase
 import com.example.osmdroidexample.databinding.TripFragmentBinding
 import com.example.osmdroidexample.map.MapAreaManager
-import kotlinx.android.synthetic.main.main_fragment.*
 import kotlinx.android.synthetic.main.trip_fragment.*
 import org.osmdroid.tileprovider.modules.OfflineTileProvider
 import org.osmdroid.tileprovider.tilesource.FileBasedTileSource
@@ -51,7 +51,7 @@ class TripFragment : Fragment() {
         override fun onLocationChanged(location: Location?) {
             Log.d("#####", "Location: " + location.toString())
             location?.let {
-                pinLocation(it)
+                pinLocation(GeoPoint(it))
             }
         }
 
@@ -90,16 +90,14 @@ class TripFragment : Fragment() {
         viewModel.mapArea.observe(viewLifecycleOwner, {
             it?.let {
                 Log.d("#######", "MapArea: " + it.toString())
-                tripMapView.minZoomLevel = it.mapAreaMinZoom
-                tripMapView.maxZoomLevel = it.mapAreaMaxZoom
-                tripMapView.controller.zoomTo(it.mapAreaMinZoom)
-                tripMapView.controller.animateTo(it.boundingBox.centerWithDateLine)
+                binding.tripMapView.minZoomLevel = it.mapAreaMinZoom
+                binding.tripMapView.maxZoomLevel = it.mapAreaMaxZoom
+                binding.tripMapView.controller.zoomTo(it.mapAreaMinZoom)
+                binding.tripMapView.controller.animateTo(it.boundingBox.centerWithDateLine)
 
                 val mapAreaString = it.getSqliteFilename()
-
                 mapAreaNameTextView.text = mapAreaString
-
-                setupMapView(tripMapView, mapAreaString)
+                setupMapView(binding.tripMapView, mapAreaString)
             }
         })
 
@@ -107,14 +105,6 @@ class TripFragment : Fragment() {
         binding.tripViewModel = viewModel
 
         return binding.root
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        // TODO: Use the ViewModel
-
-        //val mapAreaString = "map_area_${arguments.mapAreaString}.sqlite"
-
     }
 
     private fun setupMapView(mapView: MapView, mapAreaName: String) {
@@ -137,24 +127,25 @@ class TripFragment : Fragment() {
             } catch (e: Exception) {
                 mapView.setTileSource(TileSourceFactory.DEFAULT_TILE_SOURCE)
             }
-
+        } else {
+            Toast.makeText(requireContext(), "Could not find MapArea", Toast.LENGTH_LONG).show()
         }
 
         val locationOverlay = MyLocationNewOverlay(GpsMyLocationProvider(context), mapView)
         locationOverlay.enableMyLocation()
         mapView.overlays.add(locationOverlay)
 
-        pinCurrentLocationButton.setOnClickListener {
+        binding.pinCurrentLocationButton.setOnClickListener {
             pinCurrentLocation()
         }
 
         Log.d("########", "######")
         viewModel.mapArea.value?.let {
             Log.d("########", it.boundingBox.centerWithDateLine.toString())
-            tripMapView.controller.animateTo(it.boundingBox.centerWithDateLine)
+            binding.tripMapView.controller.animateTo(it.boundingBox.centerWithDateLine)
         }
 
-        tripMapView.overlayManager.add(gpsTrail)
+        binding.tripMapView.overlayManager.add(gpsTrail)
 
         locationManager = requireContext().applicationContext.getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
@@ -229,41 +220,24 @@ class TripFragment : Fragment() {
 
     private fun pinCurrentLocation () {
         MapAreaManager.getLastKnownLocation(requireContext(), requireActivity(), permissionRequestCode)?.let {
-            pinnedLocations.add(it)
-
-            val pinnedLocationMarker = Marker(tripMapView)
-            pinnedLocationMarker.position = it
-            pinnedLocationMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
-
-            tripMapView.overlays.add(pinnedLocationMarker)
+            pinLocation(it)
         }
-
-        if (pinnedLocations.size > 0) {
-            gpsTrail.setPoints(pinnedLocations)
-        }
-
-        tripMapView.invalidate()
-
-        Log.d("#####", "Pinned Locations: ${pinnedLocations.toString()}")
-        Log.d("#####", "Overlays: ${tripMapView.overlays.toString()}")
     }
 
-    private fun pinLocation (location: Location) {
-        val geoPoint = GeoPoint(location)
-
+    private fun pinLocation (geoPoint: GeoPoint) {
         pinnedLocations.add(geoPoint)
 
         val pinnedLocationMarker = Marker(tripMapView)
         pinnedLocationMarker.position = geoPoint
         pinnedLocationMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
 
-        tripMapView.overlays.add(pinnedLocationMarker)
+        binding.tripMapView.overlays.add(pinnedLocationMarker)
 
         if (pinnedLocations.size > 0) {
             gpsTrail.setPoints(pinnedLocations)
         }
 
-        tripMapView.invalidate()
+        binding.tripMapView.invalidate()
 
         Log.d("#####", "Pinned Locations: ${pinnedLocations.toString()}")
         Log.d("#####", "Overlays: ${tripMapView.overlays.toString()}")
