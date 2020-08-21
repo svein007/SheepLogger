@@ -1,12 +1,14 @@
 package com.example.osmdroidexample.map
 
 import android.Manifest
+import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
 import android.location.LocationManager
 import android.util.Log
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
+import com.example.osmdroidexample.ui.MainActivity
 import org.osmdroid.tileprovider.cachemanager.CacheManager
 import org.osmdroid.tileprovider.modules.SqliteArchiveTileWriter
 import org.osmdroid.tileprovider.tilesource.OnlineTileSourceBase
@@ -18,10 +20,9 @@ class MapAreaManager {
 
     companion object {
 
-        fun getLastKnownLocation(context: Context): GeoPoint? {
+        fun getLastKnownLocation(context: Context, activity: Activity, requestCode: Int, requestPermissionIfNotGranted: Boolean = true): GeoPoint? {
             val locationManager = context.applicationContext.getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
-            // TODO: Ask for permission if not granted!
             if (ActivityCompat.checkSelfPermission(
                     context,
                     Manifest.permission.ACCESS_FINE_LOCATION
@@ -31,6 +32,10 @@ class MapAreaManager {
                 ) == PackageManager.PERMISSION_GRANTED
             ) {
                 return GeoPoint(locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER))
+            } else {
+                if (requestPermissionIfNotGranted) {
+                    ActivityCompat.requestPermissions(activity, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION), requestCode)
+                }
             }
             return null
         }

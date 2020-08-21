@@ -1,6 +1,7 @@
 package com.example.osmdroidexample.ui.main
 
 import android.content.Context
+import android.content.pm.PackageManager
 import android.location.LocationManager
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -40,6 +41,8 @@ class MainFragment : Fragment() {
 
     private var locationManager: LocationManager? = null
     private var locationOverlay: MyLocationNewOverlay? = null
+
+    private val permissionRequestCode = 12
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
@@ -117,7 +120,7 @@ class MainFragment : Fragment() {
 
         mapView.overlays.add(marker)
 
-        MapAreaManager.getLastKnownLocation(requireContext())?.let {
+        MapAreaManager.getLastKnownLocation(requireContext(), requireActivity(), permissionRequestCode)?.let {
             mapView.controller.animateTo(it)
         }
 
@@ -162,6 +165,22 @@ class MainFragment : Fragment() {
         super.onPause()
 
         mapView.onPause()
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        //super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == permissionRequestCode) {
+            if (grantResults.isNotEmpty()
+                && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                MapAreaManager.getLastKnownLocation(requireContext(), requireActivity(), permissionRequestCode, false)?.let {
+                    mapView.controller.animateTo(it)
+                }
+            }
+        }
     }
 
 }

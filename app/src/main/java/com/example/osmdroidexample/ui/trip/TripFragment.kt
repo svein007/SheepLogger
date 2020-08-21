@@ -19,6 +19,7 @@ import com.example.osmdroidexample.R
 import com.example.osmdroidexample.database.AppDatabase
 import com.example.osmdroidexample.databinding.TripFragmentBinding
 import com.example.osmdroidexample.map.MapAreaManager
+import kotlinx.android.synthetic.main.main_fragment.*
 import kotlinx.android.synthetic.main.trip_fragment.*
 import org.osmdroid.tileprovider.modules.OfflineTileProvider
 import org.osmdroid.tileprovider.tilesource.FileBasedTileSource
@@ -43,6 +44,8 @@ class TripFragment : Fragment() {
     private val gpsTrail = Polyline() // GPS trail of current trip
 
     private lateinit var locationManager: LocationManager
+
+    private val permissionRequestCode = 13
 
     private val gpsListener = object : LocationListener {
         override fun onLocationChanged(location: Location?) {
@@ -137,14 +140,9 @@ class TripFragment : Fragment() {
 
         }
 
-
         val locationOverlay = MyLocationNewOverlay(GpsMyLocationProvider(context), mapView)
         locationOverlay.enableMyLocation()
         mapView.overlays.add(locationOverlay)
-
-        MapAreaManager.getLastKnownLocation(requireContext())?.let {
-            //mapView.controller.animateTo(it)
-        }
 
         pinCurrentLocationButton.setOnClickListener {
             pinCurrentLocation()
@@ -213,8 +211,24 @@ class TripFragment : Fragment() {
         }
     }
 
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        //super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == permissionRequestCode) {
+            if (grantResults.isNotEmpty()
+                && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                MapAreaManager.getLastKnownLocation(requireContext(), requireActivity(), permissionRequestCode, false)?.let {
+                    pinCurrentLocation()
+                }
+            }
+        }
+    }
+
     private fun pinCurrentLocation () {
-        MapAreaManager.getLastKnownLocation(requireContext())?.let {
+        MapAreaManager.getLastKnownLocation(requireContext(), requireActivity(), permissionRequestCode)?.let {
             pinnedLocations.add(it)
 
             val pinnedLocationMarker = Marker(tripMapView)
