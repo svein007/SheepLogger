@@ -46,9 +46,7 @@ class DownloadedTilesFragment : Fragment() {
 
         val adapter = MapAreaAdapter(MapAreaListItemListener {
             Log.d("#####", "Clicked MapArea ID: $it")
-            Toast.makeText(requireContext(), "Clicked MapArea ID: $it", Toast.LENGTH_SHORT).show()
 
-            // TODO: Navigate to Trip-Fragment
             findNavController().navigate(
                 DownloadedTilesFragmentDirections.actionDownloadedTilesFragmentToTripFragment(it)
             )
@@ -65,27 +63,6 @@ class DownloadedTilesFragment : Fragment() {
         binding.mapAreasRecyclerView.addItemDecoration(DividerItemDecoration(application, DividerItemDecoration.VERTICAL))
 
         return binding.root
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
-        val mapArchiveFilesPath = MapAreaManager.getStoredMapAreas(requireContext())
-
-        mapAreaFilesTextView.text = mapArchiveFilesPath.joinToString(separator = ", \n")
-
-        navigateToTripButton.setOnClickListener { v ->
-            val mapAreaString = mapAreaNameEditText.text.toString()
-            if ("map_area_${mapAreaString}.sqlite" in mapArchiveFilesPath) { //TODO: FIX
-                /*
-                findNavController().navigate(
-                    DownloadedTilesFragmentDirections.actionDownloadedTilesFragmentToTripFragment(mapAreaString)
-                )
-                 */
-            } else {
-                Toast.makeText(context, "No such MapArea", Toast.LENGTH_LONG).show()
-            }
-        }
     }
 
 }
