@@ -13,7 +13,9 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:background="?android:attr/selectableItemBackground"
         android:layout_width="match_parent"
+        android:onClick="@{() -> clickListener.onClick(mapArea)}"
         android:layout_height="50dp">
 
         <TextView

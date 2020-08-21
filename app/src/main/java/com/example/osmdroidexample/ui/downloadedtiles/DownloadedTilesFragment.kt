@@ -45,7 +45,11 @@ class DownloadedTilesFragment : Fragment() {
         binding.downliadedTilesViewModel = viewModel
 
         val adapter = MapAreaAdapter(MapAreaListItemListener {
-            Log.d("#####", "Cliked MapArea ID: $it")
+            Log.d("#####", "Clicked MapArea ID: $it")
+            Toast.makeText(requireContext(), "Clicked MapArea ID: $it", Toast.LENGTH_SHORT).show()
+
+            // TODO: Navigate to Trip-Fragment
+
         })
 
         binding.mapAreasRecyclerView.adapter = adapter
