@@ -14,7 +14,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.osmdroidexample.R
 import com.example.osmdroidexample.database.AppDatabase
@@ -78,20 +77,26 @@ class TripFragment : Fragment() {
 
         val appDao = AppDatabase.getInstance(application).appDatabaseDao
         val viewModelFactory = TripViewModelFactory(
-            arguments.mapAreaString,
+            arguments.mapAreaId,
             requireNotNull(this.activity).application,
             appDao)
 
         viewModel = ViewModelProvider(
             this, viewModelFactory)[TripViewModel::class.java]
 
-        viewModel.mapArea.observe(viewLifecycleOwner, Observer {
+        viewModel.mapArea.observe(viewLifecycleOwner, {
             it?.let {
                 Log.d("#######", "MapArea: " + it.toString())
                 tripMapView.minZoomLevel = it.mapAreaMinZoom
                 tripMapView.maxZoomLevel = it.mapAreaMaxZoom
                 tripMapView.controller.zoomTo(it.mapAreaMinZoom)
                 tripMapView.controller.animateTo(it.boundingBox.centerWithDateLine)
+
+                val mapAreaString = it.getSqliteFilename()
+
+                mapAreaNameTextView.text = mapAreaString
+
+                setupMapView(tripMapView, mapAreaString)
             }
         })
 
@@ -105,11 +110,8 @@ class TripFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         // TODO: Use the ViewModel
 
-        val mapAreaString = "map_area_${arguments.mapAreaString}.sqlite"
+        //val mapAreaString = "map_area_${arguments.mapAreaString}.sqlite"
 
-        mapAreaNameTextView.text = mapAreaString
-
-        setupMapView(tripMapView, mapAreaString)
     }
 
     private fun setupMapView(mapView: MapView, mapAreaName: String) {

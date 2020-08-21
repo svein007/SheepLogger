@@ -49,12 +49,14 @@ class DownloadedTilesFragment : Fragment() {
             Toast.makeText(requireContext(), "Clicked MapArea ID: $it", Toast.LENGTH_SHORT).show()
 
             // TODO: Navigate to Trip-Fragment
-
+            findNavController().navigate(
+                DownloadedTilesFragmentDirections.actionDownloadedTilesFragmentToTripFragment(it)
+            )
         })
 
         binding.mapAreasRecyclerView.adapter = adapter
 
-        viewModel.mapAreas.observe(viewLifecycleOwner, Observer {
+        viewModel.mapAreas.observe(viewLifecycleOwner, {
             it?.let {
                 adapter.submitList(it)
             }
@@ -75,9 +77,11 @@ class DownloadedTilesFragment : Fragment() {
         navigateToTripButton.setOnClickListener { v ->
             val mapAreaString = mapAreaNameEditText.text.toString()
             if ("map_area_${mapAreaString}.sqlite" in mapArchiveFilesPath) { //TODO: FIX
+                /*
                 findNavController().navigate(
                     DownloadedTilesFragmentDirections.actionDownloadedTilesFragmentToTripFragment(mapAreaString)
                 )
+                 */
             } else {
                 Toast.makeText(context, "No such MapArea", Toast.LENGTH_LONG).show()
             }

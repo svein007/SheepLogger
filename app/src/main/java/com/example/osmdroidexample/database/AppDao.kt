@@ -15,6 +15,9 @@ interface AppDao {
     @Query("SELECT * FROM map_area_table WHERE map_area_id = :key")
     fun getMapArea(key: Long): MapArea?
 
+    @Query("SELECT * FROM map_area_table WHERE map_area_id = :key")
+    fun getMapAreaLD(key: Long): LiveData<MapArea?>
+
     @Query("SELECT * FROM map_area_table WHERE map_area_name = :mapName")
     fun getMapArea(mapName: String): MapArea?
 

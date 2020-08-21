@@ -4,21 +4,21 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.example.osmdroidexample.database.AppDao
 import com.example.osmdroidexample.database.entities.MapArea
 import kotlinx.coroutines.*
 
-class TripViewModel(private val mapAreaName: String,
-                    application: Application,
-                    private val appDao: AppDao
+class TripViewModel(
+    private val mapAreaId: Long,
+    application: Application,
+    private val appDao: AppDao
 ) : AndroidViewModel(application) {
 
     val mapArea: LiveData<MapArea?>
 
     init {
         Log.d("TripViewModel", "TripViewModel created!")
-        mapArea = appDao.getMapAreaLD(mapAreaName)
+        mapArea = appDao.getMapAreaLD(mapAreaId)
         Log.d("TripViewModel", "MapArea: " + (mapArea.value?.mapAreaName ?: "???"))
     }
 

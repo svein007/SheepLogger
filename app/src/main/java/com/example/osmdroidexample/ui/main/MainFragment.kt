@@ -1,12 +1,8 @@
 package com.example.osmdroidexample.ui.main
 
-import android.Manifest
 import android.content.Context
-import android.content.pm.PackageManager
 import android.location.LocationManager
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -29,16 +25,11 @@ import org.osmdroid.events.ScrollEvent
 import org.osmdroid.events.ZoomEvent
 import org.osmdroid.library.BuildConfig
 import org.osmdroid.tileprovider.cachemanager.CacheManager
-import org.osmdroid.tileprovider.modules.SqliteArchiveTileWriter
-import org.osmdroid.tileprovider.tilesource.*
 import org.osmdroid.util.GeoPoint
-import org.osmdroid.util.MapTileIndex
 import org.osmdroid.views.overlay.Marker
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
-import java.io.File
 import kotlin.math.floor
-import kotlin.math.roundToInt
 
 class MainFragment : Fragment() {
 
@@ -75,8 +66,6 @@ class MainFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        //viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
-        // TODO: Use the ViewModel
 
         tilesListButton.setOnClickListener { v ->
             this.findNavController().navigate(

@@ -30,8 +30,8 @@
         android:label="trip_fragment"
         tools:layout="@layout/trip_fragment" >
         <argument
-            android:name="mapAreaString"
-            app:argType="string" />
+            android:name="mapAreaId"
+            app:argType="long" />
     </fragment>
 
 </navigation>
