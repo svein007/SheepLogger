@@ -60,8 +60,6 @@ class MainFragment : Fragment() {
             this, viewModelFactory
         )[MainViewModel::class.java]
 
-        // Configuration.getInstance().load(context?.applicationContext, PreferenceManager.getDefaultSharedPreferences(context?.applicationContext))
-
         Configuration.getInstance().userAgentValue = BuildConfig.APPLICATION_ID  // Required to do API calls to OSM servers
 
         return binding.root
@@ -70,42 +68,42 @@ class MainFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        tilesListButton.setOnClickListener { v ->
+        binding.tilesListButton.setOnClickListener { v ->
             this.findNavController().navigate(
-                R.id.action_mainFragment_to_downloadedTilesFragment
+                MainFragmentDirections.actionMainFragmentToMapAreasFragment()
             )
         }
 
         locationManager = this.context?.applicationContext?.getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
-        locationOverlay = MyLocationNewOverlay(GpsMyLocationProvider(context), mapView)
+        locationOverlay = MyLocationNewOverlay(GpsMyLocationProvider(context), binding.mapView)
         locationOverlay?.enableMyLocation()
 
         val tileSource = MapAreaManager.getOnlineTileSource()
 
         val position = GeoPoint(65.0, 14.0)
 
-        mapView.setTileSource(tileSource)
+        binding.mapView.setTileSource(tileSource)
 
-        mapView.setMultiTouchControls(true)
+        binding.mapView.setMultiTouchControls(true)
 
-        mapView.minZoomLevel = 5.0
-        mapView.maxZoomLevel = 20.0
+        binding.mapView.minZoomLevel = 5.0
+        binding.mapView.maxZoomLevel = 20.0
 
-        mapView.isTilesScaledToDpi = true
-        mapView.isFlingEnabled = true
+        binding.mapView.isTilesScaledToDpi = true
+        binding.mapView.isFlingEnabled = true
 
-        mapView.setScrollableAreaLimitLatitude(72.0, 55.0, 0)
-        mapView.setScrollableAreaLimitLongitude(-2.0, 33.0, 0)
+        binding.mapView.setScrollableAreaLimitLatitude(72.0, 55.0, 0)
+        binding.mapView.setScrollableAreaLimitLongitude(-2.0, 33.0, 0)
 
-        mapView.controller.setZoom(15.0)
-        mapView.controller.setCenter(position)
+        binding.mapView.controller.setZoom(15.0)
+        binding.mapView.controller.setCenter(position)
 
-        textView.text = "Zoom = " + mapView.zoomLevelDouble
+        textView.text = "Zoom = " + binding.mapView.zoomLevelDouble
 
         mapView.addMapListener(DelayedMapListener(object : MapListener {
             override fun onZoom(event: ZoomEvent?): Boolean {
-                textView.text = "Zoom = " + mapView.zoomLevelDouble
+                textView.text = "Zoom = " + binding.mapView.zoomLevelDouble
                 return false
             }
 
@@ -114,41 +112,42 @@ class MainFragment : Fragment() {
             }
         }))
 
-        val marker = Marker(mapView)
+        val marker = Marker(binding.mapView)
         marker.position = position
         marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
 
-        mapView.overlays.add(marker)
+        binding.mapView.overlays.add(marker)
 
         MapAreaManager.getLastKnownLocation(requireContext(), requireActivity(), permissionRequestCode)?.let {
-            mapView.controller.animateTo(it)
+            binding.mapView.controller.animateTo(it)
         }
 
-        mapView.overlays.add(locationOverlay)
+        binding.mapView.overlays.add(locationOverlay)
 
-        cacheManager = CacheManager(mapView)
+        cacheManager = CacheManager(binding.mapView)
 
-        saveTileButton.setOnClickListener { v ->
-            val possibleNumOfTiles = cacheManager?.possibleTilesInArea(mapView.boundingBox, mapView.zoomLevelDouble.toInt(), 20) ?: 0
+        binding.saveTileButton.setOnClickListener { v ->
+            val possibleNumOfTiles = cacheManager?.possibleTilesInArea(binding.mapView.boundingBox,
+                binding.mapView.zoomLevelDouble.toInt(), 20) ?: 0
             Toast.makeText(context, "#Tiles="+possibleNumOfTiles, Toast.LENGTH_LONG).show()
 
-            //TODO: Warn & confirm if users tries to download a large number of tiles! (show space usage?)
             if (possibleNumOfTiles > 10000) {
                 Toast.makeText(context, ">10000 tiles, use smaller area", Toast.LENGTH_LONG).show()
+            } else if (binding.mapView.zoomLevelDouble.toInt() > 18 || possibleNumOfTiles < 40) {
+                Toast.makeText(context, "Area too small, zoom out", Toast.LENGTH_LONG).show()
             } else {
-                val mapAreaFileName = mapNameEditText.text.toString()
+                val mapAreaName = binding.mapNameEditText.text.toString()
 
-                MapAreaManager.storeMapArea(requireContext(), mapView, mapAreaFileName)
-
-                // TODO: store MapArea in AppDB (refactor w/ MapAreaManager to one method?)
                 val mapArea = MapArea(
-                    mapAreaName = mapAreaFileName,
+                    mapAreaName = mapAreaName,
                     mapAreaMinZoom = floor(mapView.zoomLevelDouble),
-                    mapAreaMaxZoom = mapView.maxZoomLevel,
-                    boundingBox = mapView.boundingBox
+                    mapAreaMaxZoom = binding.mapView.maxZoomLevel,
+                    boundingBox = binding.mapView.boundingBox
                 )
 
                 viewModel.storeMapArea(mapArea)
+
+                MapAreaManager.storeMapArea(requireContext(), binding.mapView, mapArea.getSqliteFilename())
             }
 
         }
@@ -158,13 +157,13 @@ class MainFragment : Fragment() {
     override fun onResume() {
         super.onResume()
 
-        mapView.onResume()
+        binding.mapView.onResume()
     }
 
     override fun onPause() {
         super.onPause()
 
-        mapView.onPause()
+        binding.mapView.onPause()
     }
 
     override fun onRequestPermissionsResult(
@@ -177,7 +176,7 @@ class MainFragment : Fragment() {
             if (grantResults.isNotEmpty()
                 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 MapAreaManager.getLastKnownLocation(requireContext(), requireActivity(), permissionRequestCode, false)?.let {
-                    mapView.controller.animateTo(it)
+                    binding.mapView.controller.animateTo(it)
                 }
             }
         }

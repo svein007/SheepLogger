@@ -8,7 +8,6 @@ import android.location.LocationManager
 import android.util.Log
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
-import com.example.osmdroidexample.ui.MainActivity
 import org.osmdroid.tileprovider.cachemanager.CacheManager
 import org.osmdroid.tileprovider.modules.SqliteArchiveTileWriter
 import org.osmdroid.tileprovider.tilesource.OnlineTileSourceBase
@@ -47,12 +46,13 @@ class MapAreaManager {
                 .toList()
         }
 
-        fun storeMapArea(context: Context, mapView: MapView, mapAreaName: String) {
-            val mapAreaFilename = context.getDatabasePath("map_area_$mapAreaName.sqlite").toString()
-            Log.d("#######", "Should store map-area at: $mapAreaFilename")
+        fun storeMapArea(context: Context, mapView: MapView, mapAreaFilename: String) {
+            //val mapAreaFilename = context.getDatabasePath("map_area_$mapAreaName.sqlite").toString()
+            val mapAreaFilenamePath = context.getDatabasePath(mapAreaFilename).toString()
+            Log.d("#######", "Should store map-area at: $mapAreaFilenamePath")
 
             val sqliteArchiveTileWriterCacheManager = CacheManager(mapView,
-                SqliteArchiveTileWriter(mapAreaFilename))
+                SqliteArchiveTileWriter(mapAreaFilenamePath))
 
             sqliteArchiveTileWriterCacheManager.downloadAreaAsync(context,
                 mapView.boundingBox,
@@ -74,7 +74,7 @@ class MapAreaManager {
                     }
 
                     override fun onTaskComplete() {
-                        Toast.makeText(context, "Downloaded: $mapAreaName", Toast.LENGTH_LONG).show()
+                        Toast.makeText(context, "Downloaded: $mapAreaFilename", Toast.LENGTH_LONG).show()
                     }
 
                     override fun onTaskFailed(errors: Int) {
