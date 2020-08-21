@@ -9,7 +9,7 @@
             type="com.example.osmdroidexample.database.entities.MapArea" />
         <variable
             name="clickListener"
-            type="com.example.osmdroidexample.ui.downloadedtiles.MapAreaListItemListener" />
+            type="com.example.osmdroidexample.ui.mapareas.MapAreaListItemListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

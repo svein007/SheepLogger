@@ -17,9 +17,9 @@
     </fragment>
     <fragment
         android:id="@+id/downloadedTilesFragment"
-        android:name="com.example.osmdroidexample.ui.downloadedtiles.DownloadedTilesFragment"
+        android:name="com.example.osmdroidexample.ui.mapareas.MapAreasFragment"
         android:label="Map Areas"
-        tools:layout="@layout/downloaded_tiles_fragment">
+        tools:layout="@layout/map_areas_fragment">
         <action
             android:id="@+id/action_downloadedTilesFragment_to_tripFragment"
             app:destination="@id/tripFragment" />

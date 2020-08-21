@@ -1,4 +1,4 @@
-package com.example.osmdroidexample.ui.downloadedtiles
+package com.example.osmdroidexample.ui.mapareas
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

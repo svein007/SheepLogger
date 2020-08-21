@@ -1,4 +1,4 @@
-package com.example.osmdroidexample.ui.downloadedtiles
+package com.example.osmdroidexample.ui.mapareas
 
 import android.app.Application
 import android.util.Log
@@ -8,7 +8,7 @@ import androidx.lifecycle.Transformations
 import com.example.osmdroidexample.database.AppDao
 import com.example.osmdroidexample.database.entities.MapArea
 
-class DownloadedTilesViewModel(
+class MapAreasViewModel(
     application: Application,
     private val appDao: AppDao
 ) : AndroidViewModel(application) {
