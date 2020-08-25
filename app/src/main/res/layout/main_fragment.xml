@@ -20,9 +20,8 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:text="---"
-            app:layout_constraintBottom_toBottomOf="@+id/saveTileButton"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/saveTileButton"
+            app:layout_constraintTop_toTopOf="parent"
             tools:text="Zoom: 8" />
 
         <org.osmdroid.views.MapView
@@ -42,32 +41,25 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
-            android:text="Lagre Utsnitt"
+            android:text="Save Area"
+            app:layout_constraintBottom_toBottomOf="@+id/mapNameEditText"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Button
-            android:id="@+id/tilesListButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:text="Liste"
-            app:layout_constraintBottom_toBottomOf="@+id/saveTileButton"
-            app:layout_constraintEnd_toStartOf="@+id/saveTileButton"
-            app:layout_constraintTop_toTopOf="@+id/saveTileButton" />
+            app:layout_constraintTop_toTopOf="@+id/mapNameEditText" />
 
         <EditText
             android:id="@+id/mapNameEditText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
             android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
             android:ems="10"
             android:hint="Navn På Lagret Kart"
             android:inputType="textPersonName"
             android:text="Name"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/saveTileButton"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tilesListButton" />
+            app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

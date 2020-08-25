@@ -68,12 +68,6 @@ class MainFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        binding.tilesListButton.setOnClickListener { v ->
-            this.findNavController().navigate(
-                MainFragmentDirections.actionMainFragmentToMapAreasFragment()
-            )
-        }
-
         locationManager = this.context?.applicationContext?.getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
         locationOverlay = MyLocationNewOverlay(GpsMyLocationProvider(context), binding.mapView)

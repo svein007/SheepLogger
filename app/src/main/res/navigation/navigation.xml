@@ -4,17 +4,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
-    app:startDestination="@id/mainFragment">
+    app:startDestination="@id/startFragment">
 
     <fragment
         android:id="@+id/mainFragment"
         android:name="com.example.osmdroidexample.ui.main.MainFragment"
         android:label="Map"
-        tools:layout="@layout/main_fragment">
-        <action
-            android:id="@+id/action_mainFragment_to_mapAreasFragment"
-            app:destination="@id/mapAreasFragment" />
-    </fragment>
+        tools:layout="@layout/main_fragment"/>
     <fragment
         android:id="@+id/mapAreasFragment"
         android:name="com.example.osmdroidexample.ui.mapareas.MapAreasFragment"
@@ -32,6 +28,18 @@
         <argument
             android:name="mapAreaId"
             app:argType="long" />
+    </fragment>
+    <fragment
+        android:id="@+id/startFragment"
+        android:name="com.example.osmdroidexample.ui.start.StartFragment"
+        android:label="StartFragment"
+        tools:layout="@layout/start_fragment">
+        <action
+            android:id="@+id/action_startFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
+        <action
+            android:id="@+id/action_startFragment_to_mapAreasFragment"
+            app:destination="@id/mapAreasFragment" />
     </fragment>
 
 </navigation>
