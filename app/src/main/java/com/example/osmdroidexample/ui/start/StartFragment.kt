@@ -39,6 +39,12 @@ class StartFragment : Fragment() {
             )
         }
 
+        binding.tripsButton.setOnClickListener {
+            findNavController().navigate(
+                StartFragmentDirections.actionStartFragmentToTripsFragment()
+            )
+        }
+
         return binding.root
     }
 

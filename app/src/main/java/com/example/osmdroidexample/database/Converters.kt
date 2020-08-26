@@ -2,6 +2,7 @@ package com.example.osmdroidexample.database
 
 import androidx.room.TypeConverter
 import org.osmdroid.util.BoundingBox
+import java.util.*
 
 class Converters {
 
@@ -18,11 +19,11 @@ class Converters {
 
         val bboxStr = boundingBox
             .toString()
-            .replace(":","")
-            .replace("N","")
-            .replace("E","")
-            .replace("S","")
-            .replace("W","")
+            .replace(":", "")
+            .replace("N", "")
+            .replace("E", "")
+            .replace("S", "")
+            .replace("W", "")
             .trim()
 
         return bboxStr

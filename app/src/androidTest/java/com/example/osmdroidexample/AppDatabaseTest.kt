@@ -6,12 +6,14 @@ import androidx.test.platform.app.InstrumentationRegistry
 import com.example.osmdroidexample.database.AppDao
 import com.example.osmdroidexample.database.AppDatabase
 import com.example.osmdroidexample.database.entities.MapArea
+import com.example.osmdroidexample.database.entities.Trip
 import org.junit.After
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import java.io.IOException
+import com.example.osmdroidexample.utils.*
 
 @RunWith(AndroidJUnit4::class)
 class AppDatabaseTest {
@@ -82,6 +84,25 @@ class AppDatabaseTest {
         val resultMapAreas = appDao.getMapAreas()
 
         Assert.assertEquals(2, resultMapAreas.size)
+
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun insertAndGetTripsForMapArea() {
+        val mapArea = MapArea(mapAreaName = "Oslo")
+
+        val mapAreaId = appDao.insert(mapArea)
+
+        val trip = Trip(tripName = "Trip 1",
+            tripOwnerMapAreaId = mapAreaId,
+            tripDate = dateToFormattedString(getToday()))
+
+        appDao.insert(trip)
+
+        val resultTrips = appDao.getTripsForMapArea(mapAreaId)
+
+        Assert.assertEquals(1, resultTrips.size)
 
     }
 }

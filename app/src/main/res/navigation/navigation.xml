@@ -40,6 +40,14 @@
         <action
             android:id="@+id/action_startFragment_to_mapAreasFragment"
             app:destination="@id/mapAreasFragment" />
+        <action
+            android:id="@+id/action_startFragment_to_tripsFragment"
+            app:destination="@id/tripsFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/tripsFragment"
+        android:name="com.example.osmdroidexample.ui.trips.TripsFragment"
+        android:label="trips_fragment"
+        tools:layout="@layout/trips_fragment" />
 
 </navigation>

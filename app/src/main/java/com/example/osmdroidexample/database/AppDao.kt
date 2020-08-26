@@ -5,9 +5,12 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import com.example.osmdroidexample.database.entities.MapArea
+import com.example.osmdroidexample.database.entities.Trip
 
 @Dao
 interface AppDao {
+
+    /** MapArea **/
 
     @Insert
     fun insert(mapArea: MapArea): Long
@@ -29,6 +32,24 @@ interface AppDao {
 
     @Query("SELECT * FROM map_area_table ORDER BY map_area_name ASC")
     fun getMapAreasLD(): LiveData<List<MapArea>>
+
+
+    /** Trip **/
+
+    @Insert
+    fun insert(trip: Trip): Long
+
+    @Query("SELECT * FROM trip_table WHERE trip_id = :key")
+    fun getTrip(key: Long): Trip?
+
+    @Query("SELECT * FROM trip_table ORDER BY trip_id ASC")
+    fun getTrips(): List<Trip>
+
+    @Query("SELECT * FROM trip_table ORDER BY trip_id ASC")
+    fun getTripsLD(): LiveData<List<Trip>>
+
+    @Query("SELECT * FROM trip_table WHERE trip_owner_map_area_id = :mapAreaId ORDER BY trip_id ASC ")
+    fun getTripsForMapArea(mapAreaId: Long): List<Trip>
 
 
 }
