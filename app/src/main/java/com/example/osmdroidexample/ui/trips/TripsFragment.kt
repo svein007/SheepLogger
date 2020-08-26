@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.example.osmdroidexample.R
 import com.example.osmdroidexample.database.AppDatabase
 import com.example.osmdroidexample.databinding.TripsFragmentBinding
@@ -50,7 +51,9 @@ class TripsFragment : Fragment() {
         })
 
         binding.newTripButton.setOnClickListener {
-            viewModel.addTrip()
+            findNavController().navigate(
+                TripsFragmentDirections.actionTripsFragmentToAddTripFragment()
+            )
         }
 
         return binding.root
