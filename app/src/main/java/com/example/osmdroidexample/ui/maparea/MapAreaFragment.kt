@@ -2,13 +2,12 @@ package com.example.osmdroidexample.ui.maparea
 
 import android.os.Bundle
 import android.util.Log
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.example.osmdroidexample.R
 import com.example.osmdroidexample.database.AppDatabase
 import com.example.osmdroidexample.databinding.MapAreaFragmentBinding
@@ -38,6 +37,8 @@ class MapAreaFragment : Fragment() {
         )
 
         arguments = MapAreaFragmentArgs.fromBundle(requireArguments())
+
+        setHasOptionsMenu(true)
 
         val application = requireNotNull(this.activity).application
         val appDao = AppDatabase.getInstance(application).appDatabaseDao
@@ -69,6 +70,20 @@ class MapAreaFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         // TODO: Use the ViewModel
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.map_area_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.mi_delete_map_area) {
+            viewModel.deleteMapArea()
+            findNavController().popBackStack()
+            return true
+        }
+        return false
     }
 
     private fun setupMapView(mapView: MapView, mapAreaName: String) {

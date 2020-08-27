@@ -33,6 +33,9 @@ interface AppDao {
     @Query("SELECT * FROM map_area_table ORDER BY map_area_name ASC")
     fun getMapAreasLD(): LiveData<List<MapArea>>
 
+    @Query("DELETE FROM map_area_table WHERE map_area_id = :key")
+    fun deleteMapArea(key: Long)
+
 
     /** Trip **/
 

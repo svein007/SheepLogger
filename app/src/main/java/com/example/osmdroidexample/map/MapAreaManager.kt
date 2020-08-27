@@ -84,6 +84,13 @@ class MapAreaManager {
 
         }
 
+        fun deleteMapArea(context: Context, mapAreaFilename: String) {
+            val sqlFile = context.getDatabasePath(mapAreaFilename)
+            if (sqlFile.isFile) {
+                sqlFile.delete()
+            }
+        }
+
         fun getOnlineTileSource(): OnlineTileSourceBase {
             return object : OnlineTileSourceBase("Kartverket - Norge Topografisk",
                 0, 20, 256, "",
