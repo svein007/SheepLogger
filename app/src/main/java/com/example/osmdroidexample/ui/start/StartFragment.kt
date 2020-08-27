@@ -33,7 +33,7 @@ class StartFragment : Fragment() {
             )
         }
 
-        binding.startTripButton.setOnClickListener {
+        binding.offlineMapAreasButton.setOnClickListener {
             findNavController().navigate(
                 StartFragmentDirections.actionStartFragmentToMapAreasFragment()
             )

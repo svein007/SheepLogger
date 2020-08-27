@@ -42,7 +42,7 @@ class MapAreasFragment : Fragment() {
 
         val adapter = MapAreaAdapter(MapAreaListItemListener {
             findNavController().navigate(
-                MapAreasFragmentDirections.actionDownloadedTilesFragmentToTripFragment(it)
+                MapAreasFragmentDirections.actionMapAreasFragmentToMapAreaFragment(it)
             )
         })
 

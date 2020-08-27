@@ -17,8 +17,8 @@
         android:label="Map Areas"
         tools:layout="@layout/map_areas_fragment">
         <action
-            android:id="@+id/action_downloadedTilesFragment_to_tripFragment"
-            app:destination="@id/tripFragment" />
+            android:id="@+id/action_mapAreasFragment_to_mapAreaFragment"
+            app:destination="@id/mapAreaFragment" />
     </fragment>
     <fragment
         android:id="@+id/tripFragment"
@@ -58,5 +58,13 @@
         android:name="com.example.osmdroidexample.ui.addtrip.AddTripFragment"
         android:label="AddTripFragment"
         tools:layout="@layout/add_trip_fragment"/>
+    <fragment
+        android:id="@+id/mapAreaFragment"
+        android:name="com.example.osmdroidexample.ui.maparea.MapAreaFragment"
+        android:label="MapAreaFragment" >
+        <argument
+            android:name="mapAreaId"
+            app:argType="long" />
+    </fragment>
 
 </navigation>
