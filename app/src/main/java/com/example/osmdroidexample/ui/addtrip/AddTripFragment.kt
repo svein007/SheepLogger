@@ -1,10 +1,8 @@
 package com.example.osmdroidexample.ui.addtrip
 
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -26,6 +24,8 @@ class AddTripFragment : Fragment() {
             inflater, R.layout.add_trip_fragment, container, false
         )
 
+        setHasOptionsMenu(true)
+
         val application = requireNotNull(this.activity).application
         val appDao = AppDatabase.getInstance(application).appDatabaseDao
 
@@ -37,17 +37,32 @@ class AddTripFragment : Fragment() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
-        binding.addTripButton.setOnClickListener {
-            viewModel.addTrip()
-            findNavController().popBackStack()
-        }
-
         return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         // TODO: Use the ViewModel
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.add_trip_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.mi_add_trip -> {
+                addTrip()
+                return true
+            }
+        }
+        return false
+    }
+
+    private fun addTrip() {
+        viewModel.addTrip()
+        findNavController().popBackStack()
     }
 
 }
