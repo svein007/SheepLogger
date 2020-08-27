@@ -2,10 +2,8 @@ package com.example.osmdroidexample.ui.mapareas
 
 import android.os.Bundle
 import android.util.Log
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -27,6 +25,8 @@ class MapAreasFragment : Fragment() {
         binding = DataBindingUtil.inflate(
             inflater, R.layout.map_areas_fragment, container, false
         )
+
+        setHasOptionsMenu(true)
 
         val application = requireNotNull(this.activity).application
         val appDao = AppDatabase.getInstance(application).appDatabaseDao
@@ -57,6 +57,21 @@ class MapAreasFragment : Fragment() {
         binding.mapAreasRecyclerView.addItemDecoration(DividerItemDecoration(application, DividerItemDecoration.VERTICAL))
 
         return binding.root
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.map_areas_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.mi_add_map_area) {
+            findNavController().navigate(
+                MapAreasFragmentDirections.actionMapAreasFragmentToMainFragment()
+            )
+            return true
+        }
+        return false
     }
 
 }

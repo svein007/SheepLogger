@@ -19,6 +19,9 @@
         <action
             android:id="@+id/action_mapAreasFragment_to_mapAreaFragment"
             app:destination="@id/mapAreaFragment" />
+        <action
+            android:id="@+id/action_mapAreasFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
     </fragment>
     <fragment
         android:id="@+id/tripFragment"
@@ -34,9 +37,6 @@
         android:name="com.example.osmdroidexample.ui.start.StartFragment"
         android:label="StartFragment"
         tools:layout="@layout/start_fragment">
-        <action
-            android:id="@+id/action_startFragment_to_mainFragment"
-            app:destination="@id/mainFragment" />
         <action
             android:id="@+id/action_startFragment_to_mapAreasFragment"
             app:destination="@id/mapAreasFragment" />

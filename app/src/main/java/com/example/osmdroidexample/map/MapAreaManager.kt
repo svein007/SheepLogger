@@ -46,7 +46,7 @@ class MapAreaManager {
                 .toList()
         }
 
-        fun storeMapArea(context: Context, mapView: MapView, mapAreaFilename: String) {
+        fun storeMapArea(context: Context, mapView: MapView, mapAreaFilename: String, onDownloaded: () -> Unit) {
             //val mapAreaFilename = context.getDatabasePath("map_area_$mapAreaName.sqlite").toString()
             val mapAreaFilenamePath = context.getDatabasePath(mapAreaFilename).toString()
             Log.d("#######", "Should store map-area at: $mapAreaFilenamePath")
@@ -75,9 +75,11 @@ class MapAreaManager {
 
                     override fun onTaskComplete() {
                         Toast.makeText(context, "Downloaded: $mapAreaFilename", Toast.LENGTH_LONG).show()
+                        onDownloaded()
                     }
 
                     override fun onTaskFailed(errors: Int) {
+                        Toast.makeText(context, "ERROR: Download failed!", Toast.LENGTH_LONG).show()
                     }
                 }
             )

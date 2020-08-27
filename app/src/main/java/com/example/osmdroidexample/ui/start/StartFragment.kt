@@ -27,12 +27,6 @@ class StartFragment : Fragment() {
 
         viewModel = ViewModelProvider(this)[StartViewModel::class.java]
 
-        binding.downloadMapAreaButton.setOnClickListener {
-            findNavController().navigate(
-                StartFragmentDirections.actionStartFragmentToMainFragment()
-            )
-        }
-
         binding.offlineMapAreasButton.setOnClickListener {
             findNavController().navigate(
                 StartFragmentDirections.actionStartFragmentToMapAreasFragment()
