@@ -16,6 +16,7 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.example.osmdroidexample.R
 import com.example.osmdroidexample.database.AppDatabase
 import com.example.osmdroidexample.databinding.TripFragmentBinding
@@ -41,6 +42,8 @@ class TripFragment : Fragment() {
     private lateinit var arguments: TripFragmentArgs
 
     private val pinnedLocations = mutableListOf<GeoPoint>()
+
+    //TODO: Put in ViewModel (crash on pinLocation after popStackNavigation from AddObservation)
     private val gpsTrail = Polyline() // GPS trail of current trip
 
     private lateinit var locationManager: LocationManager
@@ -101,6 +104,12 @@ class TripFragment : Fragment() {
                 setupMapView(binding.tripMapView, mapAreaString)
             }
         })
+
+        binding.newObservationButton.setOnClickListener {
+            findNavController().navigate(
+                TripFragmentDirections.actionTripFragmentToAddObservationFragment(arguments.tripId)
+            )
+        }
 
         binding.lifecycleOwner = viewLifecycleOwner
         binding.tripViewModel = viewModel

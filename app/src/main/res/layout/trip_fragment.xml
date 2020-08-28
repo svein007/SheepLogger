@@ -23,6 +23,16 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <Button
+            android:id="@+id/newObservationButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="New Observation"
+            app:layout_constraintStart_toEndOf="@+id/textView8"
+            app:layout_constraintTop_toBottomOf="@+id/startGpsLogButton" />
+
         <org.osmdroid.views.MapView
             android:id="@+id/tripMapView"
             android:layout_width="wrap_content"
@@ -31,7 +41,9 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/startGpsLogButton" />
+            app:layout_constraintTop_toBottomOf="@+id/newObservationButton">
+
+        </org.osmdroid.views.MapView>
 
         <Button
             android:id="@+id/startGpsLogButton"
@@ -40,7 +52,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:text="Start"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/textView7"
             app:layout_constraintTop_toBottomOf="@+id/mapAreaNameTextView" />
 
         <Button
@@ -62,6 +74,26 @@
             android:text="Log_Point"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/mapAreaNameTextView" />
+
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="GPS: "
+            app:layout_constraintBottom_toBottomOf="@+id/startGpsLogButton"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/startGpsLogButton" />
+
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="Obs: "
+            app:layout_constraintBottom_toBottomOf="@+id/newObservationButton"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/newObservationButton" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -1,4 +1,4 @@
-package com.example.osmdroidexample.ui.trips
+package com.example.osmdroidexample.ui
 
 import android.widget.TextView
 import androidx.databinding.BindingAdapter

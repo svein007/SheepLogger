@@ -34,6 +34,9 @@
         <argument
             android:name="mapAreaId"
             app:argType="long" />
+        <action
+            android:id="@+id/action_tripFragment_to_addObservationFragment"
+            app:destination="@id/addObservationFragment" />
     </fragment>
     <fragment
         android:id="@+id/startFragment"
@@ -71,6 +74,15 @@
         tools:layout="@layout/map_area_fragment">
         <argument
             android:name="mapAreaId"
+            app:argType="long" />
+    </fragment>
+    <fragment
+        android:id="@+id/addObservationFragment"
+        android:name="com.example.osmdroidexample.ui.addobservation.AddObservationFragment"
+        android:label="add_observation_fragment"
+        tools:layout="@layout/add_observation_fragment" >
+        <argument
+            android:name="tripId"
             app:argType="long" />
     </fragment>
 
