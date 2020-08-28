@@ -45,6 +45,9 @@ interface AppDao {
     @Query("SELECT * FROM trip_table WHERE trip_id = :key")
     fun getTrip(key: Long): Trip?
 
+    @Query("SELECT * FROM trip_table WHERE trip_id = :key")
+    fun getTripLD(key: Long): LiveData<Trip?>
+
     @Query("SELECT * FROM trip_table ORDER BY trip_id ASC")
     fun getTrips(): List<Trip>
 

@@ -80,6 +80,7 @@ class TripFragment : Fragment() {
 
         val appDao = AppDatabase.getInstance(application).appDatabaseDao
         val viewModelFactory = TripViewModelFactory(
+            arguments.tripId,
             arguments.mapAreaId,
             requireNotNull(this.activity).application,
             appDao)

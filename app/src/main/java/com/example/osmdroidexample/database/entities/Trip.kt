@@ -11,7 +11,7 @@ import androidx.room.PrimaryKey
                 entity = MapArea::class,
                 parentColumns = arrayOf("map_area_id"),
                 childColumns = arrayOf("trip_owner_map_area_id"),
-                onDelete = ForeignKey.CASCADE)
+                onDelete = ForeignKey.NO_ACTION)
         ])
 data class Trip (
     @PrimaryKey(autoGenerate = true)

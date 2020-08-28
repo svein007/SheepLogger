@@ -6,20 +6,18 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import com.example.osmdroidexample.database.AppDao
 import com.example.osmdroidexample.database.entities.MapArea
+import com.example.osmdroidexample.database.entities.Trip
 import kotlinx.coroutines.*
 
 class TripViewModel(
+    private val tripId: Long,
     private val mapAreaId: Long,
     application: Application,
     private val appDao: AppDao
 ) : AndroidViewModel(application) {
 
-    val mapArea: LiveData<MapArea?>
-
-    init {
-        mapArea = appDao.getMapAreaLD(mapAreaId)
-        Log.d("TripViewModel", "MapArea: " + (mapArea.value?.mapAreaName ?: "???"))
-    }
+    val trip: LiveData<Trip?> = appDao.getTripLD(tripId)
+    val mapArea: LiveData<MapArea?> = appDao.getMapAreaLD(mapAreaId)
 
     /** Private fields **/
 

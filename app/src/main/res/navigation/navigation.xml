@@ -29,6 +29,9 @@
         android:label="Trip"
         tools:layout="@layout/trip_fragment">
         <argument
+            android:name="tripId"
+            app:argType="long" />
+        <argument
             android:name="mapAreaId"
             app:argType="long" />
     </fragment>
@@ -52,6 +55,9 @@
         <action
             android:id="@+id/action_tripsFragment_to_addTripFragment"
             app:destination="@id/addTripFragment" />
+        <action
+            android:id="@+id/action_tripsFragment_to_tripFragment"
+            app:destination="@id/tripFragment" />
     </fragment>
     <fragment
         android:id="@+id/addTripFragment"
@@ -61,7 +67,8 @@
     <fragment
         android:id="@+id/mapAreaFragment"
         android:name="com.example.osmdroidexample.ui.maparea.MapAreaFragment"
-        android:label="MapAreaFragment" >
+        android:label="MapAreaFragment"
+        tools:layout="@layout/map_area_fragment">
         <argument
             android:name="mapAreaId"
             app:argType="long" />
