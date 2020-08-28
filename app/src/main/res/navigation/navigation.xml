@@ -95,6 +95,17 @@
         <argument
             android:name="tripId"
             app:argType="long" />
+        <action
+            android:id="@+id/action_observationsFragment_to_observationDetailsFragment"
+            app:destination="@id/observationDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/observationDetailsFragment"
+        android:name="com.example.osmdroidexample.ui.observationdetails.ObservationDetailsFragment"
+        android:label="ObservationDetailsFragment" >
+        <argument
+            android:name="observationId"
+            app:argType="long" />
     </fragment>
 
 </navigation>

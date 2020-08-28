@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.example.osmdroidexample.R
 import com.example.osmdroidexample.database.AppDatabase
 import com.example.osmdroidexample.databinding.ObservationsFragmentBinding
@@ -41,7 +42,9 @@ class ObservationsFragment : Fragment() {
         binding.viewModel = viewModel
 
         val adapter = ObservationAdapter(ObservationListItemListener { observationId ->
-            Toast.makeText(requireContext(), "ObsID: $observationId", Toast.LENGTH_SHORT).show()
+            findNavController().navigate(
+                ObservationsFragmentDirections.actionObservationsFragmentToObservationDetailsFragment(observationId)
+            )
         })
 
         binding.observationsRV.adapter = adapter
