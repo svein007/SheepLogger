@@ -22,7 +22,6 @@ data class Observation(
     @ColumnInfo(name = "observation_note")
     var observationNote: String,
 
-    @ForeignKey(entity = Trip::class, parentColumns = ["trip_id"], childColumns = ["observation_owner_trip_id"], onDelete = ForeignKey.CASCADE)
     @ColumnInfo(name = "observation_owner_trip_id")
     var observationOwnerTripId: Long
 

@@ -95,5 +95,15 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/newObservationButton" />
 
+        <Button
+            android:id="@+id/observationsButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="Observations"
+            app:layout_constraintBottom_toBottomOf="@+id/newObservationButton"
+            app:layout_constraintStart_toEndOf="@+id/newObservationButton"
+            app:layout_constraintTop_toTopOf="@+id/newObservationButton" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

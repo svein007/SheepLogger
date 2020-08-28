@@ -37,6 +37,9 @@
         <action
             android:id="@+id/action_tripFragment_to_addObservationFragment"
             app:destination="@id/addObservationFragment" />
+        <action
+            android:id="@+id/action_tripFragment_to_observationsFragment"
+            app:destination="@id/observationsFragment" />
     </fragment>
     <fragment
         android:id="@+id/startFragment"
@@ -81,6 +84,14 @@
         android:name="com.example.osmdroidexample.ui.addobservation.AddObservationFragment"
         android:label="add_observation_fragment"
         tools:layout="@layout/add_observation_fragment" >
+        <argument
+            android:name="tripId"
+            app:argType="long" />
+    </fragment>
+    <fragment
+        android:id="@+id/observationsFragment"
+        android:name="com.example.osmdroidexample.ui.observations.ObservationsFragment"
+        android:label="ObservationsFragment" >
         <argument
             android:name="tripId"
             app:argType="long" />

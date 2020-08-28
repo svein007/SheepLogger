@@ -111,6 +111,12 @@ class TripFragment : Fragment() {
             )
         }
 
+        binding.observationsButton.setOnClickListener {
+            findNavController().navigate(
+                TripFragmentDirections.actionTripFragmentToObservationsFragment(arguments.tripId)
+            )
+        }
+
         binding.lifecycleOwner = viewLifecycleOwner
         binding.tripViewModel = viewModel
 

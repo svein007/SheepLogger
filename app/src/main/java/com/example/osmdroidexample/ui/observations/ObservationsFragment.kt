@@ -1,4 +1,4 @@
-package com.example.osmdroidexample.ui.addobservation
+package com.example.osmdroidexample.ui.observations
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -9,32 +9,30 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.example.osmdroidexample.R
 import com.example.osmdroidexample.database.AppDatabase
-import com.example.osmdroidexample.databinding.AddObservationFragmentBinding
+import com.example.osmdroidexample.databinding.ObservationsFragmentBinding
 
-class AddObservationFragment : Fragment() {
+class ObservationsFragment : Fragment() {
 
-    private lateinit var viewModel: AddObservationViewModel
-    private lateinit var binding: AddObservationFragmentBinding
-    private lateinit var arguments: AddObservationFragmentArgs
+    private lateinit var viewModel: ObservationsViewModel
+    private lateinit var binding: ObservationsFragmentBinding
+    private lateinit var arguments: ObservationsFragmentArgs
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
 
-        binding = DataBindingUtil.inflate(
-            inflater, R.layout.add_observation_fragment, container, false
-        )
+        binding = DataBindingUtil.inflate(inflater, R.layout.observations_fragment, container, false)
 
-        arguments = AddObservationFragmentArgs.fromBundle(requireArguments())
+        arguments = ObservationsFragmentArgs.fromBundle(requireArguments())
 
         val application = requireNotNull(this.activity).application
 
         val appDao = AppDatabase.getInstance(application).appDatabaseDao
-        val viewModelFactory = AddObservationViewModelFactory(arguments.tripId, application, appDao)
+        val viewModelFactory = ObservationsViewModelFactory(arguments.tripId, appDao)
 
         viewModel = ViewModelProvider(
-            this, viewModelFactory)[AddObservationViewModel::class.java]
+            this, viewModelFactory)[ObservationsViewModel::class.java]
 
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
