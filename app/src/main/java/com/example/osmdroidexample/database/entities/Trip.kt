@@ -5,7 +5,14 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "trip_table")
+@Entity(tableName = "trip_table",
+        foreignKeys = [
+            ForeignKey(
+                entity = MapArea::class,
+                parentColumns = arrayOf("map_area_id"),
+                childColumns = arrayOf("trip_owner_map_area_id"),
+                onDelete = ForeignKey.CASCADE)
+        ])
 data class Trip (
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "trip_id")
@@ -17,7 +24,6 @@ data class Trip (
     @ColumnInfo(name="trip_date")
     var tripDate: String,
 
-    @ForeignKey(entity = MapArea::class, parentColumns = ["map_area_id"], childColumns = ["trip_owner_map_area_id"], onDelete = ForeignKey.CASCADE)
     @ColumnInfo(name = "trip_owner_map_area_id")
     var tripOwnerMapAreaId: Long
 

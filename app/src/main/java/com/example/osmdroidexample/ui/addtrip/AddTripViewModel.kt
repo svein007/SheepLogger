@@ -1,6 +1,8 @@
 package com.example.osmdroidexample.ui.addtrip
 
 import android.app.Application
+import android.database.sqlite.SQLiteConstraintException
+import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.example.osmdroidexample.database.AppDao
@@ -20,22 +22,35 @@ class AddTripViewModel(
     /** ViewModel fields **/
 
     val tripName = MutableLiveData<String>()
+    val mapAreaId = MutableLiveData<String>()
 
     /** ViewModel methods **/
 
-    fun addTrip() {
+    fun addTrip(onSuccess: () -> Unit, onFail: () -> Unit) {
         uiScope.launch {
             tripName.value?.let {
                 if (it.isBlank())
                     return@let
 
-                val trip = Trip(
-                    tripName = it,
-                    tripDate = dateToFormattedString(getToday()),
-                    tripOwnerMapAreaId = getMapAreaId()
-                )
+                val mapAreaIdLong = mapAreaId.value?.toLongOrNull()
 
-                insert(trip)
+                if (mapAreaIdLong != null) {
+                    try {
+                        val trip = Trip(
+                            tripName = it,
+                            tripDate = dateToFormattedString(getToday()),
+                            tripOwnerMapAreaId = mapAreaIdLong
+                        )
+
+                        insert(trip)
+
+                        onSuccess()
+                    } catch (e: SQLiteConstraintException) {
+                        onFail()
+                    }
+                } else {
+                    onFail()
+                }
             }
         }
     }

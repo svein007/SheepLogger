@@ -1,14 +1,20 @@
 package com.example.osmdroidexample.ui.addtrip
 
+import android.app.Application
+import android.database.sqlite.SQLiteConstraintException
 import android.os.Bundle
 import android.view.*
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.osmdroidexample.R
 import com.example.osmdroidexample.database.AppDatabase
+import com.example.osmdroidexample.database.entities.Trip
 import com.example.osmdroidexample.databinding.AddTripFragmentBinding
+import com.example.osmdroidexample.utils.dateToFormattedString
+import com.example.osmdroidexample.utils.getToday
 
 class AddTripFragment : Fragment() {
 
@@ -61,8 +67,10 @@ class AddTripFragment : Fragment() {
     }
 
     private fun addTrip() {
-        viewModel.addTrip()
-        findNavController().popBackStack()
+        viewModel.addTrip(
+            onSuccess = { findNavController().popBackStack() },
+            onFail = { Toast.makeText(requireContext(), "Invalid MapAreaId", Toast.LENGTH_LONG).show() }
+        )
     }
 
 }
