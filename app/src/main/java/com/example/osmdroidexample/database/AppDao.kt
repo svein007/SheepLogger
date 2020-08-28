@@ -61,6 +61,9 @@ interface AppDao {
 
     /** Observation **/
 
+    @Insert
+    fun insert(observation: Observation): Long
+
     @Query("SELECT * FROM observation_table ORDER BY observation_id ASC")
     fun getObservationsLD(): LiveData<List<Observation>>
 

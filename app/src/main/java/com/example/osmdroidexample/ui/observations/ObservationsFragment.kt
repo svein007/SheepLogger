@@ -38,7 +38,7 @@ class ObservationsFragment : Fragment() {
             this, viewModelFactory)[ObservationsViewModel::class.java]
 
         binding.lifecycleOwner = viewLifecycleOwner
-        //binding.viewModel = viewModel
+        binding.viewModel = viewModel
 
         val adapter = ObservationAdapter(ObservationListItemListener { observationId ->
             Toast.makeText(requireContext(), "ObsID: $observationId", Toast.LENGTH_SHORT).show()

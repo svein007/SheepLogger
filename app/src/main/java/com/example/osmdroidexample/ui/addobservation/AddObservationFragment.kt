@@ -1,12 +1,12 @@
 package com.example.osmdroidexample.ui.addobservation
 
 import android.os.Bundle
+import android.view.*
+import android.widget.Toast
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.example.osmdroidexample.R
 import com.example.osmdroidexample.database.AppDatabase
 import com.example.osmdroidexample.databinding.AddObservationFragmentBinding
@@ -25,6 +25,8 @@ class AddObservationFragment : Fragment() {
         binding = DataBindingUtil.inflate(
             inflater, R.layout.add_observation_fragment, container, false
         )
+
+        setHasOptionsMenu(true)
 
         arguments = AddObservationFragmentArgs.fromBundle(requireArguments())
 
@@ -45,6 +47,23 @@ class AddObservationFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         // TODO: Use the ViewModel
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.add_observation_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.mi_add_observation) {
+            viewModel.addObservation(
+                onSuccess = { findNavController().popBackStack() },
+                onFail = { Toast.makeText(requireContext(), "Invalid tripId", Toast.LENGTH_SHORT).show() }
+            )
+            return true
+        }
+
+        return false
     }
 
 }
