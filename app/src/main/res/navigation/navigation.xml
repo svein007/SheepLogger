@@ -44,7 +44,7 @@
     <fragment
         android:id="@+id/startFragment"
         android:name="com.example.osmdroidexample.ui.start.StartFragment"
-        android:label="StartFragment"
+        android:label="Sheep Logger"
         tools:layout="@layout/start_fragment">
         <action
             android:id="@+id/action_startFragment_to_mapAreasFragment"
@@ -56,7 +56,7 @@
     <fragment
         android:id="@+id/tripsFragment"
         android:name="com.example.osmdroidexample.ui.trips.TripsFragment"
-        android:label="trips_fragment"
+        android:label="My Trips"
         tools:layout="@layout/trips_fragment" >
         <action
             android:id="@+id/action_tripsFragment_to_addTripFragment"
@@ -68,12 +68,12 @@
     <fragment
         android:id="@+id/addTripFragment"
         android:name="com.example.osmdroidexample.ui.addtrip.AddTripFragment"
-        android:label="AddTripFragment"
+        android:label="New Trip"
         tools:layout="@layout/add_trip_fragment"/>
     <fragment
         android:id="@+id/mapAreaFragment"
         android:name="com.example.osmdroidexample.ui.maparea.MapAreaFragment"
-        android:label="MapAreaFragment"
+        android:label="Map Area"
         tools:layout="@layout/map_area_fragment">
         <argument
             android:name="mapAreaId"
@@ -82,7 +82,7 @@
     <fragment
         android:id="@+id/addObservationFragment"
         android:name="com.example.osmdroidexample.ui.addobservation.AddObservationFragment"
-        android:label="add_observation_fragment"
+        android:label="New Observation"
         tools:layout="@layout/add_observation_fragment" >
         <argument
             android:name="tripId"
@@ -91,7 +91,7 @@
     <fragment
         android:id="@+id/observationsFragment"
         android:name="com.example.osmdroidexample.ui.observations.ObservationsFragment"
-        android:label="ObservationsFragment" >
+        android:label="Observations" >
         <argument
             android:name="tripId"
             app:argType="long" />
@@ -102,7 +102,7 @@
     <fragment
         android:id="@+id/observationDetailsFragment"
         android:name="com.example.osmdroidexample.ui.observationdetails.ObservationDetailsFragment"
-        android:label="ObservationDetailsFragment" >
+        android:label="Observation Details" >
         <argument
             android:name="observationId"
             app:argType="long" />

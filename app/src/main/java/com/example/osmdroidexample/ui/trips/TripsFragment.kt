@@ -1,10 +1,8 @@
 package com.example.osmdroidexample.ui.trips
 
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
@@ -26,6 +24,8 @@ class TripsFragment : Fragment() {
         binding = DataBindingUtil.inflate(
             inflater, R.layout.trips_fragment, container, false
         )
+
+        setHasOptionsMenu(true)
 
         val application = requireNotNull(this.activity).application
         val appDao = AppDatabase.getInstance(application).appDatabaseDao
@@ -57,17 +57,26 @@ class TripsFragment : Fragment() {
             }
         })
 
-        binding.newTripButton.setOnClickListener {
-            findNavController().navigate(
-                TripsFragmentDirections.actionTripsFragmentToAddTripFragment()
-            )
-        }
-
         return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.trips_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.mi_add_trips) {
+            findNavController().navigate(
+                TripsFragmentDirections.actionTripsFragmentToAddTripFragment()
+            )
+            return true
+        }
+        return false
     }
 
 }
