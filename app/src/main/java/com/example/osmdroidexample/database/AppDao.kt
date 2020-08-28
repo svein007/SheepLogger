@@ -5,6 +5,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import com.example.osmdroidexample.database.entities.MapArea
+import com.example.osmdroidexample.database.entities.Observation
 import com.example.osmdroidexample.database.entities.Trip
 
 @Dao
@@ -56,6 +57,15 @@ interface AppDao {
 
     @Query("SELECT * FROM trip_table WHERE trip_owner_map_area_id = :mapAreaId ORDER BY trip_id ASC ")
     fun getTripsForMapArea(mapAreaId: Long): List<Trip>
+
+
+    /** Observation **/
+
+    @Query("SELECT * FROM observation_table ORDER BY observation_id ASC")
+    fun getObservationsLD(): LiveData<List<Observation>>
+
+    @Query("SELECT * FROM observation_table WHERE observation_owner_trip_id = :tripId ORDER BY observation_id ASC")
+    fun getObservationsForTripLD(tripId: Long): LiveData<List<Observation>>
 
 
 }

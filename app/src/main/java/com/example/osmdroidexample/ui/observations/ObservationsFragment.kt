@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.example.osmdroidexample.R
@@ -22,20 +23,35 @@ class ObservationsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        binding = DataBindingUtil.inflate(inflater, R.layout.observations_fragment, container, false)
+        binding = DataBindingUtil.inflate(
+            inflater, R.layout.observations_fragment, container, false
+        )
 
         arguments = ObservationsFragmentArgs.fromBundle(requireArguments())
 
         val application = requireNotNull(this.activity).application
 
         val appDao = AppDatabase.getInstance(application).appDatabaseDao
-        val viewModelFactory = ObservationsViewModelFactory(arguments.tripId, appDao)
+        val viewModelFactory = ObservationsViewModelFactory(arguments.tripId, appDao, application)
 
         viewModel = ViewModelProvider(
             this, viewModelFactory)[ObservationsViewModel::class.java]
 
         binding.lifecycleOwner = viewLifecycleOwner
-        binding.viewModel = viewModel
+        //binding.viewModel = viewModel
+
+        val adapter = ObservationAdapter(ObservationListItemListener { observationId ->
+            Toast.makeText(requireContext(), "ObsID: $observationId", Toast.LENGTH_SHORT).show()
+        })
+
+        binding.observationsRV.adapter = adapter
+
+        viewModel.observations.observe(viewLifecycleOwner, {
+            it?.let {
+                adapter.submitList(it)
+            }
+        })
+
 
         return binding.root
     }
