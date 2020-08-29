@@ -208,6 +208,8 @@ class TripFragment : Fragment() {
                 locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 20.0f, gpsListener)
             }
         }
+
+        binding.tripMapView.onResume()
     }
 
     override fun onPause() {
@@ -216,6 +218,8 @@ class TripFragment : Fragment() {
         if (gpsTrackingInProgress) {
             locationManager.removeUpdates(gpsListener)
         }
+
+        binding.tripMapView.onPause()
     }
 
     override fun onRequestPermissionsResult(

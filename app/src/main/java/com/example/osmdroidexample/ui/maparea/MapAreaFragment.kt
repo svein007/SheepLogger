@@ -72,6 +72,16 @@ class MapAreaFragment : Fragment() {
         // TODO: Use the ViewModel
     }
 
+    override fun onPause() {
+        super.onPause()
+        binding.mapAreaMapView.onPause()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        binding.mapAreaMapView.onResume()
+    }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.map_area_menu, menu)
