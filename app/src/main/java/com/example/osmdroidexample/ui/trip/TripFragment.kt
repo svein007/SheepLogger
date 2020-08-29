@@ -21,14 +21,14 @@ import com.example.osmdroidexample.R
 import com.example.osmdroidexample.database.AppDatabase
 import com.example.osmdroidexample.databinding.TripFragmentBinding
 import com.example.osmdroidexample.map.MapAreaManager
-import kotlinx.android.synthetic.main.trip_fragment.*
+import com.example.osmdroidexample.utils.dateToFormattedString
+import com.example.osmdroidexample.utils.getToday
 import org.osmdroid.tileprovider.modules.OfflineTileProvider
 import org.osmdroid.tileprovider.tilesource.FileBasedTileSource
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.tileprovider.util.SimpleRegisterReceiver
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
-import org.osmdroid.views.overlay.Marker
 import org.osmdroid.views.overlay.Polyline
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
@@ -41,9 +41,6 @@ class TripFragment : Fragment() {
     private lateinit var binding: TripFragmentBinding
     private lateinit var arguments: TripFragmentArgs
 
-    private val pinnedLocations = mutableListOf<GeoPoint>()
-
-    //TODO: Put in ViewModel (crash on pinLocation after popStackNavigation from AddObservation)
     private val gpsTrail = Polyline() // GPS trail of current trip
 
     private lateinit var locationManager: LocationManager
@@ -105,6 +102,18 @@ class TripFragment : Fragment() {
             }
         })
 
+        viewModel.tripMapPoints.observe(viewLifecycleOwner, {
+            it?.let {
+                if (it.isNotEmpty()) {
+                    gpsTrail.setPoints(it.map { tripMapPoint ->
+                        GeoPoint(tripMapPoint.tripMapPointLat, tripMapPoint.tripMapPointLon)
+                    })
+
+                    binding.tripMapView.invalidate()
+                }
+            }
+        })
+
         binding.newObservationButton.setOnClickListener {
             findNavController().navigate(
                 TripFragmentDirections.actionTripFragmentToAddObservationFragment(arguments.tripId)
@@ -149,7 +158,7 @@ class TripFragment : Fragment() {
 
         val locationOverlay = MyLocationNewOverlay(GpsMyLocationProvider(context), mapView)
         locationOverlay.enableMyLocation()
-        mapView.overlays.add(locationOverlay)
+        binding.tripMapView.overlays.add(locationOverlay)
 
         binding.pinCurrentLocationButton.setOnClickListener {
             pinCurrentLocation()
@@ -160,8 +169,6 @@ class TripFragment : Fragment() {
             Log.d("########", it.boundingBox.centerWithDateLine.toString())
             binding.tripMapView.controller.animateTo(it.boundingBox.centerWithDateLine)
         }
-
-        binding.tripMapView.overlayManager.add(gpsTrail)
 
         locationManager = requireContext().applicationContext.getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
@@ -210,6 +217,8 @@ class TripFragment : Fragment() {
         }
 
         binding.tripMapView.onResume()
+
+        binding.tripMapView.overlayManager.add(gpsTrail)
     }
 
     override fun onPause() {
@@ -218,6 +227,8 @@ class TripFragment : Fragment() {
         if (gpsTrackingInProgress) {
             locationManager.removeUpdates(gpsListener)
         }
+
+        binding.tripMapView.overlayManager.remove(gpsTrail)
 
         binding.tripMapView.onPause()
     }
@@ -245,22 +256,11 @@ class TripFragment : Fragment() {
     }
 
     private fun pinLocation (geoPoint: GeoPoint) {
-        pinnedLocations.add(geoPoint)
-
-        val pinnedLocationMarker = Marker(tripMapView)
-        pinnedLocationMarker.position = geoPoint
-        pinnedLocationMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
-
-        binding.tripMapView.overlays.add(pinnedLocationMarker)
-
-        if (pinnedLocations.size > 0) {
-            gpsTrail.setPoints(pinnedLocations)
-        }
-
-        binding.tripMapView.invalidate()
-
-        Log.d("#####", "Pinned Locations: ${pinnedLocations.toString()}")
-        Log.d("#####", "Overlays: ${tripMapView.overlays.toString()}")
+        viewModel.addTripMapPoint(
+            geoPoint.latitude,
+            geoPoint.longitude, dateToFormattedString(
+            getToday())
+        )
     }
 
 }
