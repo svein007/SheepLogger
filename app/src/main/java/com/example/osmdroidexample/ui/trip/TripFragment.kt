@@ -100,7 +100,7 @@ class TripFragment : Fragment() {
                 binding.tripMapView.controller.animateTo(it.boundingBox.centerWithDateLine)
 
                 val mapAreaString = it.getSqliteFilename()
-                mapAreaNameTextView.text = mapAreaString
+                Log.d("#####", "MapArea sql: mapAreaString")
                 setupMapView(binding.tripMapView, mapAreaString)
             }
         })

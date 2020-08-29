@@ -39,14 +39,11 @@ class TripsFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
 
         val adapter = TripAdapter(TripListItemListener { tripId ->
-            Toast.makeText(requireContext(), "Trip ID: $tripId", Toast.LENGTH_SHORT).show()
-
             viewModel.trips.value?.firstOrNull { trip -> trip.tripId == tripId }?.tripOwnerMapAreaId?.let {mapAreaId ->
                 findNavController().navigate(
                     TripsFragmentDirections.actionTripsFragmentToTripFragment(tripId, mapAreaId)
                 )
             }
-
         })
 
         binding.tripsRecyclerView.adapter = adapter

@@ -14,15 +14,6 @@
         android:layout_height="match_parent"
         tools:context=".ui.trip.TripFragment">
 
-        <TextView
-            android:id="@+id/mapAreaNameTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Hello"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <Button
             android:id="@+id/newObservationButton"
             android:layout_width="wrap_content"
@@ -50,30 +41,27 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
             android:text="Start"
             app:layout_constraintStart_toEndOf="@+id/textView7"
-            app:layout_constraintTop_toBottomOf="@+id/mapAreaNameTextView" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <Button
             android:id="@+id/stopGpsLogButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
             android:text="Stop"
             app:layout_constraintStart_toEndOf="@+id/startGpsLogButton"
-            app:layout_constraintTop_toBottomOf="@+id/mapAreaNameTextView" />
+            app:layout_constraintTop_toTopOf="@+id/startGpsLogButton" />
 
         <Button
             android:id="@+id/pinCurrentLocationButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:text="Log_Point"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/mapAreaNameTextView" />
+            app:layout_constraintTop_toTopOf="@+id/stopGpsLogButton" />
 
         <TextView
             android:id="@+id/textView7"
