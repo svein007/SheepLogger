@@ -4,8 +4,10 @@ import android.app.Application
 import android.database.sqlite.SQLiteConstraintException
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.osmdroidexample.database.AppDao
+import com.example.osmdroidexample.database.entities.MapArea
 import com.example.osmdroidexample.database.entities.Trip
 import com.example.osmdroidexample.utils.dateToFormattedString
 import com.example.osmdroidexample.utils.getToday
@@ -20,6 +22,8 @@ class AddTripViewModel(
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
 
     /** ViewModel fields **/
+
+    val mapAreas: LiveData<List<MapArea>> = appDao.getMapAreasLD()
 
     val tripName = MutableLiveData<String>()
     val mapAreaId = MutableLiveData<String>()

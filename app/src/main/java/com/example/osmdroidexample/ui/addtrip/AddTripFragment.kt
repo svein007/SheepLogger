@@ -1,7 +1,5 @@
 package com.example.osmdroidexample.ui.addtrip
 
-import android.app.Application
-import android.database.sqlite.SQLiteConstraintException
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
@@ -9,12 +7,12 @@ import androidx.fragment.app.Fragment
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.osmdroidexample.R
 import com.example.osmdroidexample.database.AppDatabase
-import com.example.osmdroidexample.database.entities.Trip
 import com.example.osmdroidexample.databinding.AddTripFragmentBinding
-import com.example.osmdroidexample.utils.dateToFormattedString
-import com.example.osmdroidexample.utils.getToday
+import com.example.osmdroidexample.ui.mapareas.MapAreaAdapter
+import com.example.osmdroidexample.ui.mapareas.MapAreaListItemListener
 
 class AddTripFragment : Fragment() {
 
@@ -42,6 +40,20 @@ class AddTripFragment : Fragment() {
 
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
+
+        val adapter = SelectableMapAreaAdapter(SelectableMapAreaListItemListener {
+            viewModel.mapAreaId.value = it.toString()
+        })
+
+        binding.mapAreasRV.adapter = adapter
+
+        viewModel.mapAreas.observe(viewLifecycleOwner, {
+            it?.let {
+                adapter.submitList(it)
+            }
+        })
+
+        binding.mapAreasRV.addItemDecoration(DividerItemDecoration(application, DividerItemDecoration.VERTICAL))
 
         return binding.root
     }
