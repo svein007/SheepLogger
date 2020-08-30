@@ -11,7 +11,7 @@ import com.example.osmdroidexample.database.entities.Trip
 import kotlinx.coroutines.*
 
 class AddObservationViewModel(
-    tripId: Long,
+    private val tripId: Long,
     application: Application,
     private val appDao: AppDao) : AndroidViewModel(application) {
 
@@ -21,7 +21,6 @@ class AddObservationViewModel(
     val trip: LiveData<Trip?> = appDao.getTripLD(tripId)
 
     val observationNote = MutableLiveData<String>()
-    val observationTripId = MutableLiveData<String>()
 
     /** Methods **/
 
@@ -31,28 +30,22 @@ class AddObservationViewModel(
                 if (it.isBlank())
                     return@let
 
-                val tripIdLong = observationTripId.value?.toLongOrNull()
+                try {
+                    val observation = Observation(
+                        observationNote = it,
+                        observationOwnerTripId = tripId
+                    )
 
-                if (tripIdLong != null) {
-                    try {
-                        val observation = Observation(
-                            observationNote = it,
-                            observationOwnerTripId = tripIdLong
-                        )
+                    insert(observation)
 
-                        insert(observation)
-
-                        onSuccess()
-                    } catch (e: SQLiteConstraintException) {
-                        onFail()
-                    }
-                } else {
+                    onSuccess()
+                } catch (e: SQLiteConstraintException) {
                     onFail()
                 }
+
             }
         }
     }
-
 
     /** Helpers **/
 

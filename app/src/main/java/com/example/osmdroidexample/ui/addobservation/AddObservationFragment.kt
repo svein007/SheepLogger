@@ -58,7 +58,7 @@ class AddObservationFragment : Fragment() {
         if (item.itemId == R.id.mi_add_observation) {
             viewModel.addObservation(
                 onSuccess = { findNavController().popBackStack() },
-                onFail = { Toast.makeText(requireContext(), "Invalid tripId", Toast.LENGTH_SHORT).show() }
+                onFail = { }
             )
             return true
         }
