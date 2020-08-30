@@ -1,9 +1,7 @@
 package com.example.osmdroidexample.database
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
 import com.example.osmdroidexample.database.entities.MapArea
 import com.example.osmdroidexample.database.entities.Observation
 import com.example.osmdroidexample.database.entities.Trip
@@ -85,6 +83,12 @@ interface AppDao {
 
     @Query("SELECT * FROM observation_table WHERE observation_id = :key")
     fun getObservationLD(key: Long): LiveData<Observation>
+
+    @Query("SELECT * FROM observation_table WHERE observation_id = :key")
+    fun getObservation(key: Long): Observation?
+
+    @Update(onConflict = OnConflictStrategy.REPLACE)
+    fun update(observation: Observation)
 
 
 }
