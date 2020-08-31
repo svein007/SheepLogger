@@ -21,7 +21,7 @@
             android:layout_marginTop="8dp"
             android:ems="10"
             android:hint="Trip name"
-            android:inputType="textPersonName"
+            android:inputType="textPersonName|textCapSentences"
             android:text="@={viewModel.tripName}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
