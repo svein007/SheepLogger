@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.osmdroidexample.R
 import com.example.osmdroidexample.database.AppDatabase
 import com.example.osmdroidexample.databinding.TripsFragmentBinding
@@ -47,6 +48,8 @@ class TripsFragment : Fragment() {
         })
 
         binding.tripsRecyclerView.adapter = adapter
+
+        binding.tripsRecyclerView.addItemDecoration(DividerItemDecoration(application, DividerItemDecoration.VERTICAL))
 
         viewModel.trips.observe(viewLifecycleOwner, {
             it?.let {
