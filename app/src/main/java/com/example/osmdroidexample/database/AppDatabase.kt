@@ -11,7 +11,7 @@ import com.example.osmdroidexample.database.entities.Trip
 import com.example.osmdroidexample.database.entities.TripMapPoint
 
 @Database(entities = [MapArea::class, Trip::class, Observation::class, TripMapPoint::class],
-    version = 6, exportSchema = false)
+    version = 7, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
 

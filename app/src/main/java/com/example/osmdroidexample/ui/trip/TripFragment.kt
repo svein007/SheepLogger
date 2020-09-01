@@ -47,6 +47,7 @@ class TripFragment : Fragment() {
 
     private val gpsTrail = Polyline() // GPS trail of current trip
     private val gpsMarkers = ArrayList<Marker>() // To be able to delete old markers
+    private val observationMarkers = ArrayList<Marker>() // To be able to delete old markers
 
     private lateinit var locationManager: LocationManager
 
@@ -78,7 +79,11 @@ class TripFragment : Fragment() {
 
         override fun longPressHelper(p: GeoPoint?): Boolean {
             findNavController().navigate(
-                TripFragmentDirections.actionTripFragmentToAddObservationFragment(arguments.tripId)
+                TripFragmentDirections.actionTripFragmentToAddObservationFragment(
+                    arguments.tripId,
+                    "${p?.latitude}",
+                    "${p?.longitude}"
+                )
             )
             return true
         }
@@ -155,11 +160,33 @@ class TripFragment : Fragment() {
             }
         })
 
-        binding.newObservationButton.setOnClickListener {
-            findNavController().navigate(
-                TripFragmentDirections.actionTripFragmentToAddObservationFragment(arguments.tripId)
-            )
-        }
+        viewModel.observations.observe(viewLifecycleOwner, {
+            it?.let {
+                val observationsGeoPoints = it.map { observation ->
+                    GeoPoint(observation.observationLat, observation.observationLon)
+                }
+
+                binding.tripMapView.overlayManager.removeAll(observationMarkers)
+                observationMarkers.clear()
+
+                observationsGeoPoints.forEach { geoPoint ->
+                    val marker = Marker(binding.tripMapView)
+                    marker.position = geoPoint
+                    marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
+                    observationMarkers.add(marker)
+                }
+
+                binding.tripMapView.overlayManager.addAll(observationMarkers)
+
+                binding.tripMapView.invalidate()
+            }
+        })
+
+//        binding.newObservationButton.setOnClickListener {
+//            findNavController().navigate(
+//                TripFragmentDirections.actionTripFragmentToAddObservationFragment(arguments.tripId)
+//            )
+//        }
 
         binding.observationsButton.setOnClickListener {
             findNavController().navigate(

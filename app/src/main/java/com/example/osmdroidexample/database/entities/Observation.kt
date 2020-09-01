@@ -12,6 +12,12 @@ import androidx.room.PrimaryKey
                 parentColumns = arrayOf("trip_id"),
                 childColumns = arrayOf("observation_owner_trip_id"),
                 onDelete = ForeignKey.CASCADE
+            ),
+            ForeignKey(
+                entity = TripMapPoint::class,
+                parentColumns = arrayOf("trip_map_point_id"),
+                childColumns = arrayOf("observation_owner_trip_map_point_id"),
+                onDelete = ForeignKey.CASCADE
             )
         ])
 data class Observation(
@@ -21,6 +27,15 @@ data class Observation(
 
     @ColumnInfo(name = "observation_note")
     var observationNote: String,
+
+    @ColumnInfo(name = "observation_lat")
+    var observationLat: Double,
+
+    @ColumnInfo(name = "observation_lon")
+    var observationLon: Double,
+
+    @ColumnInfo(name = "observation_owner_trip_map_point_id")
+    var observationOwnerTripMapPointId: Long,
 
     @ColumnInfo(name = "observation_owner_trip_id")
     var observationOwnerTripId: Long

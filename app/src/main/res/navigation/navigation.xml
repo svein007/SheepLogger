@@ -87,11 +87,18 @@
         <argument
             android:name="tripId"
             app:argType="long" />
+        <argument
+            android:name="obsLat"
+            app:argType="string" />
+        <argument
+            android:name="obsLon"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/observationsFragment"
         android:name="com.example.osmdroidexample.ui.observations.ObservationsFragment"
-        android:label="Observations" >
+        android:label="Observations"
+        tools:layout="@layout/observations_fragment">
         <argument
             android:name="tripId"
             app:argType="long" />
@@ -102,7 +109,8 @@
     <fragment
         android:id="@+id/observationDetailsFragment"
         android:name="com.example.osmdroidexample.ui.observationdetails.ObservationDetailsFragment"
-        android:label="Observation Details" >
+        android:label="Observation Details"
+        tools:layout="@layout/observation_details_fragment">
         <argument
             android:name="observationId"
             app:argType="long" />

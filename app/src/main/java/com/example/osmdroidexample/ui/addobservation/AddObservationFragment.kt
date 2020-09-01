@@ -1,15 +1,19 @@
 package com.example.osmdroidexample.ui.addobservation
 
 import android.os.Bundle
+import android.util.Log
 import android.view.*
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.osmdroidexample.R
 import com.example.osmdroidexample.database.AppDatabase
+import com.example.osmdroidexample.database.entities.TripMapPoint
 import com.example.osmdroidexample.databinding.AddObservationFragmentBinding
+import com.example.osmdroidexample.map.MapAreaManager
+import com.example.osmdroidexample.utils.dateToFormattedString
+import com.example.osmdroidexample.utils.getToday
 
 class AddObservationFragment : Fragment() {
 
@@ -30,10 +34,25 @@ class AddObservationFragment : Fragment() {
 
         arguments = AddObservationFragmentArgs.fromBundle(requireArguments())
 
+        val currentPosition = MapAreaManager.getLastKnownLocation(
+            requireContext(),
+            requireActivity(),
+            1
+            )
+
         val application = requireNotNull(this.activity).application
 
         val appDao = AppDatabase.getInstance(application).appDatabaseDao
-        val viewModelFactory = AddObservationViewModelFactory(arguments.tripId, application, appDao)
+        val viewModelFactory = AddObservationViewModelFactory(
+            arguments.tripId,
+            TripMapPoint(
+                tripMapPointLat =  currentPosition!!.latitude,
+                tripMapPointLon =  currentPosition!!.longitude,
+                tripMapPointDate = dateToFormattedString(getToday()),
+                tripMapPointOwnerTripId = arguments.tripId
+                )
+            , application
+            , appDao)
 
         viewModel = ViewModelProvider(
             this, viewModelFactory)[AddObservationViewModel::class.java]
@@ -57,8 +76,10 @@ class AddObservationFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.mi_add_observation) {
             viewModel.addObservation(
+                lat = arguments.obsLat.toDouble(),
+                lon = arguments.obsLon.toDouble(),
                 onSuccess = { findNavController().popBackStack() },
-                onFail = { }
+                onFail = { Log.d("#####", "Can't create observation in DB") }
             )
             return true
         }

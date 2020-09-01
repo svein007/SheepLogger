@@ -6,6 +6,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import com.example.osmdroidexample.database.AppDao
 import com.example.osmdroidexample.database.entities.MapArea
+import com.example.osmdroidexample.database.entities.Observation
 import com.example.osmdroidexample.database.entities.Trip
 import com.example.osmdroidexample.database.entities.TripMapPoint
 import kotlinx.coroutines.*
@@ -28,6 +29,7 @@ class TripViewModel(
     val trip: LiveData<Trip?> = appDao.getTripLD(tripId)
     val mapArea: LiveData<MapArea?> = appDao.getMapAreaLD(mapAreaId)
     val tripMapPoints: LiveData<List<TripMapPoint>> = appDao.getTripMapPointsForTripLD(tripId)
+    val observations: LiveData<List<Observation>> = appDao.getObservationsForTripLD(tripId)
 
     /** Methods **/
 

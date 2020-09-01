@@ -8,10 +8,13 @@ import androidx.lifecycle.MutableLiveData
 import com.example.osmdroidexample.database.AppDao
 import com.example.osmdroidexample.database.entities.Observation
 import com.example.osmdroidexample.database.entities.Trip
+import com.example.osmdroidexample.database.entities.TripMapPoint
 import kotlinx.coroutines.*
+import org.osmdroid.util.GeoPoint
 
 class AddObservationViewModel(
     private val tripId: Long,
+    private val currentPosition: TripMapPoint,
     application: Application,
     private val appDao: AppDao) : AndroidViewModel(application) {
 
@@ -24,7 +27,7 @@ class AddObservationViewModel(
 
     /** Methods **/
 
-    fun addObservation(onSuccess: () -> Unit, onFail: () -> Unit) {
+    fun addObservation(lat: Double, lon: Double, onSuccess: () -> Unit, onFail: () -> Unit) {
         uiScope.launch {
             observationNote.value?.let {
                 if (it.isBlank())
@@ -32,8 +35,11 @@ class AddObservationViewModel(
 
                 try {
                     val observation = Observation(
+                        observationLat = lat,
+                        observationLon = lon,
                         observationNote = it,
-                        observationOwnerTripId = tripId
+                        observationOwnerTripId = tripId,
+                        observationOwnerTripMapPointId = getObservedFromPoint().tripMapPointId
                     )
 
                     insert(observation)
@@ -54,4 +60,25 @@ class AddObservationViewModel(
             appDao.insert(observation)
         }
     }
+
+    /** Gets observation-position to be associated with the observation **/
+    private suspend fun getObservedFromPoint(): TripMapPoint {
+        return withContext(Dispatchers.IO) {
+            val currentLastPoint = appDao.getTripMapPointsForTrip(tripId).maxByOrNull { point -> point.tripMapPointId }
+
+            var distance = -1.0
+
+            if (currentLastPoint != null)
+                distance = GeoPoint(currentLastPoint.tripMapPointLat, currentLastPoint.tripMapPointLon).distanceToAsDouble(
+                    GeoPoint(currentPosition.tripMapPointLat, currentPosition.tripMapPointLon)
+                )
+
+            if (distance > 5.0 || currentLastPoint == null) {
+                return@withContext currentPosition
+            }
+
+            return@withContext currentLastPoint
+        }
+    }
+
 }
