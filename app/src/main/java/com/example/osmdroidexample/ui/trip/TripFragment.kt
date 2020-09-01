@@ -273,6 +273,19 @@ class TripFragment : Fragment() {
     }
 
     private fun pinLocation (geoPoint: GeoPoint) {
+        val minDistanceBetweenPoints = 5.0f // Min 5 meters between adjacent points, TODO: use settings
+
+        val lastTripMapPoint = viewModel.tripMapPoints.value?.maxByOrNull { tripMapPoint -> tripMapPoint.tripMapPointId }
+
+        if (lastTripMapPoint != null) {
+            val lastGeoPoint = GeoPoint(lastTripMapPoint.tripMapPointLat, lastTripMapPoint.tripMapPointLon)
+            val distance = lastGeoPoint.distanceToAsDouble(geoPoint)
+            if (distance < minDistanceBetweenPoints) {
+                Log.d("####", "Did not add GeoPoint, too close to last pinned GeoPoint. ${distance}m")
+                return
+            }
+        }
+
         viewModel.addTripMapPoint(
             geoPoint.latitude,
             geoPoint.longitude, dateToFormattedString(
