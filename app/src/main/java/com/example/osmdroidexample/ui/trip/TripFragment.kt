@@ -29,6 +29,7 @@ import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.tileprovider.util.SimpleRegisterReceiver
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
+import org.osmdroid.views.overlay.Marker
 import org.osmdroid.views.overlay.Polyline
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
@@ -42,6 +43,7 @@ class TripFragment : Fragment() {
     private lateinit var arguments: TripFragmentArgs
 
     private val gpsTrail = Polyline() // GPS trail of current trip
+    private val gpsMarkers = ArrayList<Marker>() // To be able to delete old markers
 
     private lateinit var locationManager: LocationManager
 
@@ -105,9 +107,24 @@ class TripFragment : Fragment() {
         viewModel.tripMapPoints.observe(viewLifecycleOwner, {
             it?.let {
                 if (it.isNotEmpty()) {
-                    gpsTrail.setPoints(it.map { tripMapPoint ->
+
+                    val tripMapPoints = it.map { tripMapPoint ->
                         GeoPoint(tripMapPoint.tripMapPointLat, tripMapPoint.tripMapPointLon)
-                    })
+                    }
+
+                    gpsTrail.setPoints(tripMapPoints)
+
+                    binding.tripMapView.overlayManager.removeAll(gpsMarkers)
+                    gpsMarkers.clear()
+
+                    tripMapPoints.forEach { geoPoint ->
+                        val marker = Marker(binding.tripMapView)
+                        marker.position = geoPoint
+                        marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
+                        gpsMarkers.add(marker)
+                    }
+
+                    binding.tripMapView.overlayManager.addAll(gpsMarkers)
 
                     binding.tripMapView.invalidate()
                 }
