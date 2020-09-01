@@ -14,6 +14,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -23,12 +24,14 @@ import com.example.osmdroidexample.databinding.TripFragmentBinding
 import com.example.osmdroidexample.map.MapAreaManager
 import com.example.osmdroidexample.utils.dateToFormattedString
 import com.example.osmdroidexample.utils.getToday
+import org.osmdroid.events.MapEventsReceiver
 import org.osmdroid.tileprovider.modules.OfflineTileProvider
 import org.osmdroid.tileprovider.tilesource.FileBasedTileSource
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.tileprovider.util.SimpleRegisterReceiver
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
+import org.osmdroid.views.overlay.MapEventsOverlay
 import org.osmdroid.views.overlay.Marker
 import org.osmdroid.views.overlay.Polyline
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider
@@ -67,6 +70,20 @@ class TripFragment : Fragment() {
         }
 
     }
+
+    private val eventsOverlay = MapEventsOverlay( object : MapEventsReceiver{
+        override fun singleTapConfirmedHelper(p: GeoPoint?): Boolean {
+            return false
+        }
+
+        override fun longPressHelper(p: GeoPoint?): Boolean {
+            findNavController().navigate(
+                TripFragmentDirections.actionTripFragmentToAddObservationFragment(arguments.tripId)
+            )
+            return true
+        }
+
+    })
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -124,7 +141,14 @@ class TripFragment : Fragment() {
                         gpsMarkers.add(marker)
                     }
 
-                    binding.tripMapView.overlayManager.addAll(gpsMarkers)
+                    gpsMarkers.first().let {marker ->
+                        marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
+                        marker.icon = ResourcesCompat.getDrawable(resources, R.drawable.ic_baseline_trip_origin_24, null)
+                        marker.title = "Start"
+                    }
+
+                    // binding.tripMapView.overlayManager.addAll(gpsMarkers)
+                    binding.tripMapView.overlayManager.add(gpsMarkers.first())
 
                     binding.tripMapView.invalidate()
                 }
@@ -153,6 +177,7 @@ class TripFragment : Fragment() {
         mapView.setUseDataConnection(false)
         mapView.isTilesScaledToDpi = true
         mapView.setMultiTouchControls(true)
+        mapView.isLongClickable = true
 
         val mapAreaFile = context?.getDatabasePath(mapAreaName)
 
@@ -180,6 +205,8 @@ class TripFragment : Fragment() {
         binding.pinCurrentLocationButton.setOnClickListener {
             pinCurrentLocation()
         }
+
+        mapView.overlayManager.add(eventsOverlay)
 
         Log.d("########", "######")
         viewModel.mapArea.value?.let {
@@ -216,6 +243,7 @@ class TripFragment : Fragment() {
             gpsTrackingInProgress = false
         }
 
+        mapView.invalidate()
     }
 
     override fun onResume() {
