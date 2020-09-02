@@ -252,11 +252,11 @@ class TripFragment : Fragment() {
         observationsGeoPoints.forEach { geoPoint ->
             val marker = Marker(binding.tripMapView)
             marker.position = geoPoint
-            marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
+            marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
+            marker.icon = ResourcesCompat.getDrawable(resources, R.drawable.ic_baseline_remove_red_eye_24, null)
             observationMarkers.add(marker)
         }
 
-        binding.tripMapView.overlayManager.addAll(observationMarkers)
 
         observationPolylines.clear()
 
@@ -268,6 +268,8 @@ class TripFragment : Fragment() {
         }
 
         binding.tripMapView.overlayManager.addAll(observationPolylines)
+        binding.tripMapView.overlayManager.addAll(observationMarkers)
+
 
     }
 
