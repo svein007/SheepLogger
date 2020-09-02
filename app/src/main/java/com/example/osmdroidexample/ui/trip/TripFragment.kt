@@ -3,6 +3,7 @@ package com.example.osmdroidexample.ui.trip
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
@@ -48,6 +49,7 @@ class TripFragment : Fragment() {
     private val gpsTrail = Polyline() // GPS trail of current trip
     private val gpsMarkers = ArrayList<Marker>() // To be able to delete old markers
     private val observationMarkers = ArrayList<Marker>() // To be able to delete old markers
+    private val observationPolylines = ArrayList<Polyline>()
 
     private lateinit var locationManager: LocationManager
 
@@ -129,32 +131,8 @@ class TripFragment : Fragment() {
         viewModel.tripMapPoints.observe(viewLifecycleOwner, {
             it?.let {
                 if (it.isNotEmpty()) {
-
-                    val tripMapPoints = it.map { tripMapPoint ->
-                        GeoPoint(tripMapPoint.tripMapPointLat, tripMapPoint.tripMapPointLon)
-                    }
-
-                    gpsTrail.setPoints(tripMapPoints)
-
-                    binding.tripMapView.overlayManager.removeAll(gpsMarkers)
-                    gpsMarkers.clear()
-
-                    tripMapPoints.forEach { geoPoint ->
-                        val marker = Marker(binding.tripMapView)
-                        marker.position = geoPoint
-                        marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
-                        gpsMarkers.add(marker)
-                    }
-
-                    gpsMarkers.first().let {marker ->
-                        marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
-                        marker.icon = ResourcesCompat.getDrawable(resources, R.drawable.ic_baseline_trip_origin_24, null)
-                        marker.title = "Start"
-                    }
-
-                    // binding.tripMapView.overlayManager.addAll(gpsMarkers)
-                    binding.tripMapView.overlayManager.add(gpsMarkers.first())
-
+                    drawGpsTrail()
+                    drawObservationLines()
                     binding.tripMapView.invalidate()
                 }
             }
@@ -162,31 +140,10 @@ class TripFragment : Fragment() {
 
         viewModel.observations.observe(viewLifecycleOwner, {
             it?.let {
-                val observationsGeoPoints = it.map { observation ->
-                    GeoPoint(observation.observationLat, observation.observationLon)
-                }
-
-                binding.tripMapView.overlayManager.removeAll(observationMarkers)
-                observationMarkers.clear()
-
-                observationsGeoPoints.forEach { geoPoint ->
-                    val marker = Marker(binding.tripMapView)
-                    marker.position = geoPoint
-                    marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
-                    observationMarkers.add(marker)
-                }
-
-                binding.tripMapView.overlayManager.addAll(observationMarkers)
-
+                drawObservationLines()
                 binding.tripMapView.invalidate()
             }
         })
-
-//        binding.newObservationButton.setOnClickListener {
-//            findNavController().navigate(
-//                TripFragmentDirections.actionTripFragmentToAddObservationFragment(arguments.tripId)
-//            )
-//        }
 
         binding.observationsButton.setOnClickListener {
             findNavController().navigate(
@@ -271,6 +228,78 @@ class TripFragment : Fragment() {
         }
 
         mapView.invalidate()
+    }
+
+    private fun drawObservationLines() {
+        if (viewModel.tripMapPoints.value == null || viewModel.observations.value == null) {
+            return
+        }
+
+        val observationsGeoPoints = viewModel.observations.value!!.map { observation ->
+            GeoPoint(observation.observationLat, observation.observationLon)
+        }
+
+        val observationTripMapGeoPoints = viewModel.observations.value!!.map { observation ->
+            val tripMapPoint = viewModel.tripMapPoints.value?.first { tripMapPoint ->
+                tripMapPoint.tripMapPointId == observation.observationOwnerTripMapPointId
+            }
+            GeoPoint(tripMapPoint!!.tripMapPointLat, tripMapPoint!!.tripMapPointLon)
+        }
+
+        binding.tripMapView.overlayManager.removeAll(observationMarkers)
+        observationMarkers.clear()
+
+        observationsGeoPoints.forEach { geoPoint ->
+            val marker = Marker(binding.tripMapView)
+            marker.position = geoPoint
+            marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
+            observationMarkers.add(marker)
+        }
+
+        binding.tripMapView.overlayManager.addAll(observationMarkers)
+
+        observationPolylines.clear()
+
+        for (i in observationTripMapGeoPoints.indices) {
+            val line = Polyline()
+            line.setPoints(listOf(observationTripMapGeoPoints[i], observationsGeoPoints[i]))
+            line.outlinePaint.color = Color.BLUE
+            observationPolylines.add(line)
+        }
+
+        binding.tripMapView.overlayManager.addAll(observationPolylines)
+
+    }
+
+    private fun drawGpsTrail() {
+        if (viewModel.tripMapPoints.value == null) {
+            return
+        }
+
+        val tripMapPoints = viewModel.tripMapPoints.value!!.map { tripMapPoint ->
+            GeoPoint(tripMapPoint.tripMapPointLat, tripMapPoint.tripMapPointLon)
+        }
+
+        gpsTrail.setPoints(tripMapPoints)
+
+        binding.tripMapView.overlayManager.removeAll(gpsMarkers)
+        gpsMarkers.clear()
+
+        tripMapPoints.forEach { geoPoint ->
+            val marker = Marker(binding.tripMapView)
+            marker.position = geoPoint
+            marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
+            gpsMarkers.add(marker)
+        }
+
+        gpsMarkers.first().let {marker ->
+            marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
+            marker.icon = ResourcesCompat.getDrawable(resources, R.drawable.ic_baseline_trip_origin_24, null)
+            marker.title = "Start"
+        }
+
+        // binding.tripMapView.overlayManager.addAll(gpsMarkers)
+        binding.tripMapView.overlayManager.add(gpsMarkers.first())
     }
 
     override fun onResume() {
