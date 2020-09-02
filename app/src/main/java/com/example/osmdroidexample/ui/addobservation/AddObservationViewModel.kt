@@ -24,8 +24,38 @@ class AddObservationViewModel(
     val trip: LiveData<Trip?> = appDao.getTripLD(tripId)
 
     val observationNote = MutableLiveData<String>()
+    val observationSheepCount = MutableLiveData<Int>(0)
+    val observationLambCount = MutableLiveData<Int>(0)
 
     /** Methods **/
+
+    fun incSheepCount() {
+        observationSheepCount.value?.let {
+            observationSheepCount.value = it + 1
+        }
+    }
+
+    fun decSheepCount() {
+        observationSheepCount.value?.let {
+            if (it > 0) {
+                observationSheepCount.value = it - 1
+            }
+        }
+    }
+
+    fun incLambCount() {
+        observationLambCount.value?.let {
+            observationLambCount.value = it + 1
+        }
+    }
+
+    fun decLambCount() {
+        observationLambCount.value?.let {
+            if (it > 0) {
+                observationLambCount.value = it - 1
+            }
+        }
+    }
 
     fun addObservation(lat: Double, lon: Double, onSuccess: () -> Unit, onFail: () -> Unit) {
         uiScope.launch {
@@ -39,6 +69,8 @@ class AddObservationViewModel(
                     val observation = Observation(
                         observationLat = lat,
                         observationLon = lon,
+                        observationSheepCount = observationSheepCount.value ?: 0,
+                        observationLambCount = observationLambCount.value ?: 0,
                         observationNote = it,
                         observationOwnerTripId = tripId,
                         observationOwnerTripMapPointId = observationPoint.tripMapPointId

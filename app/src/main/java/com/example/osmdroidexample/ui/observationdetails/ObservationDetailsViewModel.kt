@@ -18,6 +18,8 @@ class ObservationDetailsViewModel(
     val observation = MutableLiveData<Observation>()
 
     val observationNote = MutableLiveData<String>()
+    val observationSheepCount = MutableLiveData<Int>(0)
+    val observationLambCount = MutableLiveData<Int>(0)
 
     init {
         uiScope.launch {
@@ -25,16 +27,48 @@ class ObservationDetailsViewModel(
 
             observation.value?.let {
                 observationNote.value = it.observationNote
+                observationSheepCount.value = it.observationSheepCount
+                observationLambCount.value = it.observationLambCount
             }
         }
     }
 
     /** ViewModel methods **/
 
+    fun incSheepCount() {
+        observationSheepCount.value?.let {
+            observationSheepCount.value = it + 1
+        }
+    }
+
+    fun decSheepCount() {
+        observationSheepCount.value?.let {
+            if (it > 0) {
+                observationSheepCount.value = it - 1
+            }
+        }
+    }
+
+    fun incLambCount() {
+        observationLambCount.value?.let {
+            observationLambCount.value = it + 1
+        }
+    }
+
+    fun decLambCount() {
+        observationLambCount.value?.let {
+            if (it > 0) {
+                observationLambCount.value = it - 1
+            }
+        }
+    }
+
     fun onUpdateObservation() {
         uiScope.launch {
             if (observation.value != null) {
                 observation.value!!.observationNote = observationNote.value!!
+                observation.value!!.observationSheepCount = observationSheepCount.value!!
+                observation.value!!.observationLambCount = observationLambCount.value!!
 
                 updateObservation(observation.value!!)
             }

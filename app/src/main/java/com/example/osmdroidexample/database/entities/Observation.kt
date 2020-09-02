@@ -34,6 +34,12 @@ data class Observation(
     @ColumnInfo(name = "observation_lon")
     var observationLon: Double,
 
+    @ColumnInfo(name = "observation_lamb_count")
+    var observationLambCount: Int = 0,
+
+    @ColumnInfo(name = "observation_sheep_count")
+    var observationSheepCount: Int = 0,
+
     @ColumnInfo(name = "observation_owner_trip_map_point_id")
     var observationOwnerTripMapPointId: Long,
 
