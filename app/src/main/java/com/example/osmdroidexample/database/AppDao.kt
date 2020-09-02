@@ -63,6 +63,9 @@ interface AppDao {
     @Insert
     fun insert(tripMapPoint: TripMapPoint): Long
 
+    @Query("SELECT * FROM trip_map_point_table WHERE trip_map_point_id = :key")
+    fun getTripMapPoint(key: Long): TripMapPoint?
+
     @Query("SELECT * FROM trip_map_point_table WHERE trip_map_point_owner_trip_id = :tripId ORDER BY trip_map_point_date ASC ")
     fun getTripMapPointsForTrip(tripId: Long): List<TripMapPoint>
 

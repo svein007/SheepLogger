@@ -34,12 +34,14 @@ class AddObservationViewModel(
                     return@let
 
                 try {
+                    val observationPoint = getObservedFromPoint()
+
                     val observation = Observation(
                         observationLat = lat,
                         observationLon = lon,
                         observationNote = it,
                         observationOwnerTripId = tripId,
-                        observationOwnerTripMapPointId = getObservedFromPoint().tripMapPointId
+                        observationOwnerTripMapPointId = observationPoint.tripMapPointId
                     )
 
                     insert(observation)
@@ -66,15 +68,16 @@ class AddObservationViewModel(
         return withContext(Dispatchers.IO) {
             val currentLastPoint = appDao.getTripMapPointsForTrip(tripId).maxByOrNull { point -> point.tripMapPointId }
 
-            var distance = -1.0
+            var currentToLastDistance = -1.0
 
             if (currentLastPoint != null)
-                distance = GeoPoint(currentLastPoint.tripMapPointLat, currentLastPoint.tripMapPointLon).distanceToAsDouble(
+                currentToLastDistance = GeoPoint(currentLastPoint.tripMapPointLat, currentLastPoint.tripMapPointLon).distanceToAsDouble(
                     GeoPoint(currentPosition.tripMapPointLat, currentPosition.tripMapPointLon)
                 )
 
-            if (distance > 5.0 || currentLastPoint == null) {
-                return@withContext currentPosition
+            if (currentToLastDistance > 5.0 || currentLastPoint == null) {
+                val id = appDao.insert(currentPosition)
+                return@withContext appDao.getTripMapPoint(id)!!
             }
 
             return@withContext currentLastPoint

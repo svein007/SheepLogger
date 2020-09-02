@@ -14,25 +14,14 @@
         android:layout_height="match_parent"
         tools:context=".ui.trip.TripFragment">
 
-        <Button
-            android:id="@+id/newObservationButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:text="New Observation"
-            app:layout_constraintStart_toEndOf="@+id/textView8"
-            app:layout_constraintTop_toBottomOf="@+id/startGpsLogButton" />
-
         <org.osmdroid.views.MapView
             android:id="@+id/tripMapView"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:layout_marginTop="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/newObservationButton">
+            app:layout_constraintTop_toTopOf="parent">
 
         </org.osmdroid.views.MapView>
 
@@ -79,19 +68,19 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:text="Obs: "
-            app:layout_constraintBottom_toBottomOf="@+id/newObservationButton"
+            app:layout_constraintBottom_toBottomOf="@+id/observationsButton"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/newObservationButton" />
+            app:layout_constraintTop_toTopOf="@+id/observationsButton" />
 
         <Button
             android:id="@+id/observationsButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
             android:text="Observations"
-            app:layout_constraintBottom_toBottomOf="@+id/newObservationButton"
-            app:layout_constraintStart_toEndOf="@+id/newObservationButton"
-            app:layout_constraintTop_toTopOf="@+id/newObservationButton" />
+            app:layout_constraintStart_toEndOf="@+id/textView8"
+            app:layout_constraintTop_toBottomOf="@+id/startGpsLogButton" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
