@@ -93,6 +93,9 @@
         <argument
             android:name="obsLon"
             app:argType="string" />
+        <action
+            android:id="@+id/action_addObservationFragment_to_swiperFragment"
+            app:destination="@id/swiperFragment" />
     </fragment>
     <fragment
         android:id="@+id/observationsFragment"
@@ -114,6 +117,14 @@
         <argument
             android:name="observationId"
             app:argType="long" />
+        <action
+            android:id="@+id/action_observationDetailsFragment_to_swiperFragment"
+            app:destination="@id/swiperFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/swiperFragment"
+        android:name="com.example.osmdroidexample.ui.swiper.SwiperFragment"
+        android:label="SwiperFragment"
+        tools:layout="@layout/swiper_fragment"/>
 
 </navigation>

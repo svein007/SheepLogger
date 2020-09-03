@@ -55,7 +55,17 @@ class AddObservationFragment : Fragment() {
             , appDao)
 
         viewModel = ViewModelProvider(
-            this, viewModelFactory)[AddObservationViewModel::class.java]
+            requireActivity(),
+            viewModelFactory)[AddObservationViewModel::class.java]
+
+        Log.d("####", "AVM tripId: ${viewModel.trip.value?.tripId}")
+        Log.d("####", "AVM sheepCount: ${viewModel.observationSheepCount.value}")
+
+        binding.swiperButton.setOnClickListener {
+            findNavController().navigate(
+                AddObservationFragmentDirections.actionAddObservationFragmentToSwiperFragment()
+            )
+        }
 
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
@@ -68,6 +78,11 @@ class AddObservationFragment : Fragment() {
         // TODO: Use the ViewModel
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        requireActivity().viewModelStore.clear() // DANGEROUS??
+    }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.add_observation_menu, menu)
@@ -75,16 +90,20 @@ class AddObservationFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.mi_add_observation) {
-            viewModel.addObservation(
-                lat = arguments.obsLat.toDouble(),
-                lon = arguments.obsLon.toDouble(),
-                onSuccess = { findNavController().popBackStack() },
-                onFail = { Log.d("#####", "Can't create observation in DB") }
-            )
+            saveObservation()
             return true
         }
 
         return false
+    }
+
+    private fun saveObservation() {
+        viewModel.addObservation(
+            lat = arguments.obsLat.toDouble(),
+            lon = arguments.obsLon.toDouble(),
+            onSuccess = { findNavController().popBackStack() },
+            onFail = { Log.d("#####", "Can't create observation in DB") }
+        )
     }
 
 }

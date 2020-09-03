@@ -66,7 +66,7 @@ class AddObservationViewModel(
                 try {
                     val observationPoint = getObservedFromPoint()
 
-                    val observation = Observation(
+                    val newObservation = Observation(
                         observationLat = lat,
                         observationLon = lon,
                         observationSheepCount = observationSheepCount.value ?: 0,
@@ -76,7 +76,7 @@ class AddObservationViewModel(
                         observationOwnerTripMapPointId = observationPoint.tripMapPointId
                     )
 
-                    insert(observation)
+                    insert(newObservation)
 
                     onSuccess()
                 } catch (e: SQLiteConstraintException) {

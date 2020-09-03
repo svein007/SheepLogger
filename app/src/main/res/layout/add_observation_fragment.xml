@@ -140,5 +140,15 @@
             app:layout_constraintEnd_toStartOf="@+id/button3"
             app:layout_constraintTop_toBottomOf="@+id/button2" />
 
+        <Button
+            android:id="@+id/swiperButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Swiper"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextNumberSigned2" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
