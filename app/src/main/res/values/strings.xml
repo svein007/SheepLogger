@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">OsmDroidExample</string>
+    <string name="sheep">sheep</string>
+    <string name="lamb">lamb</string>
 </resources>

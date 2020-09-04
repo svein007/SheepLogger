@@ -1,5 +1,6 @@
 package com.example.osmdroidexample.ui.swiper
 
+import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.speech.tts.TextToSpeech
@@ -22,6 +23,8 @@ class SwiperFragment : Fragment() {
     private lateinit var binding: SwiperFragmentBinding
 
     private lateinit var textToSpeech: TextToSpeech
+
+    private var toast: Toast? = null
 
     private var countType = CountType.SHEEP
 
@@ -95,13 +98,17 @@ class SwiperFragment : Fragment() {
             echoSelectedCountType()
             echoSelectedCount()
         }
+    }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        toast?.cancel()
     }
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     private fun echoSelectedCountType() {
-        val textToSpeak = "${countType.str()} Selected"
-        Toast.makeText(requireContext(), textToSpeak, Toast.LENGTH_SHORT).show()
+        val textToSpeak = "${countType.str(requireContext())} Selected"
+        showToast(textToSpeak)
         textToSpeech.speak(textToSpeak, TextToSpeech.QUEUE_ADD, null, null)
     }
 
@@ -109,15 +116,21 @@ class SwiperFragment : Fragment() {
     private fun echoSelectedCount() {
         val textToSpeak = when (countType) {
             CountType.SHEEP -> {
-                "${addObsViewModel.observationSheepCount.value!!} ${countType.str()}"
+                "${addObsViewModel.observationSheepCount.value!!} ${countType.str(requireContext())}"
             }
             CountType.LAMB -> {
-                "${addObsViewModel.observationLambCount.value!!} ${countType.str()}"
+                "${addObsViewModel.observationLambCount.value!!} ${countType.str(requireContext())}"
             }
         }
 
-        Toast.makeText(requireContext(), textToSpeak, Toast.LENGTH_SHORT).show()
-        textToSpeech.speak(textToSpeak, TextToSpeech.QUEUE_ADD, null, null)
+        showToast(textToSpeak)
+        textToSpeech.speak(textToSpeak, TextToSpeech.QUEUE_FLUSH, null, null)
+    }
+
+    private fun showToast(text: String) {
+        toast?.cancel()
+        toast = Toast.makeText(requireContext(), text, Toast.LENGTH_SHORT)
+        toast?.show()
     }
 
     enum class CountType {
@@ -128,11 +141,10 @@ class SwiperFragment : Fragment() {
         fun prev(): CountType{
             return values()[(this.ordinal-1+values().size) % values().size]
         }
-        fun str(): String {
+        fun str(context: Context): String {
             return when (this) {
-                SHEEP -> "sheep"
-                LAMB -> "lamb"
-                else -> ""
+                SHEEP -> context.resources.getString(R.string.sheep)
+                LAMB -> context.resources.getString(R.string.lamb)
             }
         }
     }
