@@ -3,4 +3,7 @@
     <string name="app_name">OsmDroidExample</string>
     <string name="sheep">sau</string>
     <string name="lamb">lam</string>
+    <string name="black">svart</string>
+    <string name="grey">grå</string>
+    <string name="white">hvit</string>
 </resources>

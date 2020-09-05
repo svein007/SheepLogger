@@ -26,33 +26,22 @@ class AddObservationViewModel(
     val observationNote = MutableLiveData<String>()
     val observationSheepCount = MutableLiveData<Int>(0)
     val observationLambCount = MutableLiveData<Int>(0)
+    val observationBlackCount = MutableLiveData<Int>(0)
+    val observationGreyCount = MutableLiveData<Int>(0)
+    val observationWhiteCount = MutableLiveData<Int>(0)
 
     /** Methods **/
 
-    fun incSheepCount() {
-        observationSheepCount.value?.let {
-            observationSheepCount.value = it + 1
+    fun inc(count: MutableLiveData<Int>) {
+        count.value?.let {
+            count.value = it + 1
         }
     }
 
-    fun decSheepCount() {
-        observationSheepCount.value?.let {
-            if (it > 0) {
-                observationSheepCount.value = it - 1
-            }
-        }
-    }
-
-    fun incLambCount() {
-        observationLambCount.value?.let {
-            observationLambCount.value = it + 1
-        }
-    }
-
-    fun decLambCount() {
-        observationLambCount.value?.let {
-            if (it > 0) {
-                observationLambCount.value = it - 1
+    fun dec(count: MutableLiveData<Int>) {
+        count.value?.let {
+            if(it > 0) {
+                count.value = it - 1
             }
         }
     }
@@ -71,6 +60,9 @@ class AddObservationViewModel(
                         observationLon = lon,
                         observationSheepCount = observationSheepCount.value ?: 0,
                         observationLambCount = observationLambCount.value ?: 0,
+                        observationBlackCount = observationBlackCount.value ?: 0,
+                        observationGreyCount = observationGreyCount.value ?: 0,
+                        observationWhiteCount = observationWhiteCount.value ?: 0,
                         observationNote = it,
                         observationOwnerTripId = tripId,
                         observationOwnerTripMapPointId = observationPoint.tripMapPointId

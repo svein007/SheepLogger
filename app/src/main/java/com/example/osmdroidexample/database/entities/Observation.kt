@@ -40,6 +40,15 @@ data class Observation(
     @ColumnInfo(name = "observation_sheep_count")
     var observationSheepCount: Int = 0,
 
+    @ColumnInfo(name = "observation_black_count")
+    var observationBlackCount: Int = 0,
+
+    @ColumnInfo(name = "observation_grey_count")
+    var observationGreyCount: Int = 0,
+
+    @ColumnInfo(name = "observation_white_count")
+    var observationWhiteCount: Int = 0,
+
     @ColumnInfo(name = "observation_owner_trip_map_point_id")
     var observationOwnerTripMapPointId: Long,
 
