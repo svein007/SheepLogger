@@ -48,33 +48,27 @@ class AddObservationViewModel(
 
     fun addObservation(lat: Double, lon: Double, onSuccess: () -> Unit, onFail: () -> Unit) {
         uiScope.launch {
-            observationNote.value?.let {
-                if (it.isBlank())
-                    return@let
+            try {
+                val observationPoint = getObservedFromPoint()
 
-                try {
-                    val observationPoint = getObservedFromPoint()
+                val newObservation = Observation(
+                    observationLat = lat,
+                    observationLon = lon,
+                    observationSheepCount = observationSheepCount.value ?: 0,
+                    observationLambCount = observationLambCount.value ?: 0,
+                    observationBlackCount = observationBlackCount.value ?: 0,
+                    observationGreyCount = observationGreyCount.value ?: 0,
+                    observationWhiteCount = observationWhiteCount.value ?: 0,
+                    observationNote = observationNote.value ?: "",
+                    observationOwnerTripId = tripId,
+                    observationOwnerTripMapPointId = observationPoint.tripMapPointId
+                )
 
-                    val newObservation = Observation(
-                        observationLat = lat,
-                        observationLon = lon,
-                        observationSheepCount = observationSheepCount.value ?: 0,
-                        observationLambCount = observationLambCount.value ?: 0,
-                        observationBlackCount = observationBlackCount.value ?: 0,
-                        observationGreyCount = observationGreyCount.value ?: 0,
-                        observationWhiteCount = observationWhiteCount.value ?: 0,
-                        observationNote = it,
-                        observationOwnerTripId = tripId,
-                        observationOwnerTripMapPointId = observationPoint.tripMapPointId
-                    )
+                insert(newObservation)
 
-                    insert(newObservation)
-
-                    onSuccess()
-                } catch (e: SQLiteConstraintException) {
-                    onFail()
-                }
-
+                onSuccess()
+            } catch (e: SQLiteConstraintException) {
+                onFail()
             }
         }
     }
