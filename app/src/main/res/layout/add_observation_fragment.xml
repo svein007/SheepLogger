@@ -20,11 +20,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
             android:text="@string/sheep"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView3" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            app:layout_constraintBottom_toBottomOf="@+id/editTextNumberSigned"
+            app:layout_constraintStart_toEndOf="@+id/editTextNumberSigned"
+            app:layout_constraintTop_toTopOf="@+id/editTextNumberSigned" />
 
         <TextView
             android:id="@+id/textView9"
@@ -66,76 +66,76 @@
 
         <EditText
             android:id="@+id/editTextNumberSigned"
-            android:layout_width="0dp"
+            android:layout_width="60dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginTop="16dp"
             android:ems="10"
-            android:hint="Sheep Count"
             android:inputType="numberSigned"
             android:text="@={``+viewModel.observationSheepCount}"
-            app:layout_constraintEnd_toStartOf="@+id/button2"
+            tools:text="0"
+            android:textAlignment="center"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView13" />
+            app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
         <EditText
             android:id="@+id/editTextNumberSigned2"
-            android:layout_width="0dp"
+            android:layout_width="60dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginTop="16dp"
             android:ems="10"
-            android:hint="Lamb Count"
             android:inputType="numberSigned"
             android:text="@={``+viewModel.observationLambCount}"
-            app:layout_constraintEnd_toStartOf="@+id/button4"
+            android:textAlignment="center"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView4" />
+            app:layout_constraintTop_toBottomOf="@+id/editTextNumberSigned"
+            tools:text="0" />
 
         <EditText
             android:id="@+id/editTextNumberSigned5"
-            android:layout_width="0dp"
+            android:layout_width="60dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:ems="10"
-            android:hint="Black Count"
             android:inputType="numberSigned"
             android:text="@={``+viewModel.observationBlackCount}"
+            tools:text="0"
+            android:textAlignment="center"
             app:layout_constraintEnd_toStartOf="@+id/button9"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView17" />
+            app:layout_constraintTop_toBottomOf="@+id/editTextNumberSigned2" />
 
         <EditText
             android:id="@+id/editTextNumberSigned6"
-            android:layout_width="0dp"
+            android:layout_width="60dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginTop="16dp"
             android:ems="10"
-            android:hint="Grey Count"
             android:inputType="numberSigned"
             android:text="@={``+viewModel.observationGreyCount}"
-            app:layout_constraintEnd_toStartOf="@+id/button13"
-            app:layout_constraintHorizontal_bias="1.0"
+            android:textAlignment="center"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView18" />
+            app:layout_constraintTop_toBottomOf="@+id/editTextNumberSigned5"
+            tools:text="0" />
 
         <EditText
             android:id="@+id/editTextNumberSigned7"
-            android:layout_width="0dp"
+            android:layout_width="60dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginTop="16dp"
             android:ems="10"
-            android:hint="White Count"
             android:inputType="numberSigned"
             android:text="@={``+viewModel.observationWhiteCount}"
-            app:layout_constraintEnd_toStartOf="@+id/button15"
-            app:layout_constraintHorizontal_bias="1.0"
+            android:textAlignment="center"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView19" />
+            app:layout_constraintTop_toBottomOf="@+id/editTextNumberSigned6"
+            tools:text="0" />
 
         <Button
             android:id="@+id/button"
@@ -292,44 +292,44 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
             android:text="@string/lamb"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextNumberSigned" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            app:layout_constraintBottom_toBottomOf="@+id/editTextNumberSigned2"
+            app:layout_constraintStart_toEndOf="@+id/editTextNumberSigned2"
+            app:layout_constraintTop_toTopOf="@+id/editTextNumberSigned2" />
 
         <TextView
             android:id="@+id/textView17"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
             android:text="@string/black"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextNumberSigned2" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            app:layout_constraintBottom_toBottomOf="@+id/editTextNumberSigned5"
+            app:layout_constraintStart_toEndOf="@+id/editTextNumberSigned5"
+            app:layout_constraintTop_toTopOf="@+id/editTextNumberSigned5" />
 
         <TextView
             android:id="@+id/textView18"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
             android:text="@string/grey"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextNumberSigned5" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            app:layout_constraintBottom_toBottomOf="@+id/editTextNumberSigned6"
+            app:layout_constraintStart_toEndOf="@+id/editTextNumberSigned6"
+            app:layout_constraintTop_toTopOf="@+id/editTextNumberSigned6" />
 
         <TextView
             android:id="@+id/textView19"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
             android:text="@string/white"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextNumberSigned6" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            app:layout_constraintBottom_toBottomOf="@+id/editTextNumberSigned7"
+            app:layout_constraintStart_toEndOf="@+id/editTextNumberSigned7"
+            app:layout_constraintTop_toTopOf="@+id/editTextNumberSigned7" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
