@@ -5,13 +5,10 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.example.osmdroidexample.database.entities.MapArea
-import com.example.osmdroidexample.database.entities.Observation
-import com.example.osmdroidexample.database.entities.Trip
-import com.example.osmdroidexample.database.entities.TripMapPoint
+import com.example.osmdroidexample.database.entities.*
 
-@Database(entities = [MapArea::class, Trip::class, Observation::class, TripMapPoint::class],
-    version = 10, exportSchema = false)
+@Database(entities = [MapArea::class, Trip::class, Observation::class, TripMapPoint::class, Counter::class],
+    version = 12, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
 

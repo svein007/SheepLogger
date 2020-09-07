@@ -17,12 +17,9 @@ class ObservationDetailsViewModel(
 
     val observation = MutableLiveData<Observation>()
 
+    val counters = appDao.getCountersLD(observationId)
+
     val observationNote = MutableLiveData<String>()
-    val observationSheepCount = MutableLiveData<Int>(0)
-    val observationLambCount = MutableLiveData<Int>(0)
-    val observationBlackCount = MutableLiveData<Int>(0)
-    val observationGreyCount = MutableLiveData<Int>(0)
-    val observationWhiteCount = MutableLiveData<Int>(0)
 
     init {
         uiScope.launch {
@@ -30,56 +27,19 @@ class ObservationDetailsViewModel(
 
             observation.value?.let {
                 observationNote.value = it.observationNote
-                observationSheepCount.value = it.observationSheepCount
-                observationLambCount.value = it.observationLambCount
-                observationBlackCount.value = it.observationBlackCount
-                observationGreyCount.value = it.observationGreyCount
-                observationWhiteCount.value = it.observationWhiteCount
             }
         }
     }
 
     /** ViewModel methods **/
 
-    fun incSheepCount() {
-        observationSheepCount.value?.let {
-            observationSheepCount.value = it + 1
-        }
-    }
-
-    fun decSheepCount() {
-        observationSheepCount.value?.let {
-            if (it > 0) {
-                observationSheepCount.value = it - 1
-            }
-        }
-    }
-
-    fun incLambCount() {
-        observationLambCount.value?.let {
-            observationLambCount.value = it + 1
-        }
-    }
-
-    fun decLambCount() {
-        observationLambCount.value?.let {
-            if (it > 0) {
-                observationLambCount.value = it - 1
-            }
-        }
-    }
-
     fun onUpdateObservation() {
         uiScope.launch {
             if (observation.value != null) {
                 observation.value!!.observationNote = observationNote.value!!
-                observation.value!!.observationSheepCount = observationSheepCount.value!!
-                observation.value!!.observationLambCount = observationLambCount.value!!
-                observation.value!!.observationBlackCount = observationBlackCount.value!!
-                observation.value!!.observationGreyCount = observationGreyCount.value!!
-                observation.value!!.observationWhiteCount = observationWhiteCount.value!!
 
                 updateObservation(observation.value!!)
+                updateCounters()
             }
         }
     }
@@ -89,6 +49,14 @@ class ObservationDetailsViewModel(
     private suspend fun updateObservation(observation: Observation) {
         withContext(Dispatchers.IO) {
             appDao.update(observation)
+        }
+    }
+
+    private suspend fun updateCounters() {
+        withContext(Dispatchers.IO) {
+            for (counter in counters.value!!) {
+                appDao.update(counter)
+            }
         }
     }
 

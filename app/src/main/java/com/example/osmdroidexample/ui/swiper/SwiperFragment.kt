@@ -1,6 +1,5 @@
 package com.example.osmdroidexample.ui.swiper
 
-import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.speech.tts.TextToSpeech
@@ -11,9 +10,9 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import com.example.osmdroidexample.R
+import com.example.osmdroidexample.database.entities.Counter
 import com.example.osmdroidexample.databinding.SwiperFragmentBinding
 import com.example.osmdroidexample.ui.OnSwipeTouchListener
 import com.example.osmdroidexample.ui.addobservation.AddObservationViewModel
@@ -27,7 +26,7 @@ class SwiperFragment : Fragment() {
 
     private var toast: Toast? = null
 
-    private var countType = CountType.SHEEP
+    private var countType = Counter.CountType.SHEEP
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,13 +43,13 @@ class SwiperFragment : Fragment() {
         binding.root.setOnTouchListener(object : OnSwipeTouchListener(requireContext()){
             @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
             override fun onSwipeDown() {
-                addObsViewModel.dec(countForEnum(countType))
+                getCurrentCounter()?.dec()
                 echoSelectedCount()
             }
 
             @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
             override fun onSwipeUp() {
-                addObsViewModel.inc(countForEnum(countType))
+                getCurrentCounter()?.inc()
                 echoSelectedCount()
             }
 
@@ -92,14 +91,8 @@ class SwiperFragment : Fragment() {
         toast?.cancel()
     }
 
-    private fun countForEnum(countType: CountType) : MutableLiveData<Int> {
-        return when(countType) {
-            CountType.SHEEP -> addObsViewModel.observationSheepCount
-            CountType.LAMB -> addObsViewModel.observationLambCount
-            CountType.BLACK -> addObsViewModel.observationBlackCount
-            CountType.GREY -> addObsViewModel.observationGreyCount
-            CountType.WHITE -> addObsViewModel.observationWhiteCount
-        }
+    private fun getCurrentCounter(): Counter? {
+        return addObsViewModel.counters.value?.firstOrNull { c -> c.counterType == countType }
     }
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
@@ -111,7 +104,7 @@ class SwiperFragment : Fragment() {
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     private fun echoSelectedCount() {
-        val textToSpeak = "${countForEnum(countType).value!!} ${countType.str(requireContext())}"
+        val textToSpeak = "${getCurrentCounter()?.counterValue ?: "--"} ${countType.str(requireContext())}"
 
         showToast(textToSpeak)
         textToSpeech.speak(textToSpeak, TextToSpeech.QUEUE_FLUSH, null, null)
@@ -121,25 +114,6 @@ class SwiperFragment : Fragment() {
         toast?.cancel()
         toast = Toast.makeText(requireContext(), text, Toast.LENGTH_SHORT)
         toast?.show()
-    }
-
-    enum class CountType {
-        SHEEP, LAMB, BLACK, GREY, WHITE;
-        fun next(): CountType{
-            return values()[(this.ordinal+1) % values().size]
-        }
-        fun prev(): CountType{
-            return values()[(this.ordinal-1+values().size) % values().size]
-        }
-        fun str(context: Context): String {
-            return when (this) {
-                SHEEP -> context.resources.getString(R.string.sheep)
-                LAMB -> context.resources.getString(R.string.lamb)
-                BLACK -> context.resources.getString(R.string.black)
-                GREY -> context.resources.getString(R.string.grey)
-                WHITE -> context.resources.getString(R.string.white)
-            }
-        }
     }
 
 }

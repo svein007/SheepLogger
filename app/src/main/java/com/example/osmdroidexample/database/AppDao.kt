@@ -2,10 +2,7 @@ package com.example.osmdroidexample.database
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.example.osmdroidexample.database.entities.MapArea
-import com.example.osmdroidexample.database.entities.Observation
-import com.example.osmdroidexample.database.entities.Trip
-import com.example.osmdroidexample.database.entities.TripMapPoint
+import com.example.osmdroidexample.database.entities.*
 
 @Dao
 interface AppDao {
@@ -93,5 +90,19 @@ interface AppDao {
     @Update(onConflict = OnConflictStrategy.REPLACE)
     fun update(observation: Observation)
 
+
+    /** Counter **/
+
+    @Insert
+    fun insert(counter: Counter): Long
+
+    @Query("SELECT * FROM counter_table WHERE counter_owner_observation_id = :observationId")
+    fun getCounters(observationId: Long): List<Counter>
+
+    @Query("SELECT * FROM counter_table WHERE counter_owner_observation_id = :observationId")
+    fun getCountersLD(observationId: Long): LiveData<List<Counter>>
+
+    @Update(onConflict = OnConflictStrategy.REPLACE)
+    fun update(counter: Counter)
 
 }

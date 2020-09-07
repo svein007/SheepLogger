@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.osmdroidexample.R
 import com.example.osmdroidexample.database.AppDatabase
 import com.example.osmdroidexample.database.entities.TripMapPoint
@@ -59,7 +60,6 @@ class AddObservationFragment : Fragment() {
             viewModelFactory)[AddObservationViewModel::class.java]
 
         Log.d("####", "AVM tripId: ${viewModel.trip.value?.tripId}")
-        Log.d("####", "AVM sheepCount: ${viewModel.observationSheepCount.value}")
 
         binding.swiperButton.setOnClickListener {
             findNavController().navigate(
@@ -69,6 +69,27 @@ class AddObservationFragment : Fragment() {
 
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
+
+        val adapter = CounterAdapter(
+            CounterListItemListener {
+                it.inc()
+                binding.counterRV.adapter?.notifyDataSetChanged()
+            },
+            CounterListItemListener {
+                it.dec()
+                binding.counterRV.adapter?.notifyDataSetChanged()
+            }
+        )
+
+        binding.counterRV.adapter = adapter
+
+        viewModel.counters.observe(viewLifecycleOwner, {
+            it?.let {
+                adapter.submitList(it)
+            }
+        })
+
+        binding.counterRV.addItemDecoration(DividerItemDecoration(application, DividerItemDecoration.VERTICAL))
 
         return binding.root
     }

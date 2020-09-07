@@ -6,4 +6,8 @@
     <string name="black">svart</string>
     <string name="grey">grå</string>
     <string name="white">hvit</string>
+    <string name="red_tie">rødt slips</string>
+    <string name="blue_tie">blått slips</string>
+    <string name="green_tie">grønt slips</string>
+    <string name="yellow_tie">gult slips</string>
 </resources>

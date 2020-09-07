@@ -6,6 +6,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.osmdroidexample.database.AppDao
+import com.example.osmdroidexample.database.entities.Counter
 import com.example.osmdroidexample.database.entities.Observation
 import com.example.osmdroidexample.database.entities.Trip
 import com.example.osmdroidexample.database.entities.TripMapPoint
@@ -23,48 +24,59 @@ class AddObservationViewModel(
 
     val trip: LiveData<Trip?> = appDao.getTripLD(tripId)
 
-    val observationNote = MutableLiveData<String>()
-    val observationSheepCount = MutableLiveData<Int>(0)
-    val observationLambCount = MutableLiveData<Int>(0)
-    val observationBlackCount = MutableLiveData<Int>(0)
-    val observationGreyCount = MutableLiveData<Int>(0)
-    val observationWhiteCount = MutableLiveData<Int>(0)
+    private val _observation = MutableLiveData<Observation>()
+    val observation: LiveData<Observation>
+        get() = _observation
+
+    private val _counters = MutableLiveData<List<Counter>>()
+    val counters: LiveData<List<Counter>>
+        get() =_counters
+
+    init {
+        val newObservation = Observation(
+            observationLat = 0.0,
+            observationLon = 0.0,
+            observationNote = "",
+            observationOwnerTripId = tripId,
+            observationOwnerTripMapPointId = -1
+        )
+
+        _observation.value = newObservation
+
+        val newCounters = mutableListOf<Counter>()
+        for (countType in Counter.CountType.values()) {
+            val counter = Counter(
+                counterOwnerObservationId = -1,
+                counterType = countType
+            )
+            newCounters.add(counter)
+        }
+
+        _counters.value = newCounters
+
+    }
 
     /** Methods **/
-
-    fun inc(count: MutableLiveData<Int>) {
-        count.value?.let {
-            count.value = it + 1
-        }
-    }
-
-    fun dec(count: MutableLiveData<Int>) {
-        count.value?.let {
-            if(it > 0) {
-                count.value = it - 1
-            }
-        }
-    }
 
     fun addObservation(lat: Double, lon: Double, onSuccess: () -> Unit, onFail: () -> Unit) {
         uiScope.launch {
             try {
                 val observationPoint = getObservedFromPoint()
 
-                val newObservation = Observation(
-                    observationLat = lat,
-                    observationLon = lon,
-                    observationSheepCount = observationSheepCount.value ?: 0,
-                    observationLambCount = observationLambCount.value ?: 0,
-                    observationBlackCount = observationBlackCount.value ?: 0,
-                    observationGreyCount = observationGreyCount.value ?: 0,
-                    observationWhiteCount = observationWhiteCount.value ?: 0,
-                    observationNote = observationNote.value ?: "",
-                    observationOwnerTripId = tripId,
+                observation.value?.apply {
+                    observationLat = lat
+                    observationLon = lon
                     observationOwnerTripMapPointId = observationPoint.tripMapPointId
-                )
+                }
 
-                insert(newObservation)
+                val obsId = observation.value?.let { insert(it) }
+
+                if (obsId != null && counters.value != null) {
+                    for (counter in counters.value!!) {
+                        counter.counterOwnerObservationId = obsId
+                        insert(counter)
+                    }
+                }
 
                 onSuccess()
             } catch (e: SQLiteConstraintException) {
@@ -78,6 +90,12 @@ class AddObservationViewModel(
     private suspend fun insert(observation: Observation): Long {
         return withContext(Dispatchers.IO) {
             appDao.insert(observation)
+        }
+    }
+
+    private suspend fun insert(counter: Counter): Long {
+        return withContext(Dispatchers.IO) {
+            appDao.insert(counter)
         }
     }
 

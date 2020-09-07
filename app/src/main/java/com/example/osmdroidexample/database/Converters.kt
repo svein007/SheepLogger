@@ -1,8 +1,8 @@
 package com.example.osmdroidexample.database
 
 import androidx.room.TypeConverter
+import com.example.osmdroidexample.database.entities.Counter
 import org.osmdroid.util.BoundingBox
-import java.util.*
 
 class Converters {
 
@@ -29,5 +29,11 @@ class Converters {
         return bboxStr
 
     }
+
+    @TypeConverter
+    fun toCountType(value: Int) = enumValues<Counter.CountType>()[value]
+
+    @TypeConverter
+    fun fromCountType(value: Counter.CountType) = value.ordinal
 
 }
