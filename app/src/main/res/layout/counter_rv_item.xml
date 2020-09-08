@@ -20,7 +20,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="80dp">
+        android:layout_height="70dp">
 
         <Button
             android:id="@+id/button6"
@@ -72,7 +72,7 @@
             android:ems="10"
             android:inputType="numberSigned"
             android:textAlignment="center"
-            android:text="@{``+counter.counterValue}"
+            android:text="@={``+counter.counterValue}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/button5"
             app:layout_constraintTop_toTopOf="parent"
