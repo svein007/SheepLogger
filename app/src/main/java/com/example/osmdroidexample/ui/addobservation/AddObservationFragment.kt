@@ -61,12 +61,6 @@ class AddObservationFragment : Fragment() {
 
         Log.d("####", "AVM tripId: ${viewModel.trip.value?.tripId}")
 
-        binding.swiperButton.setOnClickListener {
-            findNavController().navigate(
-                AddObservationFragmentDirections.actionAddObservationFragmentToSwiperFragment()
-            )
-        }
-
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
 
@@ -114,6 +108,11 @@ class AddObservationFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.mi_add_observation) {
             saveObservation()
+            return true
+        } else if (item.itemId == R.id.mi_swiper) {
+            findNavController().navigate(
+                AddObservationFragmentDirections.actionAddObservationFragmentToSwiperFragment()
+            )
             return true
         }
 
