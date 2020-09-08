@@ -85,8 +85,6 @@ class AddObservationFragment : Fragment() {
             }
         })
 
-        binding.counterRV.addItemDecoration(DividerItemDecoration(application, DividerItemDecoration.VERTICAL))
-
         return binding.root
     }
 
