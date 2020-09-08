@@ -7,7 +7,6 @@ import androidx.fragment.app.Fragment
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.osmdroidexample.R
 import com.example.osmdroidexample.database.AppDatabase
 import com.example.osmdroidexample.database.entities.TripMapPoint

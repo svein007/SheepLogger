@@ -14,14 +14,56 @@
 
         <TextView
             android:id="@+id/swipeText"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:text="Swipe Me"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Swipe"
             android:textAlignment="center"
+            android:textAllCaps="true"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView13"
+            android:background="@drawable/ic_baseline_arrow_upward_24"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/swipeText"
+            app:layout_constraintEnd_toEndOf="@+id/swipeText"
+            app:layout_constraintStart_toStartOf="@+id/swipeText" />
+
+        <TextView
+            android:id="@+id/textView16"
+            android:background="@drawable/ic_baseline_arrow_downward_24"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="@+id/swipeText"
+            app:layout_constraintStart_toStartOf="@+id/swipeText"
+            app:layout_constraintTop_toBottomOf="@+id/swipeText" />
+
+        <TextView
+            android:id="@+id/textView17"
+            android:background="@drawable/ic_baseline_arrow_forward_24"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/swipeText"
+            app:layout_constraintStart_toEndOf="@+id/swipeText"
+            app:layout_constraintTop_toTopOf="@+id/swipeText" />
+
+        <TextView
+            android:id="@+id/textView18"
+            android:background="@drawable/ic_baseline_arrow_back_24"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/swipeText"
+            app:layout_constraintEnd_toStartOf="@+id/swipeText"
+            app:layout_constraintTop_toTopOf="@+id/swipeText" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
