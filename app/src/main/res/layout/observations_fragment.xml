@@ -15,28 +15,17 @@
         android:layout_height="match_parent"
         tools:context=".ui.observations.ObservationsFragment">
 
-        <TextView
-            android:id="@+id/textView10"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:textLong="@{viewModel.trip.tripId}"
-            tools:text="42" />
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/observationsRV"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginStart="1dp"
-            android:layout_marginTop="8dp"
             android:layout_marginEnd="1dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView10" />
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

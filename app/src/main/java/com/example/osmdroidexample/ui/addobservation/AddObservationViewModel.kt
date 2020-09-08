@@ -13,6 +13,7 @@ import com.example.osmdroidexample.database.entities.Trip
 import com.example.osmdroidexample.database.entities.TripMapPoint
 import kotlinx.coroutines.*
 import org.osmdroid.util.GeoPoint
+import java.util.*
 
 class AddObservationViewModel(
     private val tripId: Long,
@@ -22,6 +23,8 @@ class AddObservationViewModel(
 
     private var viewModelJob = Job()
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
+
+    private val observationDate = Date()
 
     val trip: LiveData<Trip?> = appDao.getTripLD(tripId)
 
@@ -42,6 +45,7 @@ class AddObservationViewModel(
             observationLat = 0.0,
             observationLon = 0.0,
             observationNote = "",
+            observationDate = observationDate,
             observationOwnerTripId = tripId,
             observationOwnerTripMapPointId = -1
         )

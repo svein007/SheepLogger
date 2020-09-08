@@ -8,7 +8,7 @@ import androidx.room.TypeConverters
 import com.example.osmdroidexample.database.entities.*
 
 @Database(entities = [MapArea::class, Trip::class, Observation::class, TripMapPoint::class, Counter::class],
-    version = 12, exportSchema = false)
+    version = 13, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
 

@@ -3,6 +3,7 @@ package com.example.osmdroidexample.database
 import androidx.room.TypeConverter
 import com.example.osmdroidexample.database.entities.Counter
 import org.osmdroid.util.BoundingBox
+import java.util.*
 
 class Converters {
 
@@ -35,5 +36,19 @@ class Converters {
 
     @TypeConverter
     fun fromCountType(value: Counter.CountType) = value.ordinal
+
+    @TypeConverter
+    fun toDate(value: Long?): Date? {
+        return if (value != null) {
+            Date(value)
+        } else {
+            null
+        }
+    }
+
+    @TypeConverter
+    fun dateToTimestamp(date: Date?): Long? {
+        return date?.time
+    }
 
 }

@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import java.util.*
 
 @Entity(tableName = "observation_table",
         foreignKeys = [
@@ -33,6 +34,9 @@ data class Observation(
 
     @ColumnInfo(name = "observation_lon")
     var observationLon: Double,
+
+    @ColumnInfo(name = "observation_date_time")
+    var observationDate: Date,
 
     @ColumnInfo(name = "observation_owner_trip_map_point_id")
     var observationOwnerTripMapPointId: Long,
