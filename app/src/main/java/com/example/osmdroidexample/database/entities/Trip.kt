@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import java.util.*
 
 @Entity(tableName = "trip_table",
         foreignKeys = [
@@ -22,7 +23,7 @@ data class Trip (
     var tripName: String,
 
     @ColumnInfo(name="trip_date")
-    var tripDate: String,
+    var tripDate: Date,
 
     @ColumnInfo(name = "trip_owner_map_area_id")
     var tripOwnerMapAreaId: Long

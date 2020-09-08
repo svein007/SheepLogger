@@ -12,6 +12,7 @@ import com.example.osmdroidexample.database.entities.Trip
 import com.example.osmdroidexample.utils.dateToFormattedString
 import com.example.osmdroidexample.utils.getToday
 import kotlinx.coroutines.*
+import java.util.*
 
 class AddTripViewModel(
     application: Application,
@@ -42,7 +43,7 @@ class AddTripViewModel(
                     try {
                         val trip = Trip(
                             tripName = it,
-                            tripDate = dateToFormattedString(getToday()),
+                            tripDate = Date(),
                             tripOwnerMapAreaId = mapAreaIdLong
                         )
 

@@ -13,7 +13,7 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import java.io.IOException
-import com.example.osmdroidexample.utils.*
+import java.util.*
 
 @RunWith(AndroidJUnit4::class)
 class AppDatabaseTest {
@@ -96,7 +96,8 @@ class AppDatabaseTest {
 
         val trip = Trip(tripName = "Trip 1",
             tripOwnerMapAreaId = mapAreaId,
-            tripDate = dateToFormattedString(getToday()))
+            tripDate = Date()
+        )
 
         appDao.insert(trip)
 

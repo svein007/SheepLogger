@@ -6,7 +6,9 @@ import androidx.databinding.BindingAdapter
 import java.text.SimpleDateFormat
 import java.util.*
 
-val formatter = SimpleDateFormat("HH:mm")
+val timeFormatter = SimpleDateFormat("HH:mm")
+val dateFormatter = SimpleDateFormat("dd/MM/yyyy")
+val dateTimeFormatter = SimpleDateFormat("dd/MM/yyyy HH:mm")
 
 @BindingAdapter("textLong")
 fun TextView.setTextFromLong(value: Long?) {
@@ -18,7 +20,17 @@ fun EditText.setTextFromInt(value: Int?) {
     setText(value?.toString() ?: "")
 }
 
-@BindingAdapter("textDateTime")
+@BindingAdapter("textTime")
 fun TextView.setTextTimeFromDate(date: Date) {
-    text = formatter.format(date)
+    text = timeFormatter.format(date)
+}
+
+@BindingAdapter("textDate")
+fun TextView.setTextDateForDate(date: Date) {
+    text = dateFormatter.format(date)
+}
+
+@BindingAdapter("textDateTime")
+fun TextView.setTextDateTimeForDate(date: Date) {
+    text = dateTimeFormatter.format(date)
 }

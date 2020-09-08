@@ -3,12 +3,10 @@ package com.example.osmdroidexample.ui.trips
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
 import com.example.osmdroidexample.database.AppDao
 import com.example.osmdroidexample.database.entities.Trip
-import com.example.osmdroidexample.utils.dateToFormattedString
-import com.example.osmdroidexample.utils.getToday
 import kotlinx.coroutines.*
+import java.util.*
 
 class TripsViewModel(
     application: Application,
@@ -28,7 +26,7 @@ class TripsViewModel(
         uiScope.launch {
             val trip = Trip(
                 tripName = "My Trip",
-                tripDate = dateToFormattedString(getToday()),
+                tripDate = Date(),
                 tripOwnerMapAreaId = getMapAreaId()
             )
 
