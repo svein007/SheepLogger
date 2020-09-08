@@ -35,9 +35,8 @@ data class Counter (
         return counterType.str(context)
     }
 
-    // TODO: slips-farge => antall
-    fun sheepChildCount(): Long {
-        return 0
+    fun sheepChildCount(): Int {
+        return counterType.sheepChildCount() * counterValue
     }
 
     enum class CountType {
@@ -59,6 +58,16 @@ data class Counter (
                 BLUE_TIE -> context.resources.getString(R.string.blue_tie)
                 YELLOW_TIE -> context.resources.getString(R.string.yellow_tie)
                 GREEN_TIE -> context.resources.getString(R.string.green_tie)
+            }
+        }
+
+        fun sheepChildCount(): Int {
+            return when (this) {
+                RED_TIE -> 0
+                BLUE_TIE -> 1
+                YELLOW_TIE -> 2
+                GREEN_TIE -> 3
+                else -> 0
             }
         }
     }

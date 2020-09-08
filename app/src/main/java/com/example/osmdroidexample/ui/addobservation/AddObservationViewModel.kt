@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteConstraintException
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import com.example.osmdroidexample.database.AppDao
 import com.example.osmdroidexample.database.entities.Counter
 import com.example.osmdroidexample.database.entities.Observation
@@ -31,6 +32,10 @@ class AddObservationViewModel(
     private val _counters = MutableLiveData<List<Counter>>()
     val counters: LiveData<List<Counter>>
         get() =_counters
+
+    val expectedSheepCount = Transformations.map(counters) {
+        it.sumBy { counter -> counter.sheepChildCount() }
+    }
 
     init {
         val newObservation = Observation(
@@ -83,6 +88,13 @@ class AddObservationViewModel(
                 onFail()
             }
         }
+    }
+
+    /* Forces the counters LiveData to propagate to Transformations
+       when fields of Counters in the list have updated values.
+     */
+    fun forceCountersLiveDateUpdateHack() {
+        _counters.value = _counters.value
     }
 
     /** Helpers **/

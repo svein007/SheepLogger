@@ -74,10 +74,12 @@ class AddObservationFragment : Fragment() {
             CounterListItemListener {
                 it.inc()
                 binding.counterRV.adapter?.notifyDataSetChanged()
+                viewModel.forceCountersLiveDateUpdateHack() // HACK
             },
             CounterListItemListener {
                 it.dec()
                 binding.counterRV.adapter?.notifyDataSetChanged()
+                viewModel.forceCountersLiveDateUpdateHack() // HACK
             }
         )
 
