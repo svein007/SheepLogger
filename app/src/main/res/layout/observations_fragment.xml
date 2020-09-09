@@ -7,7 +7,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.example.osmdroidexample.ui.observations.ObservationsViewModel" />
+            type="com.example.sheeptracker.ui.observations.ObservationsViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

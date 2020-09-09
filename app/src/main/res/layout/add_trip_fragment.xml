@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.example.osmdroidexample.ui.addtrip.AddTripViewModel" />
+            type="com.example.sheeptracker.ui.addtrip.AddTripViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

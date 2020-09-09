@@ -6,10 +6,10 @@
     <data>
         <variable
             name="observation"
-            type="com.example.osmdroidexample.database.entities.Observation" />
+            type="com.example.sheeptracker.database.entities.Observation" />
         <variable
             name="clickListener"
-            type="com.example.osmdroidexample.ui.observations.ObservationListItemListener" />
+            type="com.example.sheeptracker.ui.observations.ObservationListItemListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

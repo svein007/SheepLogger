@@ -6,16 +6,16 @@
     <data>
         <variable
             name="counter"
-            type="com.example.osmdroidexample.database.entities.Counter" />
+            type="com.example.sheeptracker.database.entities.Counter" />
         <variable
             name="countTypeName"
             type="String" />
         <variable
             name="incClickListener"
-            type="com.example.osmdroidexample.ui.addobservation.CounterListItemListener" />
+            type="com.example.sheeptracker.ui.addobservation.CounterListItemListener" />
         <variable
             name="decClickListener"
-            type="com.example.osmdroidexample.ui.addobservation.CounterListItemListener" />
+            type="com.example.sheeptracker.ui.addobservation.CounterListItemListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

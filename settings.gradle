@@ -1,2 +1,2 @@
 include ':app'
-rootProject.name = "OsmDroidExample"
+rootProject.name = "SheepTracker"

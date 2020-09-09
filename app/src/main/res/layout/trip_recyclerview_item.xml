@@ -6,10 +6,10 @@
     <data>
         <variable
             name="trip"
-            type="com.example.osmdroidexample.database.entities.Trip" />
+            type="com.example.sheeptracker.database.entities.Trip" />
         <variable
             name="clickListener"
-            type="com.example.osmdroidexample.ui.trips.TripListItemListener" />
+            type="com.example.sheeptracker.ui.trips.TripListItemListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

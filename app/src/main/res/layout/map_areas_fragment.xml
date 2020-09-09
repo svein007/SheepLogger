@@ -6,7 +6,7 @@
     <data>
         <variable
             name="downliadedTilesViewModel"
-            type="com.example.osmdroidexample.ui.mapareas.MapAreasViewModel" />
+            type="com.example.sheeptracker.ui.mapareas.MapAreasViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

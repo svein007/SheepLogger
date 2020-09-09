@@ -6,10 +6,10 @@
     <data>
         <variable
             name="mapArea"
-            type="com.example.osmdroidexample.database.entities.MapArea" />
+            type="com.example.sheeptracker.database.entities.MapArea" />
         <variable
             name="clickListener"
-            type="com.example.osmdroidexample.ui.addtrip.SelectableMapAreaListItemListener" />
+            type="com.example.sheeptracker.ui.addtrip.SelectableMapAreaListItemListener" />
         <variable
             name="isSelected"
             type="Boolean" />

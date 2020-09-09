@@ -8,12 +8,12 @@
 
     <fragment
         android:id="@+id/mainFragment"
-        android:name="com.example.osmdroidexample.ui.main.MainFragment"
+        android:name="com.example.sheeptracker.ui.main.MainFragment"
         android:label="Map"
         tools:layout="@layout/main_fragment"/>
     <fragment
         android:id="@+id/mapAreasFragment"
-        android:name="com.example.osmdroidexample.ui.mapareas.MapAreasFragment"
+        android:name="com.example.sheeptracker.ui.mapareas.MapAreasFragment"
         android:label="Map Areas"
         tools:layout="@layout/map_areas_fragment">
         <action
@@ -25,7 +25,7 @@
     </fragment>
     <fragment
         android:id="@+id/tripFragment"
-        android:name="com.example.osmdroidexample.ui.trip.TripFragment"
+        android:name="com.example.sheeptracker.ui.trip.TripFragment"
         android:label="Trip"
         tools:layout="@layout/trip_fragment">
         <argument
@@ -43,7 +43,7 @@
     </fragment>
     <fragment
         android:id="@+id/startFragment"
-        android:name="com.example.osmdroidexample.ui.start.StartFragment"
+        android:name="com.example.sheeptracker.ui.start.StartFragment"
         android:label="Sheep Logger"
         tools:layout="@layout/start_fragment">
         <action
@@ -55,7 +55,7 @@
     </fragment>
     <fragment
         android:id="@+id/tripsFragment"
-        android:name="com.example.osmdroidexample.ui.trips.TripsFragment"
+        android:name="com.example.sheeptracker.ui.trips.TripsFragment"
         android:label="My Trips"
         tools:layout="@layout/trips_fragment" >
         <action
@@ -67,12 +67,12 @@
     </fragment>
     <fragment
         android:id="@+id/addTripFragment"
-        android:name="com.example.osmdroidexample.ui.addtrip.AddTripFragment"
+        android:name="com.example.sheeptracker.ui.addtrip.AddTripFragment"
         android:label="New Trip"
         tools:layout="@layout/add_trip_fragment"/>
     <fragment
         android:id="@+id/mapAreaFragment"
-        android:name="com.example.osmdroidexample.ui.maparea.MapAreaFragment"
+        android:name="com.example.sheeptracker.ui.maparea.MapAreaFragment"
         android:label="Map Area"
         tools:layout="@layout/map_area_fragment">
         <argument
@@ -81,7 +81,7 @@
     </fragment>
     <fragment
         android:id="@+id/addObservationFragment"
-        android:name="com.example.osmdroidexample.ui.addobservation.AddObservationFragment"
+        android:name="com.example.sheeptracker.ui.addobservation.AddObservationFragment"
         android:label="New Observation"
         tools:layout="@layout/add_observation_fragment" >
         <argument
@@ -99,7 +99,7 @@
     </fragment>
     <fragment
         android:id="@+id/observationsFragment"
-        android:name="com.example.osmdroidexample.ui.observations.ObservationsFragment"
+        android:name="com.example.sheeptracker.ui.observations.ObservationsFragment"
         android:label="Observations"
         tools:layout="@layout/observations_fragment">
         <argument
@@ -111,7 +111,7 @@
     </fragment>
     <fragment
         android:id="@+id/observationDetailsFragment"
-        android:name="com.example.osmdroidexample.ui.observationdetails.ObservationDetailsFragment"
+        android:name="com.example.sheeptracker.ui.observationdetails.ObservationDetailsFragment"
         android:label="Observation Details"
         tools:layout="@layout/observation_details_fragment">
         <argument
@@ -123,7 +123,7 @@
     </fragment>
     <fragment
         android:id="@+id/swiperFragment"
-        android:name="com.example.osmdroidexample.ui.swiper.SwiperFragment"
+        android:name="com.example.sheeptracker.ui.swiper.SwiperFragment"
         android:label="SwiperFragment"
         tools:layout="@layout/swiper_fragment"/>
 
