@@ -9,6 +9,7 @@ import com.example.sheeptracker.database.entities.Observation
 import com.example.sheeptracker.database.entities.Trip
 import com.example.sheeptracker.database.entities.TripMapPoint
 import kotlinx.coroutines.*
+import java.util.*
 
 class TripViewModel(
     private val tripId: Long,
@@ -32,7 +33,7 @@ class TripViewModel(
 
     /** Methods **/
 
-    fun addTripMapPoint(lat: Double, lon: Double, dateTime: String) {
+    fun addTripMapPoint(lat: Double, lon: Double, dateTime: Date) {
         uiScope.launch {
             val point = TripMapPoint(
                 tripMapPointLat = lat,

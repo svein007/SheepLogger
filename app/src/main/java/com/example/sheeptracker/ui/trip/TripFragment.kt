@@ -23,8 +23,6 @@ import com.example.sheeptracker.R
 import com.example.sheeptracker.database.AppDatabase
 import com.example.sheeptracker.databinding.TripFragmentBinding
 import com.example.sheeptracker.map.MapAreaManager
-import com.example.sheeptracker.utils.dateToFormattedString
-import com.example.sheeptracker.utils.getToday
 import org.osmdroid.events.MapEventsReceiver
 import org.osmdroid.tileprovider.modules.OfflineTileProvider
 import org.osmdroid.tileprovider.tilesource.FileBasedTileSource
@@ -38,6 +36,8 @@ import org.osmdroid.views.overlay.Polyline
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
 import java.lang.Exception
+import java.util.*
+import kotlin.collections.ArrayList
 
 class TripFragment : Fragment() {
 
@@ -374,8 +374,8 @@ class TripFragment : Fragment() {
 
         viewModel.addTripMapPoint(
             geoPoint.latitude,
-            geoPoint.longitude, dateToFormattedString(
-            getToday())
+            geoPoint.longitude,
+            Date()
         )
     }
 

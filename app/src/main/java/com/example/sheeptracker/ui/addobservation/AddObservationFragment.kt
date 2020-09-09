@@ -12,8 +12,7 @@ import com.example.sheeptracker.database.AppDatabase
 import com.example.sheeptracker.database.entities.TripMapPoint
 import com.example.sheeptracker.databinding.AddObservationFragmentBinding
 import com.example.sheeptracker.map.MapAreaManager
-import com.example.sheeptracker.utils.dateToFormattedString
-import com.example.sheeptracker.utils.getToday
+import java.util.*
 
 class AddObservationFragment : Fragment() {
 
@@ -48,7 +47,7 @@ class AddObservationFragment : Fragment() {
             TripMapPoint(
                 tripMapPointLat =  currentPosition!!.latitude,
                 tripMapPointLon =  currentPosition!!.longitude,
-                tripMapPointDate = dateToFormattedString(getToday()),
+                tripMapPointDate = Date(),
                 tripMapPointOwnerTripId = arguments.tripId
                 )
             , application
