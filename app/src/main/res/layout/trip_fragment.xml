@@ -58,6 +58,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:text="GPS: "
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/startGpsLogButton"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/startGpsLogButton" />
@@ -68,6 +69,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:text="Obs: "
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/observationsButton"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/observationsButton" />
