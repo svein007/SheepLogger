@@ -4,7 +4,8 @@
 
     <item
         android:id="@+id/mi_add_map_area"
+        android:icon="@drawable/ic_baseline_add_24"
         android:title="Add"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="ifRoom" />
 
 </menu>
