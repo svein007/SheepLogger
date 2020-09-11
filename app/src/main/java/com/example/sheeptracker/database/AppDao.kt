@@ -54,6 +54,9 @@ interface AppDao {
     @Query("SELECT * FROM trip_table WHERE trip_owner_map_area_id = :mapAreaId ORDER BY trip_id ASC ")
     fun getTripsForMapArea(mapAreaId: Long): List<Trip>
 
+    @Query("DELETE FROM trip_table WHERE trip_id = :key")
+    fun deletTrip(key: Long)
+
 
     /** TripMapPoint **/
 

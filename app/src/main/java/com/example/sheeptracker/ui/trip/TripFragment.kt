@@ -9,10 +9,8 @@ import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
 import android.util.Log
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.res.ResourcesCompat
@@ -99,6 +97,8 @@ class TripFragment : Fragment() {
 
         binding = DataBindingUtil.inflate(
             inflater, R.layout.trip_fragment, container, false)
+
+        setHasOptionsMenu(true)
 
         arguments = TripFragmentArgs.fromBundle(requireArguments())
 
@@ -350,6 +350,20 @@ class TripFragment : Fragment() {
                 }
             }
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.trip_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.mi_delete_trip) {
+            viewModel.deleteTrip()
+            findNavController().navigateUp()
+            return true
+        }
+        return false
     }
 
     private fun pinCurrentLocation () {
