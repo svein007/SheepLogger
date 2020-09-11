@@ -1,13 +1,13 @@
 package com.example.sheeptracker.ui.main
 
+import android.app.AlertDialog
 import android.content.Context
 import android.content.pm.PackageManager
 import android.location.LocationManager
 import android.os.Bundle
+import android.view.*
+import android.widget.EditText
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
@@ -50,6 +50,8 @@ class MainFragment : Fragment() {
         binding = DataBindingUtil.inflate(
             inflater, R.layout.main_fragment, container, false
         )
+
+        setHasOptionsMenu(true)
 
         val application = requireNotNull(this.activity).application
 
@@ -120,35 +122,8 @@ class MainFragment : Fragment() {
 
         cacheManager = CacheManager(binding.mapView)
 
-        binding.saveTileButton.setOnClickListener { v ->
-            val possibleNumOfTiles = cacheManager?.possibleTilesInArea(binding.mapView.boundingBox,
-                binding.mapView.zoomLevelDouble.toInt(), 20) ?: 0
-            Toast.makeText(context, "#Tiles="+possibleNumOfTiles, Toast.LENGTH_LONG).show()
-
-            if (possibleNumOfTiles > 10000) {
-                Toast.makeText(context, ">10000 tiles, use smaller area", Toast.LENGTH_LONG).show()
-            } else if (binding.mapView.zoomLevelDouble.toInt() > 18 || possibleNumOfTiles < 40) {
-                Toast.makeText(context, "Area too small, zoom out", Toast.LENGTH_LONG).show()
-            } else {
-                val mapAreaName = binding.mapNameEditText.text.toString()
-
-                val mapArea = MapArea(
-                    mapAreaName = mapAreaName,
-                    mapAreaMinZoom = floor(mapView.zoomLevelDouble),
-                    mapAreaMaxZoom = binding.mapView.maxZoomLevel,
-                    boundingBox = binding.mapView.boundingBox
-                )
-
-                viewModel.storeMapArea(mapArea)
-
-                MapAreaManager.storeMapArea(requireContext(), binding.mapView, mapArea.getSqliteFilename()) {
-                    findNavController().popBackStack()
-                }
-            }
-
-        }
-
     }
+
 
     override fun onResume() {
         super.onResume()
@@ -176,6 +151,70 @@ class MainFragment : Fragment() {
                 }
             }
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.map_area_download_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.mi_download_map_area) {
+            showMapAreaNameDialog()
+            return true
+        }
+        return false
+    }
+
+
+    private fun saveMapArea(mapAreaName: String) {
+        val possibleNumOfTiles = cacheManager?.possibleTilesInArea(
+            binding.mapView.boundingBox,
+            binding.mapView.zoomLevelDouble.toInt(), 20
+        ) ?: 0
+        Toast.makeText(context, "#Tiles=" + possibleNumOfTiles, Toast.LENGTH_LONG).show()
+
+        if (possibleNumOfTiles > 10000) {
+            Toast.makeText(context, ">10000 tiles, use smaller area", Toast.LENGTH_LONG).show()
+        } else if (binding.mapView.zoomLevelDouble.toInt() > 18 || possibleNumOfTiles < 40) {
+            Toast.makeText(context, "Area too small, zoom out", Toast.LENGTH_LONG).show()
+        } else {
+
+            val mapArea = MapArea(
+                mapAreaName = mapAreaName,
+                mapAreaMinZoom = floor(binding.mapView.zoomLevelDouble),
+                mapAreaMaxZoom = binding.mapView.maxZoomLevel,
+                boundingBox = binding.mapView.boundingBox
+            )
+
+            viewModel.storeMapArea(mapArea)
+
+            MapAreaManager.storeMapArea(
+                requireContext(),
+                binding.mapView,
+                mapArea.getSqliteFilename()
+            ) {
+                findNavController().popBackStack()
+            }
+        }
+    }
+
+    private fun showMapAreaNameDialog() {
+        val editText = EditText(requireContext())
+        editText.hint = "map area name"
+
+        AlertDialog.Builder(requireContext())
+            .setTitle("Download Map Area")
+            .setMessage("Enter the name of the selected map area")
+            .setView(editText)
+            .setPositiveButton("Download") { dialog, which ->
+                val mapAreaName = editText.text.toString()
+                saveMapArea(mapAreaName)
+            }
+            .setNegativeButton("Cancel") { dialog, which ->
+            }
+            .show()
+
     }
 
 }
