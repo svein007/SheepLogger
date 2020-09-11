@@ -34,6 +34,7 @@
             android:background="#FFFFFF"
             android:padding="4dp"
             android:text="---"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/mapView"
             tools:text="Zoom: 8" />

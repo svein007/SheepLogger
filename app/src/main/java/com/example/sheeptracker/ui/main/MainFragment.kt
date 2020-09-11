@@ -28,6 +28,7 @@ import org.osmdroid.library.BuildConfig
 import org.osmdroid.tileprovider.cachemanager.CacheManager
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.overlay.Marker
+import org.osmdroid.views.overlay.ScaleBarOverlay
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
 import kotlin.math.floor
@@ -95,11 +96,11 @@ class MainFragment : Fragment() {
         binding.mapView.controller.setZoom(15.0)
         binding.mapView.controller.setCenter(position)
 
-        textView.text = "Zoom = " + binding.mapView.zoomLevelDouble
+        //textView.text = "Zoom = %.2f".format(binding.mapView.zoomLevelDouble)
 
         mapView.addMapListener(DelayedMapListener(object : MapListener {
             override fun onZoom(event: ZoomEvent?): Boolean {
-                textView.text = "Zoom = " + binding.mapView.zoomLevelDouble
+                //textView.text = "Zoom = %.2f".format(binding.mapView.zoomLevelDouble)
                 return false
             }
 
@@ -122,6 +123,11 @@ class MainFragment : Fragment() {
 
         cacheManager = CacheManager(binding.mapView)
 
+        val dm = requireContext().resources.displayMetrics
+        val scaleBarOverlay = ScaleBarOverlay(binding.mapView)
+        scaleBarOverlay.setCentred(true)
+        scaleBarOverlay.setScaleBarOffset(dm.widthPixels / 2, 10)
+        binding.mapView.overlays.add(scaleBarOverlay)
     }
 
 
