@@ -8,6 +8,9 @@
             name="trip"
             type="com.example.sheeptracker.database.entities.Trip" />
         <variable
+            name="mapAreaName"
+            type="String" />
+        <variable
             name="clickListener"
             type="com.example.sheeptracker.ui.trips.TripListItemListener" />
     </data>
@@ -23,11 +26,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp"
             android:text="@{trip.tripName}"
-            tools:text="My Trip"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Ettermiddagstur" />
 
         <TextView
             android:id="@+id/tripDateTV"
@@ -39,6 +43,17 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/mapAreaNameTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="4dp"
+            android:text="@{mapAreaName}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="Langeholmen" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

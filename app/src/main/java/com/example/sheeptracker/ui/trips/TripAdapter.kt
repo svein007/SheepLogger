@@ -5,8 +5,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.sheeptracker.database.AppDatabase
 import com.example.sheeptracker.database.entities.Trip
 import com.example.sheeptracker.databinding.TripRecyclerviewItemBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class TripAdapter (val clickListener: TripListItemListener)
     : ListAdapter<Trip, TripAdapter.ViewHolder>(TripDiffCallback()) {
@@ -29,7 +34,16 @@ class TripAdapter (val clickListener: TripListItemListener)
         ) {
             binding.trip = item
             binding.clickListener = clickListener
+            CoroutineScope(Dispatchers.Main).launch {
+                binding.mapAreaName = getMapAreaName(item.tripOwnerMapAreaId)
+            }
             binding.executePendingBindings()
+        }
+
+        private suspend fun getMapAreaName(mapAreaId: Long): String {
+            return withContext(Dispatchers.IO) {
+                AppDatabase.getInstance(binding.root.context).appDatabaseDao.getMapArea(mapAreaId)?.mapAreaName ?: ""
+            }
         }
 
     }
