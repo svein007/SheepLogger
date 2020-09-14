@@ -1,18 +1,11 @@
 package com.example.sheeptracker.ui.trip
 
-import android.Manifest
-import android.content.Context
-import android.content.pm.PackageManager
 import android.graphics.Color
-import android.location.Location
-import android.location.LocationListener
-import android.location.LocationManager
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.Toast
-import androidx.core.app.ActivityCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
@@ -20,7 +13,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.sheeptracker.R
 import com.example.sheeptracker.database.AppDatabase
 import com.example.sheeptracker.databinding.TripFragmentBinding
-import com.example.sheeptracker.map.MapAreaManager
+import com.example.sheeptracker.service.LocationService
 import org.osmdroid.events.MapEventsReceiver
 import org.osmdroid.tileprovider.modules.OfflineTileProvider
 import org.osmdroid.tileprovider.tilesource.FileBasedTileSource
@@ -34,12 +27,10 @@ import org.osmdroid.views.overlay.Polyline
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
 import java.lang.Exception
-import java.util.*
 import kotlin.collections.ArrayList
 
 class TripFragment : Fragment() {
 
-    private var gpsTrackingInProgress: Boolean = false
     private lateinit var viewModel: TripViewModel
     private lateinit var binding: TripFragmentBinding
     private lateinit var arguments: TripFragmentArgs
@@ -48,29 +39,6 @@ class TripFragment : Fragment() {
     private val gpsMarkers = ArrayList<Marker>() // To be able to delete old markers
     private val observationMarkers = ArrayList<Marker>() // To be able to delete old markers
     private val observationPolylines = ArrayList<Polyline>()
-
-    private lateinit var locationManager: LocationManager
-
-    private val permissionRequestCode = 13
-
-    private val gpsListener = object : LocationListener {
-        override fun onLocationChanged(location: Location?) {
-            Log.d("#####", "Location: " + location.toString())
-            location?.let {
-                pinLocation(GeoPoint(it))
-            }
-        }
-
-        override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
-        }
-
-        override fun onProviderEnabled(provider: String?) {
-        }
-
-        override fun onProviderDisabled(provider: String?) {
-        }
-
-    }
 
     private val eventsOverlay = MapEventsOverlay( object : MapEventsReceiver{
         override fun singleTapConfirmedHelper(p: GeoPoint?): Boolean {
@@ -186,10 +154,6 @@ class TripFragment : Fragment() {
         locationOverlay.enableMyLocation()
         binding.tripMapView.overlays.add(locationOverlay)
 
-        binding.pinCurrentLocationButton.setOnClickListener {
-            pinCurrentLocation()
-        }
-
         mapView.overlayManager.add(eventsOverlay)
 
         Log.d("########", "######")
@@ -198,33 +162,12 @@ class TripFragment : Fragment() {
             binding.tripMapView.controller.animateTo(it.boundingBox.centerWithDateLine)
         }
 
-        locationManager = requireContext().applicationContext.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-
         binding.startGpsLogButton.setOnClickListener {
-
-            if (!gpsTrackingInProgress) {
-                if (ActivityCompat.checkSelfPermission(
-                        requireContext(),
-                        Manifest.permission.ACCESS_FINE_LOCATION
-                    ) == PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(
-                        requireContext(),
-                        Manifest.permission.ACCESS_COARSE_LOCATION
-                    ) == PackageManager.PERMISSION_GRANTED
-                ) {
-                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 20.0f, gpsListener)
-                }
-            }
-
-            gpsTrackingInProgress = true
+            LocationService.startService(requireContext(), arguments.tripId)
         }
 
         binding.stopGpsLogButton.setOnClickListener {
-
-            if (gpsTrackingInProgress) {
-                locationManager.removeUpdates(gpsListener)
-            }
-
-            gpsTrackingInProgress = false
+            LocationService.stopService(requireContext())
         }
 
         mapView.invalidate()
@@ -306,18 +249,6 @@ class TripFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        if (gpsTrackingInProgress) {
-            if (ActivityCompat.checkSelfPermission(
-                    requireContext(),
-                    Manifest.permission.ACCESS_FINE_LOCATION
-                ) == PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(
-                    requireContext(),
-                    Manifest.permission.ACCESS_COARSE_LOCATION
-                ) == PackageManager.PERMISSION_GRANTED
-            ) {
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 20.0f, gpsListener)
-            }
-        }
 
         binding.tripMapView.onResume()
 
@@ -327,29 +258,14 @@ class TripFragment : Fragment() {
     override fun onPause() {
         super.onPause()
 
-        if (gpsTrackingInProgress) {
-            locationManager.removeUpdates(gpsListener)
-        }
-
         binding.tripMapView.overlayManager.remove(gpsTrail)
 
         binding.tripMapView.onPause()
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        //super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == permissionRequestCode) {
-            if (grantResults.isNotEmpty()
-                && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                MapAreaManager.getLastKnownLocation(requireContext(), requireActivity(), permissionRequestCode, false)?.let {
-                    pinCurrentLocation()
-                }
-            }
-        }
+    override fun onDestroy() {
+        super.onDestroy()
+        LocationService.stopService(requireContext())
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -364,33 +280,6 @@ class TripFragment : Fragment() {
             return true
         }
         return false
-    }
-
-    private fun pinCurrentLocation () {
-        MapAreaManager.getLastKnownLocation(requireContext(), requireActivity(), permissionRequestCode)?.let {
-            pinLocation(it)
-        }
-    }
-
-    private fun pinLocation (geoPoint: GeoPoint) {
-        val minDistanceBetweenPoints = 5.0f // Min 5 meters between adjacent points, TODO: use settings
-
-        val lastTripMapPoint = viewModel.tripMapPoints.value?.maxByOrNull { tripMapPoint -> tripMapPoint.tripMapPointId }
-
-        if (lastTripMapPoint != null) {
-            val lastGeoPoint = GeoPoint(lastTripMapPoint.tripMapPointLat, lastTripMapPoint.tripMapPointLon)
-            val distance = lastGeoPoint.distanceToAsDouble(geoPoint)
-            if (distance < minDistanceBetweenPoints) {
-                Log.d("####", "Did not add GeoPoint, too close to last pinned GeoPoint. ${distance}m")
-                return
-            }
-        }
-
-        viewModel.addTripMapPoint(
-            geoPoint.latitude,
-            geoPoint.longitude,
-            Date()
-        )
     }
 
 }

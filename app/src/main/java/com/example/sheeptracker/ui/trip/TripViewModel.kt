@@ -42,7 +42,6 @@ class TripViewModel(
                 tripMapPointOwnerTripId = tripId
             )
 
-            insert(point)
         }
     }
 
@@ -53,12 +52,6 @@ class TripViewModel(
     }
 
     /** Helpers **/
-
-    private suspend fun insert(point: TripMapPoint): Long {
-        return withContext(Dispatchers.IO) {
-            appDao.insert(point)
-        }
-    }
 
     private suspend fun delete(tripId: Long) {
         return withContext(Dispatchers.IO) {

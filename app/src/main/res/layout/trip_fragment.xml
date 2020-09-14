@@ -43,15 +43,6 @@
             app:layout_constraintStart_toEndOf="@+id/startGpsLogButton"
             app:layout_constraintTop_toTopOf="@+id/startGpsLogButton" />
 
-        <Button
-            android:id="@+id/pinCurrentLocationButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:text="Log_Point"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/stopGpsLogButton" />
-
         <TextView
             android:id="@+id/textView7"
             android:layout_width="wrap_content"
