@@ -1,5 +1,6 @@
 package com.example.sheeptracker.ui
 
+import android.view.View
 import android.widget.EditText
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
@@ -33,4 +34,9 @@ fun TextView.setTextDateForDate(date: Date) {
 @BindingAdapter("textDateTime")
 fun TextView.setTextDateTimeForDate(date: Date) {
     text = dateTimeFormatter.format(date)
+}
+
+@BindingAdapter("boolVisibility")
+fun View.setBoolVisibility(visible: Boolean) {
+    visibility = if (visible) View.VISIBLE else View.INVISIBLE
 }

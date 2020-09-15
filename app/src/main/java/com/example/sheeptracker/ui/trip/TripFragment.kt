@@ -122,6 +122,8 @@ class TripFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.tripViewModel = viewModel
 
+        startLocationService()
+
         return binding.root
     }
 
@@ -163,11 +165,11 @@ class TripFragment : Fragment() {
         }
 
         binding.startGpsLogButton.setOnClickListener {
-            LocationService.startService(requireContext(), arguments.tripId)
+            startLocationService()
         }
 
         binding.stopGpsLogButton.setOnClickListener {
-            LocationService.stopService(requireContext())
+            stopLocationService()
         }
 
         mapView.invalidate()
@@ -280,6 +282,19 @@ class TripFragment : Fragment() {
             return true
         }
         return false
+    }
+
+    private fun startLocationService() {
+        if (!viewModel.isTrackingGPS.value!!) {
+            LocationService.startService(requireContext(), arguments.tripId)
+            viewModel.isTrackingGPS.value = true
+        }
+    }
+
+
+    private fun stopLocationService() {
+        LocationService.stopService(requireContext())
+        viewModel.isTrackingGPS.value = false
     }
 
 }
