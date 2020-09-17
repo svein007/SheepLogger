@@ -14,7 +14,7 @@ import com.example.sheeptracker.R
 import com.example.sheeptracker.database.AppDatabase
 import com.example.sheeptracker.databinding.TripFragmentBinding
 import com.example.sheeptracker.service.LocationService
-import org.osmdroid.events.MapEventsReceiver
+import org.osmdroid.events.*
 import org.osmdroid.tileprovider.modules.OfflineTileProvider
 import org.osmdroid.tileprovider.tilesource.FileBasedTileSource
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
@@ -119,6 +119,24 @@ class TripFragment : Fragment() {
             )
         }
 
+        viewModel.latestLocation.observe(viewLifecycleOwner) {
+            it?.let {
+                if (viewModel.isFollowingGPS.value!!) {
+                    binding.tripMapView.controller.animateTo(GeoPoint(it.latitude, it.longitude))
+                }
+            }
+        }
+
+        viewModel.isFollowingGPS.observe(viewLifecycleOwner) {
+            it?.let {
+                if (it) {
+                    binding.gpsFollowButton.setImageResource(R.drawable.ic_baseline_gps_fixed_24)
+                } else {
+                    binding.gpsFollowButton.setImageResource(R.drawable.ic_baseline_gps_not_fixed_24)
+                }
+            }
+        }
+
         binding.lifecycleOwner = viewLifecycleOwner
         binding.tripViewModel = viewModel
 
@@ -158,7 +176,6 @@ class TripFragment : Fragment() {
 
         mapView.overlayManager.add(eventsOverlay)
 
-        Log.d("########", "######")
         viewModel.mapArea.value?.let {
             Log.d("########", it.boundingBox.centerWithDateLine.toString())
             binding.tripMapView.controller.animateTo(it.boundingBox.centerWithDateLine)
@@ -171,6 +188,16 @@ class TripFragment : Fragment() {
         binding.stopGpsLogButton.setOnClickListener {
             stopLocationService()
         }
+
+        mapView.setOnTouchListener { view, motionEvent ->
+            if (motionEvent.action == MotionEvent.ACTION_MOVE) {
+                viewModel.stopLocationUpdates()
+                viewModel.isFollowingGPS.value = false
+            }
+            false
+        }
+
+        viewModel.triggerLocationLiveDataUpdate()
 
         mapView.invalidate()
     }
@@ -290,7 +317,6 @@ class TripFragment : Fragment() {
             viewModel.isTrackingGPS.value = true
         }
     }
-
 
     private fun stopLocationService() {
         LocationService.stopService(requireContext())

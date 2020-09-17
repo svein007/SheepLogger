@@ -1,6 +1,12 @@
 package com.example.sheeptracker.ui.trip
 
+import android.annotation.SuppressLint
 import android.app.Application
+import android.content.Context
+import android.location.Location
+import android.location.LocationListener
+import android.location.LocationManager
+import android.os.Bundle
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -10,7 +16,6 @@ import com.example.sheeptracker.database.entities.Observation
 import com.example.sheeptracker.database.entities.Trip
 import com.example.sheeptracker.database.entities.TripMapPoint
 import kotlinx.coroutines.*
-import java.util.*
 
 class TripViewModel(
     private val tripId: Long,
@@ -25,6 +30,20 @@ class TripViewModel(
     private var viewModelJob = Job()
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
 
+    private val locationManager = application.applicationContext.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+
+    private val gpsListener = object : LocationListener {
+        override fun onLocationChanged(location: Location?) {
+            location?.let {
+                latestLocation.value = location
+            }
+        }
+
+        override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {}
+        override fun onProviderEnabled(provider: String?) {}
+        override fun onProviderDisabled(provider: String?) {}
+    }
+
     /** Fields **/
 
     val trip: LiveData<Trip?> = appDao.getTripLD(tripId)
@@ -33,24 +52,44 @@ class TripViewModel(
     val observations: LiveData<List<Observation>> = appDao.getObservationsForTripLD(tripId)
 
     val isTrackingGPS = MutableLiveData<Boolean>(false)
+    val isFollowingGPS = MutableLiveData<Boolean>(true)
+
+    val latestLocation = MutableLiveData<Location>()
+
+    init {
+        startLocationUpdates()
+    }
 
     /** Methods **/
-
-    fun addTripMapPoint(lat: Double, lon: Double, dateTime: Date) {
-        uiScope.launch {
-            val point = TripMapPoint(
-                tripMapPointLat = lat,
-                tripMapPointLon = lon,
-                tripMapPointDate = dateTime,
-                tripMapPointOwnerTripId = tripId
-            )
-
-        }
-    }
 
     fun deleteTrip() {
         uiScope.launch {
             delete(tripId)
+        }
+    }
+
+    fun toggleFollowGPS() {
+        if (isFollowingGPS.value!!) {
+            stopLocationUpdates()
+        } else {
+            triggerLocationLiveDataUpdate()
+            startLocationUpdates()
+        }
+        isFollowingGPS.value = !isFollowingGPS.value!!
+    }
+
+    @SuppressLint("MissingPermission")
+    fun startLocationUpdates() {
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 5.0f, gpsListener)
+    }
+
+    fun stopLocationUpdates() {
+        locationManager.removeUpdates(gpsListener)
+    }
+
+    fun triggerLocationLiveDataUpdate() {
+        if (latestLocation.value != null) {
+            latestLocation.value = latestLocation.value
         }
     }
 
