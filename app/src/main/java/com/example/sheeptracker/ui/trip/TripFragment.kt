@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.sheeptracker.R
 import com.example.sheeptracker.database.AppDatabase
+import com.example.sheeptracker.database.entities.Observation
 import com.example.sheeptracker.databinding.TripFragmentBinding
 import com.example.sheeptracker.service.LocationService
 import org.osmdroid.events.*
@@ -217,11 +218,15 @@ class TripFragment : Fragment() {
         binding.tripMapView.overlayManager.removeAll(observationMarkers)
         observationMarkers.clear()
 
-        observationsGeoPoints.forEach { geoPoint ->
+        observationsGeoPoints.forEachIndexed { i, geoPoint ->
             val marker = Marker(binding.tripMapView)
             marker.position = geoPoint
             marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
-            marker.icon = ResourcesCompat.getDrawable(resources, R.drawable.ic_baseline_remove_red_eye_24, null)
+            if (viewModel.observations.value!![i].observationType == Observation.ObservationType.DEAD) {
+                marker.icon = ResourcesCompat.getDrawable(resources, R.drawable.ic_baseline_report_problem_24, null)
+            } else {
+                marker.icon = ResourcesCompat.getDrawable(resources, R.drawable.ic_baseline_remove_red_eye_24, null)
+            }
             observationMarkers.add(marker)
         }
 
@@ -237,8 +242,6 @@ class TripFragment : Fragment() {
 
         binding.tripMapView.overlayManager.addAll(observationPolylines)
         binding.tripMapView.overlayManager.addAll(observationMarkers)
-
-
     }
 
     private fun drawGpsTrail() {

@@ -8,6 +8,9 @@
             name="observation"
             type="com.example.sheeptracker.database.entities.Observation" />
         <variable
+            name="observationTypeIcon"
+            type="android.graphics.drawable.Drawable" />
+        <variable
             name="clickListener"
             type="com.example.sheeptracker.ui.observations.ObservationListItemListener" />
     </data>
@@ -23,11 +26,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            tools:text="42"
-            app:textTime="@{observation.observationDate}"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toEndOf="@+id/imageView"
+            app:layout_constraintTop_toTopOf="parent"
+            app:textTime="@{observation.observationDate}"
+            tools:text="42" />
 
         <TextView
             android:id="@+id/textView12"
@@ -39,6 +42,16 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:src='@{observationTypeIcon}' />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

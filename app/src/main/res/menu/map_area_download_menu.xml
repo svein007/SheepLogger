@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/mi_download_map_area"
-        android:icon="@drawable/ic_baseline_cloud_download_24"
+        android:icon="@drawable/ic_baseline_get_app_24"
         android:title="Save"
         app:showAsAction="ifRoom" />
 </menu>

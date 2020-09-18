@@ -40,7 +40,7 @@ class ObservationsFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
 
-        val adapter = ObservationAdapter(ObservationListItemListener { observationId ->
+        val adapter = ObservationAdapter(application, ObservationListItemListener { observationId ->
             findNavController().navigate(
                 ObservationsFragmentDirections.actionObservationsFragmentToObservationDetailsFragment(observationId)
             )

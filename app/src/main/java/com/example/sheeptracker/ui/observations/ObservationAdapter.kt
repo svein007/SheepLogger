@@ -1,14 +1,21 @@
 package com.example.sheeptracker.ui.observations
 
+import android.app.Application
+import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.sheeptracker.R
 import com.example.sheeptracker.database.entities.Observation
 import com.example.sheeptracker.databinding.ObservationRvItemBinding
 
-class ObservationAdapter (val clickListener: ObservationListItemListener)
+class ObservationAdapter (
+    val application: Application,
+    val clickListener: ObservationListItemListener
+)
     : ListAdapter<Observation, ObservationAdapter.ViewHolder>(ObservationDiffCallback()) {
 
     class ViewHolder private constructor(val binding: ObservationRvItemBinding)
@@ -25,8 +32,10 @@ class ObservationAdapter (val clickListener: ObservationListItemListener)
 
         fun bind(
             item: Observation,
+            icon: Drawable,
             clickListener: ObservationListItemListener) {
             binding.observation = item
+            binding.observationTypeIcon = icon
             binding.clickListener = clickListener
             binding.executePendingBindings()
         }
@@ -34,7 +43,11 @@ class ObservationAdapter (val clickListener: ObservationListItemListener)
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)
-        holder.bind(item, clickListener)
+        val icon = when (item.observationType) {
+            Observation.ObservationType.COUNT -> ResourcesCompat.getDrawable(application.resources, R.drawable.ic_baseline_remove_red_eye_24, null)
+            Observation.ObservationType.DEAD -> ResourcesCompat.getDrawable(application.resources, R.drawable.ic_baseline_report_problem_24, null)
+        }
+        holder.bind(item, icon!!, clickListener)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
