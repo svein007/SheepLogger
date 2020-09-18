@@ -1,9 +1,13 @@
 package com.example.sheeptracker.database.entities
 
+import android.content.res.Resources
+import android.graphics.drawable.Drawable
+import androidx.core.content.res.ResourcesCompat
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import com.example.sheeptracker.R
 import java.util.*
 
 @Entity(tableName = "observation_table",
@@ -51,6 +55,20 @@ data class Observation(
 
     enum class ObservationType {
         COUNT, DEAD, INJURED;
+
+        fun getDrawable(resources: Resources): Drawable? {
+            return when (this) {
+                DEAD -> {
+                    ResourcesCompat.getDrawable(resources, R.drawable.ic_baseline_warning_red_24, null)
+                }
+                INJURED -> {
+                    ResourcesCompat.getDrawable(resources, R.drawable.ic_baseline_report_problem_24, null)
+                }
+                else -> {
+                    ResourcesCompat.getDrawable(resources, R.drawable.ic_baseline_remove_red_eye_24, null)
+                }
+            }
+        }
     }
 
 }

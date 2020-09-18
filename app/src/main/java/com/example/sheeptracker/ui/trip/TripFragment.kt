@@ -222,13 +222,7 @@ class TripFragment : Fragment() {
             val marker = Marker(binding.tripMapView)
             marker.position = geoPoint
             marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
-            if (viewModel.observations.value!![i].observationType == Observation.ObservationType.DEAD) {
-                marker.icon = ResourcesCompat.getDrawable(resources, R.drawable.ic_baseline_warning_red_24, null)
-            } else if (viewModel.observations.value!![i].observationType == Observation.ObservationType.INJURED) {
-                marker.icon = ResourcesCompat.getDrawable(resources, R.drawable.ic_baseline_report_problem_24, null)
-            } else {
-                marker.icon = ResourcesCompat.getDrawable(resources, R.drawable.ic_baseline_remove_red_eye_24, null)
-            }
+            marker.icon = viewModel.observations.value!![i].observationType.getDrawable(resources)
             observationMarkers.add(marker)
         }
 

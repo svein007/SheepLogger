@@ -65,9 +65,10 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@+id/editTextTextPersonName6"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/animalRegistrationIcon"
                 app:layout_constraintTop_toTopOf="@+id/editTextTextPersonName6"
-                tools:text="DEAD ANIMAL"/>
+                app:layout_constraintVertical_bias="0.761"
+                tools:text="DEAD ANIMAL" />
 
             <EditText
                 android:id="@+id/editTextTextPersonName6"
@@ -99,6 +100,18 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName6" />
+
+            <ImageView
+                android:id="@+id/animalRegistrationIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                app:layout_constraintBottom_toBottomOf="@+id/textView10"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/textView10"
+                app:layout_constraintVertical_bias="0.0"
+                tools:srcCompat="@drawable/ic_baseline_warning_red_24"/>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

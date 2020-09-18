@@ -64,6 +64,11 @@ class ObservationDetailsFragment : Fragment() {
 
         binding.counterRV.addItemDecoration(DividerItemDecoration(application, DividerItemDecoration.VERTICAL))
 
+        viewModel.observation.observe(viewLifecycleOwner) {
+            binding.animalRegistrationIcon.setImageDrawable(it.observationType.getDrawable(resources))
+        }
+
+
         return binding.root
     }
 
