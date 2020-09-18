@@ -29,6 +29,14 @@ class ObservationDetailsViewModel(
         it != null
     }
 
+    val observationTypeTitle = Transformations.map(observation) {
+        when (observation.value?.observationType) {
+            Observation.ObservationType.DEAD -> "DEAD ANIMAL"
+            Observation.ObservationType.INJURED -> "INJURED ANIMAL"
+            else -> "-"
+        }
+    }
+
     init {
         uiScope.launch {
             observation.value = getObservation(observationId)

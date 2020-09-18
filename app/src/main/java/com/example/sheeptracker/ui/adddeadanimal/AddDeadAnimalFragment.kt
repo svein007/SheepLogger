@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.sheeptracker.R
 import com.example.sheeptracker.database.AppDatabase
+import com.example.sheeptracker.database.entities.Observation
 import com.example.sheeptracker.database.entities.TripMapPoint
 import com.example.sheeptracker.databinding.AddDeadAnimalFragmentBinding
 import com.example.sheeptracker.map.MapAreaManager
@@ -50,12 +51,13 @@ class AddDeadAnimalFragment : Fragment() {
                 tripMapPointDate = Date(),
                 tripMapPointOwnerTripId = arguments.tripId
             ),
+            enumValues<Observation.ObservationType>()[arguments.obsType],
             application,
             appDao
         )
 
         viewModel = ViewModelProvider(
-            requireActivity(),
+            this,
             viewModelFactory)[AddDeadAnimalViewModel::class.java]
 
         binding.lifecycleOwner = viewLifecycleOwner

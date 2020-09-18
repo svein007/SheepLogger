@@ -50,7 +50,7 @@ data class Observation(
 ) {
 
     enum class ObservationType {
-        COUNT, DEAD;
+        COUNT, DEAD, INJURED;
     }
 
 }

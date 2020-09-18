@@ -45,7 +45,8 @@ class ObservationAdapter (
         val item = getItem(position)
         val icon = when (item.observationType) {
             Observation.ObservationType.COUNT -> ResourcesCompat.getDrawable(application.resources, R.drawable.ic_baseline_remove_red_eye_24, null)
-            Observation.ObservationType.DEAD -> ResourcesCompat.getDrawable(application.resources, R.drawable.ic_baseline_report_problem_24, null)
+            Observation.ObservationType.DEAD -> ResourcesCompat.getDrawable(application.resources, R.drawable.ic_baseline_warning_red_24, null)
+            Observation.ObservationType.INJURED -> ResourcesCompat.getDrawable(application.resources, R.drawable.ic_baseline_report_problem_24, null)
         }
         holder.bind(item, icon!!, clickListener)
     }

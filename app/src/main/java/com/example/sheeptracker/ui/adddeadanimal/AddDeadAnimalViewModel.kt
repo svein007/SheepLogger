@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteConstraintException
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import com.example.sheeptracker.database.AppDao
 import com.example.sheeptracker.database.entities.DeadAnimal
 import com.example.sheeptracker.database.entities.Observation
@@ -17,6 +18,7 @@ import java.util.*
 class AddDeadAnimalViewModel(
     private val tripId: Long,
     private val currentPosition: TripMapPoint,
+    private val observationType: Observation.ObservationType,
     application: Application,
     private val appDao: AppDao
 ) : AndroidViewModel(application) {
@@ -36,6 +38,14 @@ class AddDeadAnimalViewModel(
     val deadAnimal: LiveData<DeadAnimal>
         get() = _deadAnimal
 
+    val observationTypeTitle = Transformations.map(observation) {
+        when (observation.value!!.observationType) {
+            Observation.ObservationType.DEAD -> "DEAD ANIMAL"
+            Observation.ObservationType.INJURED -> "INJURED ANIMAL"
+            else -> "-"
+        }
+    }
+
     init {
         val newObservation = Observation(
             observationLat = 0.0,
@@ -44,7 +54,7 @@ class AddDeadAnimalViewModel(
             observationDate = observationDate,
             observationOwnerTripId = tripId,
             observationOwnerTripMapPointId = -1,
-            observationType = Observation.ObservationType.DEAD
+            observationType = observationType
         )
 
         _observation.value = newObservation

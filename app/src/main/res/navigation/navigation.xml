@@ -85,8 +85,8 @@
     <fragment
         android:id="@+id/addObservationFragment"
         android:name="com.example.sheeptracker.ui.addobservation.AddObservationFragment"
-        android:label="New Observation"
-        tools:layout="@layout/add_observation_fragment" >
+        android:label="Register Observation"
+        tools:layout="@layout/add_observation_fragment">
         <argument
             android:name="tripId"
             app:argType="long" />
@@ -132,8 +132,8 @@
     <fragment
         android:id="@+id/addDeadAnimalFragment"
         android:name="com.example.sheeptracker.ui.adddeadanimal.AddDeadAnimalFragment"
-        android:label="Register Dead Animal"
-        tools:layout="@layout/add_dead_animal_fragment" >
+        android:label="Register Animal Info"
+        tools:layout="@layout/add_dead_animal_fragment">
         <argument
             android:name="tripId"
             app:argType="long" />
@@ -143,6 +143,9 @@
         <argument
             android:name="obsLon"
             app:argType="string" />
+        <argument
+            android:name="obsType"
+            app:argType="integer" />
     </fragment>
 
 </navigation>
