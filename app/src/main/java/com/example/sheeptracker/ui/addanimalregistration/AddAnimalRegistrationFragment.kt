@@ -1,4 +1,4 @@
-package com.example.sheeptracker.ui.adddeadanimal
+package com.example.sheeptracker.ui.addanimalregistration
 
 import android.os.Bundle
 import android.util.Log
@@ -13,15 +13,15 @@ import com.example.sheeptracker.R
 import com.example.sheeptracker.database.AppDatabase
 import com.example.sheeptracker.database.entities.Observation
 import com.example.sheeptracker.database.entities.TripMapPoint
-import com.example.sheeptracker.databinding.AddDeadAnimalFragmentBinding
+import com.example.sheeptracker.databinding.AddAnimalRegistrationFragmentBinding
 import com.example.sheeptracker.map.MapAreaManager
 import java.util.*
 
-class AddDeadAnimalFragment : Fragment() {
+class AddAnimalRegistrationFragment : Fragment() {
 
-    private lateinit var viewModel: AddDeadAnimalViewModel
-    private lateinit var binding: AddDeadAnimalFragmentBinding
-    private lateinit var arguments: AddDeadAnimalFragmentArgs
+    private lateinit var registrationViewModel: AddAnimalRegistrationViewModel
+    private lateinit var binding: AddAnimalRegistrationFragmentBinding
+    private lateinit var arguments: AddAnimalRegistrationFragmentArgs
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,10 +29,10 @@ class AddDeadAnimalFragment : Fragment() {
     ): View? {
 
         binding = DataBindingUtil.inflate(
-            inflater, R.layout.add_dead_animal_fragment, container, false
+            inflater, R.layout.add_animal_registration_fragment, container, false
         )
 
-        arguments = AddDeadAnimalFragmentArgs.fromBundle(requireArguments())
+        arguments = AddAnimalRegistrationFragmentArgs.fromBundle(requireArguments())
 
         val currentPosition = MapAreaManager.getLastKnownLocation(
             requireContext(),
@@ -43,7 +43,7 @@ class AddDeadAnimalFragment : Fragment() {
         val application = requireNotNull(this.activity).application
 
         val appDao = AppDatabase.getInstance(application).appDatabaseDao
-        val viewModelFactory = AddDeadAnimalViewModelFactory(
+        val viewModelFactory = AddAnimalRegistrationViewModelFactory(
             arguments.tripId,
             TripMapPoint(
                 tripMapPointLat =  currentPosition!!.latitude,
@@ -56,12 +56,12 @@ class AddDeadAnimalFragment : Fragment() {
             appDao
         )
 
-        viewModel = ViewModelProvider(
+        registrationViewModel = ViewModelProvider(
             this,
-            viewModelFactory)[AddDeadAnimalViewModel::class.java]
+            viewModelFactory)[AddAnimalRegistrationViewModel::class.java]
 
         binding.lifecycleOwner = viewLifecycleOwner
-        binding.viewModel = viewModel
+        binding.viewModel = registrationViewModel
 
         binding.button.setOnClickListener {
             saveObservation()
@@ -76,7 +76,7 @@ class AddDeadAnimalFragment : Fragment() {
     }
 
     private fun saveObservation() {
-        viewModel.addObservation(
+        registrationViewModel.addObservation(
             lat = arguments.obsLat.toDouble(),
             lon = arguments.obsLon.toDouble(),
             onSuccess = { findNavController().popBackStack() },

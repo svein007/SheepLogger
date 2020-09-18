@@ -6,13 +6,13 @@
     <data>
         <variable
             name="viewModel"
-            type="com.example.sheeptracker.ui.adddeadanimal.AddDeadAnimalViewModel" />
+            type="com.example.sheeptracker.ui.addanimalregistration.AddAnimalRegistrationViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="com.example.sheeptracker.ui.adddeadanimal.AddDeadAnimalFragment">
+        tools:context="com.example.sheeptracker.ui.addanimalregistration.AddAnimalRegistrationFragment">
 
         <TextView
             android:id="@+id/textView5"
@@ -46,7 +46,7 @@
             android:ems="10"
             android:hint="Animal Identification Number"
             android:inputType="numberSigned"
-            android:text="@={viewModel.deadAnimal.deadAnimalSheepNumber}"
+            android:text="@={viewModel.animalRegistration.deadAnimalSheepNumber}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView5" />
@@ -61,7 +61,7 @@
             android:ems="10"
             android:hint="Notes"
             android:inputType="textMultiLine|textPersonName|textCapSentences"
-            android:text="@={viewModel.deadAnimal.deadAnimalNote}"
+            android:text="@={viewModel.animalRegistration.deadAnimalNote}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"

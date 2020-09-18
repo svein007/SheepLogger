@@ -112,12 +112,12 @@ interface AppDao {
     /** DeadAnimal **/
 
     @Insert
-    fun insert(deadAnimal: DeadAnimal)
+    fun insert(animalRegistration: AnimalRegistration)
 
-    @Query("SELECT * FROM dead_animal_table WHERE dead_animal_owner_observation_id = :observationId")
-    fun getDeadAnimal(observationId: Long): LiveData<DeadAnimal>
+    @Query("SELECT * FROM animal_registration_table WHERE animal_registration_owner_observation_id = :observationId")
+    fun getDeadAnimal(observationId: Long): LiveData<AnimalRegistration>
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    fun update(deadAnimal: DeadAnimal)
+    fun update(animalRegistration: AnimalRegistration)
 
 }

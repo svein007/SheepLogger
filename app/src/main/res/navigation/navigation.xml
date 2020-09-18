@@ -131,9 +131,9 @@
         tools:layout="@layout/swiper_fragment"/>
     <fragment
         android:id="@+id/addDeadAnimalFragment"
-        android:name="com.example.sheeptracker.ui.adddeadanimal.AddDeadAnimalFragment"
+        android:name="com.example.sheeptracker.ui.addanimalregistration.AddAnimalRegistrationFragment"
         android:label="Register Animal Info"
-        tools:layout="@layout/add_dead_animal_fragment">
+        tools:layout="@layout/add_animal_registration_fragment">
         <argument
             android:name="tripId"
             app:argType="long" />

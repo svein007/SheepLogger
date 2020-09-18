@@ -1,4 +1,4 @@
-package com.example.sheeptracker.ui.adddeadanimal
+package com.example.sheeptracker.ui.addanimalregistration
 
 import android.app.Application
 import android.database.sqlite.SQLiteConstraintException
@@ -7,7 +7,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.example.sheeptracker.database.AppDao
-import com.example.sheeptracker.database.entities.DeadAnimal
+import com.example.sheeptracker.database.entities.AnimalRegistration
 import com.example.sheeptracker.database.entities.Observation
 import com.example.sheeptracker.database.entities.Trip
 import com.example.sheeptracker.database.entities.TripMapPoint
@@ -15,7 +15,7 @@ import com.example.sheeptracker.utils.getObservedFromPoint
 import kotlinx.coroutines.*
 import java.util.*
 
-class AddDeadAnimalViewModel(
+class AddAnimalRegistrationViewModel(
     private val tripId: Long,
     private val currentPosition: TripMapPoint,
     private val observationType: Observation.ObservationType,
@@ -34,8 +34,8 @@ class AddDeadAnimalViewModel(
     val observation: LiveData<Observation>
         get() = _observation
 
-    private val _deadAnimal = MutableLiveData<DeadAnimal>()
-    val deadAnimal: LiveData<DeadAnimal>
+    private val _deadAnimal = MutableLiveData<AnimalRegistration>()
+    val animalRegistration: LiveData<AnimalRegistration>
         get() = _deadAnimal
 
     val observationTypeTitle = Transformations.map(observation) {
@@ -59,7 +59,7 @@ class AddDeadAnimalViewModel(
 
         _observation.value = newObservation
 
-        val newDeadAnimal = DeadAnimal(
+        val newDeadAnimal = AnimalRegistration(
             deadAnimalOwnerObservationId = -1
         )
         _deadAnimal.value = newDeadAnimal
@@ -78,9 +78,9 @@ class AddDeadAnimalViewModel(
 
                 val obsId = observation.value?.let { insert(it) }
 
-                if (obsId != null && deadAnimal.value != null) {
+                if (obsId != null && animalRegistration.value != null) {
                     _deadAnimal.value!!.deadAnimalOwnerObservationId = obsId
-                    insert(deadAnimal.value!!)
+                    insert(animalRegistration.value!!)
                 }
 
                 onSuccess()
@@ -98,9 +98,9 @@ class AddDeadAnimalViewModel(
         }
     }
 
-    private suspend fun insert(deadAnimal: DeadAnimal) {
+    private suspend fun insert(animalRegistration: AnimalRegistration) {
         return withContext(Dispatchers.IO) {
-            appDao.insert(deadAnimal)
+            appDao.insert(animalRegistration)
         }
     }
 

@@ -1,4 +1,4 @@
-package com.example.sheeptracker.ui.adddeadanimal
+package com.example.sheeptracker.ui.addanimalregistration
 
 import android.app.Application
 import androidx.lifecycle.ViewModel
@@ -7,7 +7,7 @@ import com.example.sheeptracker.database.AppDao
 import com.example.sheeptracker.database.entities.Observation
 import com.example.sheeptracker.database.entities.TripMapPoint
 
-class AddDeadAnimalViewModelFactory(
+class AddAnimalRegistrationViewModelFactory(
     private val tripId: Long,
     private val currentPosition: TripMapPoint,
     private val observationType: Observation.ObservationType,
@@ -18,8 +18,8 @@ class AddDeadAnimalViewModelFactory(
 
     @Suppress("unchecked_cast")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(AddDeadAnimalViewModel::class.java)) {
-            return AddDeadAnimalViewModel(tripId, currentPosition, observationType, application, appDao) as T
+        if (modelClass.isAssignableFrom(AddAnimalRegistrationViewModel::class.java)) {
+            return AddAnimalRegistrationViewModel(tripId, currentPosition, observationType, application, appDao) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

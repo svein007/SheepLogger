@@ -4,19 +4,19 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "dead_animal_table")
-data class DeadAnimal(
+@Entity(tableName = "animal_registration_table")
+data class AnimalRegistration(
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "dead_animal_id")
+    @ColumnInfo(name = "animal_registration_id")
     var deadAnimalId: Long = 0L,
 
-    @ColumnInfo(name = "dead_animal_sheep_number")
+    @ColumnInfo(name = "animal_registration_sheep_number")
     var deadAnimalSheepNumber: String = "",
 
-    @ColumnInfo(name = "dead_animal_note")
+    @ColumnInfo(name = "animal_registration_note")
     var deadAnimalNote: String = "",
 
-    @ColumnInfo(name = "dead_animal_owner_observation_id")
+    @ColumnInfo(name = "animal_registration_owner_observation_id")
     var deadAnimalOwnerObservationId: Long
 
 ) {

@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.example.sheeptracker.database.AppDao
-import com.example.sheeptracker.database.entities.DeadAnimal
+import com.example.sheeptracker.database.entities.AnimalRegistration
 import com.example.sheeptracker.database.entities.Observation
 import kotlinx.coroutines.*
 
@@ -79,9 +79,9 @@ class ObservationDetailsViewModel(
         }
     }
 
-    private suspend fun updateDeadAnimal(deadAnimal: DeadAnimal) {
+    private suspend fun updateDeadAnimal(animalRegistration: AnimalRegistration) {
         withContext(Dispatchers.IO) {
-            appDao.update(deadAnimal)
+            appDao.update(animalRegistration)
         }
     }
 
