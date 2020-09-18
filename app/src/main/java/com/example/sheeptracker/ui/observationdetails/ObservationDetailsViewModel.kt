@@ -1,8 +1,10 @@
 package com.example.sheeptracker.ui.observationdetails
 
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.example.sheeptracker.database.AppDao
+import com.example.sheeptracker.database.entities.DeadAnimal
 import com.example.sheeptracker.database.entities.Observation
 import kotlinx.coroutines.*
 
@@ -20,6 +22,12 @@ class ObservationDetailsViewModel(
     val counters = appDao.getCountersLD(observationId)
 
     val observationNote = MutableLiveData<String>()
+
+    val deadAnimal = appDao.getDeadAnimal(observationId)
+
+    val showDeadAnimal = Transformations.map(deadAnimal) {
+        it != null
+    }
 
     init {
         uiScope.launch {
@@ -40,6 +48,9 @@ class ObservationDetailsViewModel(
 
                 updateObservation(observation.value!!)
                 updateCounters()
+                deadAnimal.value?.let {
+                    updateDeadAnimal(it)
+                }
             }
         }
     }
@@ -57,6 +68,12 @@ class ObservationDetailsViewModel(
             for (counter in counters.value!!) {
                 appDao.update(counter)
             }
+        }
+    }
+
+    private suspend fun updateDeadAnimal(deadAnimal: DeadAnimal) {
+        withContext(Dispatchers.IO) {
+            appDao.update(deadAnimal)
         }
     }
 

@@ -2,6 +2,7 @@ package com.example.sheeptracker.database
 
 import androidx.room.TypeConverter
 import com.example.sheeptracker.database.entities.Counter
+import com.example.sheeptracker.database.entities.Observation
 import org.osmdroid.util.BoundingBox
 import java.util.*
 
@@ -36,6 +37,12 @@ class Converters {
 
     @TypeConverter
     fun fromCountType(value: Counter.CountType) = value.ordinal
+
+    @TypeConverter
+    fun toObservationType(value: Int) = enumValues<Observation.ObservationType>()[value]
+
+    @TypeConverter
+    fun fromObservationType(value: Observation.ObservationType) = value.ordinal
 
     @TypeConverter
     fun toDate(value: Long?): Date? {

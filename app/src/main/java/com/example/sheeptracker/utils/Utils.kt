@@ -1,18 +1,28 @@
 package com.example.sheeptracker.utils
 
-import java.text.SimpleDateFormat
-import java.util.*
+import com.example.sheeptracker.database.AppDao
+import com.example.sheeptracker.database.entities.TripMapPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import org.osmdroid.util.GeoPoint
 
-val formatter = SimpleDateFormat("dd/MM/yyyy")
+/** Gets observation-position to be associated with the observation **/
+suspend fun getObservedFromPoint(appDao: AppDao, tripId: Long, currentPosition: TripMapPoint): TripMapPoint {
+    return withContext(Dispatchers.IO) {
+        val currentLastPoint = appDao.getTripMapPointsForTrip(tripId).maxByOrNull { point -> point.tripMapPointId }
 
-fun getToday(): Date {
-    return formatter.parse(formatter.format(Date()))!!
-}
+        var currentToLastDistance = -1.0
 
-fun dateToFormattedString(date: Date): String {
-    return formatter.format(date)
-}
+        if (currentLastPoint != null)
+            currentToLastDistance = GeoPoint(currentLastPoint.tripMapPointLat, currentLastPoint.tripMapPointLon).distanceToAsDouble(
+                GeoPoint(currentPosition.tripMapPointLat, currentPosition.tripMapPointLon)
+            )
 
-fun formattedStringToDate(formattedString: String): Date {
-    return formatter.parse(formattedString)!!
+        if (currentToLastDistance > 5.0 || currentLastPoint == null) {
+            val id = appDao.insert(currentPosition)
+            return@withContext appDao.getTripMapPoint(id)!!
+        }
+
+        return@withContext currentLastPoint
+    }
 }

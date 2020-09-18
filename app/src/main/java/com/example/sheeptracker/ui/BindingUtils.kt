@@ -40,3 +40,8 @@ fun TextView.setTextDateTimeForDate(date: Date) {
 fun View.setBoolVisibility(visible: Boolean) {
     visibility = if (visible) View.VISIBLE else View.INVISIBLE
 }
+
+@BindingAdapter("boolVisibilityGone")
+fun View.setBoolVisibilityGone(visible: Boolean) {
+    visibility = if (visible) View.VISIBLE else View.GONE
+}

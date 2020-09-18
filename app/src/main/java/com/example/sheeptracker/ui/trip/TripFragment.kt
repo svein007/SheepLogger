@@ -1,5 +1,6 @@
 package com.example.sheeptracker.ui.trip
 
+import android.app.AlertDialog
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
@@ -45,14 +46,9 @@ class TripFragment : Fragment() {
             return false
         }
 
-        override fun longPressHelper(p: GeoPoint?): Boolean {
-            findNavController().navigate(
-                TripFragmentDirections.actionTripFragmentToAddObservationFragment(
-                    arguments.tripId,
-                    "${p?.latitude}",
-                    "${p?.longitude}"
-                )
-            )
+        override fun longPressHelper(geoPoint: GeoPoint?): Boolean {
+            showNewObservationDialog(geoPoint)
+
             return true
         }
 
@@ -321,6 +317,37 @@ class TripFragment : Fragment() {
     private fun stopLocationService() {
         LocationService.stopService(requireContext())
         viewModel.isTrackingGPS.value = false
+    }
+
+    private fun showNewObservationDialog(geoPoint: GeoPoint?) {
+        val observationTypeAlertDialog = activity?.let {
+            val builder = AlertDialog.Builder(it)
+            builder.apply {
+                setTitle("Select Observation Type")
+                setItems(arrayOf("Animal Count", "Dead Animal")){ dialogInterface, index ->
+                    if (index == 0) {
+                        findNavController().navigate(
+                            TripFragmentDirections.actionTripFragmentToAddObservationFragment(
+                                arguments.tripId,
+                                "${geoPoint?.latitude}",
+                                "${geoPoint?.longitude}"
+                            )
+                        )
+                    } else if (index == 1) {
+                        findNavController().navigate(
+                            TripFragmentDirections.actionTripFragmentToAddDeadAnimalFragment(
+                                arguments.tripId,
+                                "${geoPoint?.latitude}",
+                                "${geoPoint?.longitude}"
+                            )
+                        )
+                    }
+                }
+            }
+            builder.create()
+        }
+
+        observationTypeAlertDialog?.show()
     }
 
 }

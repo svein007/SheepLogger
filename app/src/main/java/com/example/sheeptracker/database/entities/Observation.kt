@@ -38,6 +38,9 @@ data class Observation(
     @ColumnInfo(name = "observation_date_time")
     var observationDate: Date,
 
+    @ColumnInfo(name = "observation_type")
+    val observationType: ObservationType,
+
     @ColumnInfo(name = "observation_owner_trip_map_point_id")
     var observationOwnerTripMapPointId: Long,
 
@@ -45,5 +48,9 @@ data class Observation(
     var observationOwnerTripId: Long
 
 ) {
+
+    enum class ObservationType {
+        COUNT, DEAD;
+    }
 
 }

@@ -40,6 +40,9 @@
         <action
             android:id="@+id/action_tripFragment_to_observationsFragment"
             app:destination="@id/observationsFragment" />
+        <action
+            android:id="@+id/action_tripFragment_to_addDeadAnimalFragment"
+            app:destination="@id/addDeadAnimalFragment" />
     </fragment>
     <fragment
         android:id="@+id/startFragment"
@@ -126,5 +129,20 @@
         android:name="com.example.sheeptracker.ui.swiper.SwiperFragment"
         android:label="SwiperFragment"
         tools:layout="@layout/swiper_fragment"/>
+    <fragment
+        android:id="@+id/addDeadAnimalFragment"
+        android:name="com.example.sheeptracker.ui.adddeadanimal.AddDeadAnimalFragment"
+        android:label="Register Dead Animal"
+        tools:layout="@layout/add_dead_animal_fragment" >
+        <argument
+            android:name="tripId"
+            app:argType="long" />
+        <argument
+            android:name="obsLat"
+            app:argType="string" />
+        <argument
+            android:name="obsLon"
+            app:argType="string" />
+    </fragment>
 
 </navigation>

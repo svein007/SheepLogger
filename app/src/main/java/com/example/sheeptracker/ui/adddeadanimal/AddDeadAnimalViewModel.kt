@@ -1,22 +1,25 @@
-package com.example.sheeptracker.ui.addobservation
+package com.example.sheeptracker.ui.adddeadanimal
 
 import android.app.Application
 import android.database.sqlite.SQLiteConstraintException
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import com.example.sheeptracker.database.AppDao
-import com.example.sheeptracker.database.entities.*
-import com.example.sheeptracker.utils.*
+import com.example.sheeptracker.database.entities.DeadAnimal
+import com.example.sheeptracker.database.entities.Observation
+import com.example.sheeptracker.database.entities.Trip
+import com.example.sheeptracker.database.entities.TripMapPoint
+import com.example.sheeptracker.utils.getObservedFromPoint
 import kotlinx.coroutines.*
 import java.util.*
 
-class AddObservationViewModel(
+class AddDeadAnimalViewModel(
     private val tripId: Long,
     private val currentPosition: TripMapPoint,
     application: Application,
-    private val appDao: AppDao) : AndroidViewModel(application) {
+    private val appDao: AppDao
+) : AndroidViewModel(application) {
 
     private var viewModelJob = Job()
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
@@ -29,13 +32,9 @@ class AddObservationViewModel(
     val observation: LiveData<Observation>
         get() = _observation
 
-    private val _counters = MutableLiveData<List<Counter>>()
-    val counters: LiveData<List<Counter>>
-        get() =_counters
-
-    val expectedSheepCount = Transformations.map(counters) {
-        it.sumBy { counter -> counter.sheepChildCount() }
-    }
+    private val _deadAnimal = MutableLiveData<DeadAnimal>()
+    val deadAnimal: LiveData<DeadAnimal>
+        get() = _deadAnimal
 
     init {
         val newObservation = Observation(
@@ -45,25 +44,16 @@ class AddObservationViewModel(
             observationDate = observationDate,
             observationOwnerTripId = tripId,
             observationOwnerTripMapPointId = -1,
-            observationType = Observation.ObservationType.COUNT
+            observationType = Observation.ObservationType.DEAD
         )
 
         _observation.value = newObservation
 
-        val newCounters = mutableListOf<Counter>()
-        for (countType in Counter.CountType.values()) {
-            val counter = Counter(
-                counterOwnerObservationId = -1,
-                counterType = countType
-            )
-            newCounters.add(counter)
-        }
-
-        _counters.value = newCounters
-
+        val newDeadAnimal = DeadAnimal(
+            deadAnimalOwnerObservationId = -1
+        )
+        _deadAnimal.value = newDeadAnimal
     }
-
-    /** Methods **/
 
     fun addObservation(lat: Double, lon: Double, onSuccess: () -> Unit, onFail: () -> Unit) {
         uiScope.launch {
@@ -78,11 +68,9 @@ class AddObservationViewModel(
 
                 val obsId = observation.value?.let { insert(it) }
 
-                if (obsId != null && counters.value != null) {
-                    for (counter in counters.value!!) {
-                        counter.counterOwnerObservationId = obsId
-                        insert(counter)
-                    }
+                if (obsId != null && deadAnimal.value != null) {
+                    _deadAnimal.value!!.deadAnimalOwnerObservationId = obsId
+                    insert(deadAnimal.value!!)
                 }
 
                 onSuccess()
@@ -90,13 +78,6 @@ class AddObservationViewModel(
                 onFail()
             }
         }
-    }
-
-    /* Forces the counters LiveData to propagate to Transformations
-       when fields of Counters in the list have updated values.
-     */
-    fun forceCountersLiveDateUpdateHack() {
-        _counters.value = _counters.value
     }
 
     /** Helpers **/
@@ -107,9 +88,9 @@ class AddObservationViewModel(
         }
     }
 
-    private suspend fun insert(counter: Counter): Long {
+    private suspend fun insert(deadAnimal: DeadAnimal) {
         return withContext(Dispatchers.IO) {
-            appDao.insert(counter)
+            appDao.insert(deadAnimal)
         }
     }
 

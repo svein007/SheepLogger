@@ -108,4 +108,16 @@ interface AppDao {
     @Update(onConflict = OnConflictStrategy.REPLACE)
     fun update(counter: Counter)
 
+
+    /** DeadAnimal **/
+
+    @Insert
+    fun insert(deadAnimal: DeadAnimal)
+
+    @Query("SELECT * FROM dead_animal_table WHERE dead_animal_owner_observation_id = :observationId")
+    fun getDeadAnimal(observationId: Long): LiveData<DeadAnimal>
+
+    @Update(onConflict = OnConflictStrategy.REPLACE)
+    fun update(deadAnimal: DeadAnimal)
+
 }
