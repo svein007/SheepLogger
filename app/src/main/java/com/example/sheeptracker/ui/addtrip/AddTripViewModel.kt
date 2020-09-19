@@ -28,7 +28,7 @@ class AddTripViewModel(
 
     /** ViewModel methods **/
 
-    fun addTrip(onSuccess: () -> Unit, onFail: () -> Unit) {
+    fun addTrip(onSuccess: (tripId: Long) -> Unit, onFail: () -> Unit) {
         uiScope.launch {
             tripName.value?.let {
                 if (it.isBlank())
@@ -44,9 +44,9 @@ class AddTripViewModel(
                             tripOwnerMapAreaId = mapAreaIdLong
                         )
 
-                        insert(trip)
+                        val tripId = insert(trip)
 
-                        onSuccess()
+                        onSuccess(tripId)
                     } catch (e: SQLiteConstraintException) {
                         onFail()
                     }

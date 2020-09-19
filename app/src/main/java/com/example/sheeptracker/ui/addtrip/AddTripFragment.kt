@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.sheeptracker.R
 import com.example.sheeptracker.database.AppDatabase
 import com.example.sheeptracker.databinding.AddTripFragmentBinding
+import com.example.sheeptracker.ui.trips.TripsFragmentDirections
 
 class AddTripFragment : Fragment() {
 
@@ -78,7 +79,13 @@ class AddTripFragment : Fragment() {
 
     private fun addTrip() {
         viewModel.addTrip(
-            onSuccess = { findNavController().popBackStack() },
+            onSuccess = { tripId ->
+                val mapAreaId = viewModel.mapAreaId.value!!.toLong()
+                findNavController().popBackStack()
+                findNavController().navigate(
+                    TripsFragmentDirections.actionTripsFragmentToTripFragment(tripId, mapAreaId)
+                )
+            },
             onFail = { Toast.makeText(requireContext(), "Invalid MapAreaId", Toast.LENGTH_LONG).show() }
         )
     }
