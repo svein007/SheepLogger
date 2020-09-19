@@ -12,10 +12,16 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.sheeptracker.R
+import com.example.sheeptracker.database.AppDao
 import com.example.sheeptracker.database.AppDatabase
+import com.example.sheeptracker.database.entities.Counter
 import com.example.sheeptracker.database.entities.Observation
 import com.example.sheeptracker.databinding.TripFragmentBinding
 import com.example.sheeptracker.service.LocationService
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.osmdroid.events.*
 import org.osmdroid.tileprovider.modules.OfflineTileProvider
 import org.osmdroid.tileprovider.tilesource.FileBasedTileSource
@@ -29,6 +35,7 @@ import org.osmdroid.views.overlay.Polyline
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
 import java.lang.Exception
+import java.text.SimpleDateFormat
 import kotlin.collections.ArrayList
 
 class TripFragment : Fragment() {
@@ -36,6 +43,7 @@ class TripFragment : Fragment() {
     private lateinit var viewModel: TripViewModel
     private lateinit var binding: TripFragmentBinding
     private lateinit var arguments: TripFragmentArgs
+    private lateinit var appDao: AppDao
 
     private val gpsTrail = Polyline() // GPS trail of current trip
     private val gpsMarkers = ArrayList<Marker>() // To be able to delete old markers
@@ -69,7 +77,7 @@ class TripFragment : Fragment() {
 
         val application = requireNotNull(this.activity).application
 
-        val appDao = AppDatabase.getInstance(application).appDatabaseDao
+        appDao = AppDatabase.getInstance(application).appDatabaseDao
         val viewModelFactory = TripViewModelFactory(
             arguments.tripId,
             arguments.mapAreaId,
@@ -220,9 +228,23 @@ class TripFragment : Fragment() {
 
         observationsGeoPoints.forEachIndexed { i, geoPoint ->
             val marker = Marker(binding.tripMapView)
+
             marker.position = geoPoint
             marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
-            marker.icon = viewModel.observations.value!![i].observationType.getDrawable(resources)
+
+            val observation = viewModel.observations.value!![i]
+            marker.icon = observation.observationType.getDrawable(resources)
+
+            CoroutineScope(Dispatchers.Main).launch {
+                val observationShortDescription = when (observation.observationType) {
+                    Observation.ObservationType.COUNT -> getCountersDesc(observation)
+                    Observation.ObservationType.DEAD -> "DEAD #${getAnimalRegisterNumber(observation)}"
+                    Observation.ObservationType.INJURED -> "INJURED #${getAnimalRegisterNumber(observation)}"
+                }
+                marker.title = SimpleDateFormat("dd/MM/yyyy HH:mm").format(observation.observationDate) +
+                        "\n${observationShortDescription}"
+            }
+
             observationMarkers.add(marker)
         }
 
@@ -361,6 +383,19 @@ class TripFragment : Fragment() {
         }
 
         observationTypeAlertDialog?.show()
+    }
+
+    private suspend fun getCountersDesc(observation: Observation): String {
+        return withContext(Dispatchers.IO) {
+            "${appDao.getCounter(observation.observationId, Counter.CountType.SHEEP).counterValue} sheep" +
+                "\n${appDao.getCounter(observation.observationId, Counter.CountType.LAMB).counterValue} lamb"
+        }
+    }
+
+    private suspend fun getAnimalRegisterNumber(observation: Observation): String {
+        return withContext(Dispatchers.IO) {
+            appDao.getAnimalRegistration(observation.observationId).deadAnimalSheepNumber
+        }
     }
 
 }

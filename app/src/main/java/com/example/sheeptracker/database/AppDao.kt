@@ -105,6 +105,9 @@ interface AppDao {
     @Query("SELECT * FROM counter_table WHERE counter_owner_observation_id = :observationId")
     fun getCountersLD(observationId: Long): LiveData<List<Counter>>
 
+    @Query("SELECT * FROM counter_table WHERE counter_owner_observation_id = :observationId AND counter_type = :countType")
+    fun getCounter(observationId: Long, countType: Counter.CountType): Counter
+
     @Update(onConflict = OnConflictStrategy.REPLACE)
     fun update(counter: Counter)
 
@@ -116,6 +119,9 @@ interface AppDao {
 
     @Query("SELECT * FROM animal_registration_table WHERE animal_registration_owner_observation_id = :observationId")
     fun getDeadAnimal(observationId: Long): LiveData<AnimalRegistration>
+
+    @Query("SELECT * FROM animal_registration_table WHERE animal_registration_owner_observation_id = :observationId")
+    fun getAnimalRegistration(observationId: Long): AnimalRegistration
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
     fun update(animalRegistration: AnimalRegistration)
