@@ -67,6 +67,10 @@ class AddAnimalRegistrationFragment : Fragment() {
             saveObservation()
         }
 
+        registrationViewModel.observation.observe(viewLifecycleOwner){
+            binding.animalRegistrationIcon.setImageDrawable(it.observationType.getDrawable(resources))
+        }
+
         return binding.root
     }
 

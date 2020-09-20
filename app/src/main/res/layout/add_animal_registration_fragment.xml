@@ -23,7 +23,7 @@
             android:text="Animal Id"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView19" />
+            app:layout_constraintTop_toBottomOf="@+id/animalRegistrationIcon" />
 
         <TextView
             android:id="@+id/textView6"
@@ -83,13 +83,24 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:text="@{viewModel.observationTypeTitle}"
             android:textAllCaps="true"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textStyle="bold"
-            android:text="@{viewModel.observationTypeTitle}"
+            app:layout_constraintBottom_toBottomOf="@+id/animalRegistrationIcon"
+            app:layout_constraintStart_toEndOf="@+id/animalRegistrationIcon"
+            app:layout_constraintTop_toTopOf="@+id/animalRegistrationIcon"
+            tools:text="DEAD ANIMAL" />
+
+        <ImageView
+            android:id="@+id/animalRegistrationIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            tools:src="@drawable/ic_baseline_warning_red_24"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="DEAD ANIMAL"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
