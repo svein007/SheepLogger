@@ -1,16 +1,22 @@
 package com.example.sheeptracker.ui.observationdetails
 
+import android.app.Application
+import android.net.Uri
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import androidx.lifecycle.ViewModel
 import com.example.sheeptracker.database.AppDao
 import com.example.sheeptracker.database.entities.AnimalRegistration
+import com.example.sheeptracker.database.entities.ImageResource
 import com.example.sheeptracker.database.entities.Observation
+import com.example.sheeptracker.utils.getDrawableFromUri
+import com.example.sheeptracker.utils.storeDrawableWithName
 import kotlinx.coroutines.*
 
 class ObservationDetailsViewModel(
-    observationId: Long,
-    private val appDao: AppDao) : ViewModel() {
+    private val observationId: Long,
+    app: Application,
+    private val appDao: AppDao) : AndroidViewModel(app) {
 
     /** Private fields **/
 
@@ -24,6 +30,8 @@ class ObservationDetailsViewModel(
     val observationNote = MutableLiveData<String>()
 
     val deadAnimal = appDao.getDeadAnimal(observationId)
+
+    val imageResources = appDao.getImageResourcesLD(observationId)
 
     val showDeadAnimal = Transformations.map(deadAnimal) {
         it != null
@@ -63,6 +71,12 @@ class ObservationDetailsViewModel(
         }
     }
 
+    fun addImageResource(imgUri: String) {
+        uiScope.launch {
+            addImgResToDB(imgUri)
+        }
+    }
+
     /** Helpers **/
 
     private suspend fun updateObservation(observation: Observation) {
@@ -88,6 +102,23 @@ class ObservationDetailsViewModel(
     private suspend fun getObservation(id: Long): Observation? {
         return withContext(Dispatchers.IO) {
             appDao.getObservation(id)
+        }
+    }
+
+    /**
+     * Creates and stores a copy of the given file, and creates a ImageResource entry in DB.
+     */
+    private suspend fun addImgResToDB(imgUri: String) {
+        withContext(Dispatchers.IO) {
+            val drawable = getDrawableFromUri(getApplication<Application>().applicationContext, Uri.parse(imgUri))
+            val newImgRes = ImageResource(imageResourceObservationId = observationId)
+            val newId = appDao.insert(newImgRes)
+            val uriString = storeDrawableWithName(getApplication<Application>().applicationContext, drawable!!, "img_${observationId}_$newId")
+            val imgRes = appDao.getImageResource(newId)
+
+            imgRes.imageResourceUri = uriString
+
+            appDao.update(imgRes)
         }
     }
 

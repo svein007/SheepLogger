@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="index"
+            type="String" />
+        <variable
+            name="imageResource"
+            type="com.example.sheeptracker.database.entities.ImageResource" />
+        <variable
+            name="imageDrawable"
+            type="android.graphics.drawable.Drawable" />
+        <variable
+            name="clickListener"
+            type="com.example.sheeptracker.ui.observationdetails.ImgResourceListItemListener"/>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="@{() -> clickListener.onClick(imageResource)}"
+        android:padding="8dp">
+
+        <ImageView
+            android:id="@+id/imgResImageView"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@{imageDrawable}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/imgResNameTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:text="@{index}"
+            android:textAlignment="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/imgResImageView"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Bilde 1" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

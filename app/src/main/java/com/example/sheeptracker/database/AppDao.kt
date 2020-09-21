@@ -115,7 +115,7 @@ interface AppDao {
     /** DeadAnimal **/
 
     @Insert
-    fun insert(animalRegistration: AnimalRegistration)
+    fun insert(animalRegistration: AnimalRegistration): Long
 
     @Query("SELECT * FROM animal_registration_table WHERE animal_registration_owner_observation_id = :observationId")
     fun getDeadAnimal(observationId: Long): LiveData<AnimalRegistration>
@@ -125,5 +125,24 @@ interface AppDao {
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
     fun update(animalRegistration: AnimalRegistration)
+
+    @Query("SELECT animal_registration_id FROM animal_registration_table WHERE animal_registration_owner_observation_id = :observationId")
+    fun getAnimalRegistrationId(observationId: Long): Long
+
+
+    /** ImageResource **/
+
+    @Insert
+    fun insert(imageResource: ImageResource): Long
+
+    @Query("SELECT * FROM image_resource_table WHERE image_resource_observation_id = :observationId")
+    fun getImageResourcesLD(observationId: Long): LiveData<List<ImageResource>>
+
+    @Query("SELECT * FROM image_resource_table WHERE image_resource_id = :key")
+    fun getImageResource(key: Long): ImageResource
+
+    @Update(onConflict = OnConflictStrategy.REPLACE)
+    fun update(imageResource: ImageResource)
+
 
 }
