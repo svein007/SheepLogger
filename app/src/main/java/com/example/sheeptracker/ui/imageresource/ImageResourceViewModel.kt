@@ -9,6 +9,7 @@ import com.example.sheeptracker.database.AppDao
 import com.example.sheeptracker.utils.deleteFile
 import com.example.sheeptracker.utils.getDrawableFromUri
 import kotlinx.coroutines.*
+import java.lang.Exception
 
 class ImageResourceViewModel(
     application: Application,
@@ -39,7 +40,9 @@ class ImageResourceViewModel(
     private suspend fun deleteImgRes() {
         withContext(Dispatchers.IO) {
             Uri.parse(imageUri)?.let {
-                deleteFile(it)
+                try {
+                    deleteFile(it)
+                } catch (e: Exception) {}
             }
             appDao.deleteImageResource(imageResourceId)
         }
