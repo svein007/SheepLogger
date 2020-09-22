@@ -74,8 +74,10 @@ class ObservationDetailsFragment : Fragment() {
         }
 
         val imagesAdapter = ImageResourceAdapter(
-            ImgResourceListItemListener {
-                Toast.makeText(requireContext(), "HEY: ${it}", Toast.LENGTH_SHORT).show()
+            ImgResourceListItemListener { imgResId: Long, imgResUri: String ->
+                findNavController().navigate(
+                    ObservationDetailsFragmentDirections.actionObservationDetailsFragmentToImageResourceFragment(imgResId, imgResUri)
+                )
             }
         )
 

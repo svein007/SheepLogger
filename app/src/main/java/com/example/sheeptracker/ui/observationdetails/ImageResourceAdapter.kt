@@ -56,6 +56,6 @@ class ImageResourceDiffCallback : DiffUtil.ItemCallback<ImageResource>() {
     }
 }
 
-class ImgResourceListItemListener(val clickListener: (imageResourceId: Long) -> Unit) {
-    fun onClick(imageResource: ImageResource) = clickListener(imageResource.imageResourceId)
+class ImgResourceListItemListener(val clickListener: (imageResourceId: Long, imgUri: String) -> Unit) {
+    fun onClick(imageResource: ImageResource) = clickListener(imageResource.imageResourceId, imageResource.imageResourceUri)
 }
