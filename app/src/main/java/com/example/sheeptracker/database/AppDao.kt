@@ -144,5 +144,8 @@ interface AppDao {
     @Update(onConflict = OnConflictStrategy.REPLACE)
     fun update(imageResource: ImageResource)
 
+    @Query("DELETE FROM image_resource_table WHERE image_resource_id = :key")
+    fun deleteImageResource(key: Long)
+
 
 }

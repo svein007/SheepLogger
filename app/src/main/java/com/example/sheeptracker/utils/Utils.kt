@@ -6,6 +6,7 @@ import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.net.Uri
+import androidx.core.net.toFile
 import com.example.sheeptracker.database.AppDao
 import com.example.sheeptracker.database.entities.TripMapPoint
 import kotlinx.coroutines.Dispatchers
@@ -62,4 +63,11 @@ fun storeDrawableWithName(context: Context, drawable: Drawable, fileName: String
     }
 
     return fileUriStr
+}
+
+fun deleteFile(fileUri: Uri) {
+    val file = fileUri.toFile()
+    if(file.exists()) {
+        file.delete()
+    }
 }

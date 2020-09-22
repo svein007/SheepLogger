@@ -6,7 +6,9 @@ import android.net.Uri
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.example.sheeptracker.database.AppDao
+import com.example.sheeptracker.utils.deleteFile
 import com.example.sheeptracker.utils.getDrawableFromUri
+import kotlinx.coroutines.*
 
 class ImageResourceViewModel(
     application: Application,
@@ -15,10 +17,32 @@ class ImageResourceViewModel(
     private val imageUri: String
 ) : AndroidViewModel(application) {
 
+    /** Private fields **/
+
+    private var viewModelJob = Job()
+    private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
+
     val imageDrawable = MutableLiveData<Drawable>()
 
     init {
         imageDrawable.value = getDrawableFromUri(application.applicationContext, Uri.parse(imageUri))
+    }
+
+    fun deleteImage() {
+        uiScope.launch {
+            deleteImgRes()
+        }
+    }
+
+    /** Helpers **/
+
+    private suspend fun deleteImgRes() {
+        withContext(Dispatchers.IO) {
+            Uri.parse(imageUri)?.let {
+                deleteFile(it)
+            }
+            appDao.deleteImageResource(imageResourceId)
+        }
     }
 
 }

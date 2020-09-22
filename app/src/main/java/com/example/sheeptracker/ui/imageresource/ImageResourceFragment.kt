@@ -1,12 +1,11 @@
 package com.example.sheeptracker.ui.imageresource
 
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.example.sheeptracker.R
 import com.example.sheeptracker.database.AppDatabase
 import com.example.sheeptracker.databinding.ImageResourceFragmentBinding
@@ -25,6 +24,8 @@ class ImageResourceFragment : Fragment() {
         binding = DataBindingUtil.inflate(
             inflater, R.layout.image_resource_fragment, container, false
         )
+
+        setHasOptionsMenu(true)
 
         val application = requireNotNull(this.activity).application
         val appDao = AppDatabase.getInstance(application).appDatabaseDao
@@ -45,6 +46,20 @@ class ImageResourceFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.image_resource_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.mi_delete_image) {
+            viewModel.deleteImage()
+            findNavController().popBackStack()
+            return true
+        }
+        return false
     }
 
 }
