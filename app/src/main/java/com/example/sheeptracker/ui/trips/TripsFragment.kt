@@ -37,6 +37,7 @@ class TripsFragment : Fragment() {
         )[TripsViewModel::class.java]
 
         binding.lifecycleOwner = viewLifecycleOwner
+        binding.viewModel = viewModel
 
         val adapter = TripAdapter(TripListItemListener { tripId ->
             viewModel.trips.value?.firstOrNull { trip -> trip.tripId == tripId }?.tripOwnerMapAreaId?.let {mapAreaId ->

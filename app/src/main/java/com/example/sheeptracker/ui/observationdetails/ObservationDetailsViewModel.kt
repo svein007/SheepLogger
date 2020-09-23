@@ -45,6 +45,10 @@ class ObservationDetailsViewModel(
         }
     }
 
+    val showEmptyImageListTextView = Transformations.map(imageResources) {
+        it.isNullOrEmpty()
+    }
+
     init {
         uiScope.launch {
             observation.value = getObservation(observationId)

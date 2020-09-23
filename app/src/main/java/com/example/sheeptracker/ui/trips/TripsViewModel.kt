@@ -3,6 +3,7 @@ package com.example.sheeptracker.ui.trips
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.Transformations
 import com.example.sheeptracker.database.AppDao
 import com.example.sheeptracker.database.entities.Trip
 import kotlinx.coroutines.*
@@ -19,6 +20,10 @@ class TripsViewModel(
     /** ViewModel fields **/
 
     val trips: LiveData<List<Trip>> = appDao.getTripsLD()
+
+    val showEmptyListTextView = Transformations.map(trips) {
+        it.isNullOrEmpty()
+    }
 
     /** ViewModel methods **/
 
