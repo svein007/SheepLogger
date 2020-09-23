@@ -37,7 +37,7 @@ class MapAreasFragment : Fragment() {
         )[MapAreasViewModel::class.java]
 
         binding.lifecycleOwner = viewLifecycleOwner
-        binding.downliadedTilesViewModel = viewModel
+        binding.mapAreasViewModel = viewModel
 
         val adapter = MapAreaAdapter(MapAreaListItemListener {
             findNavController().navigate(

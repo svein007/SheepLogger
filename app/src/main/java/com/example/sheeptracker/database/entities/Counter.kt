@@ -3,11 +3,19 @@ package com.example.sheeptracker.database.entities
 import android.content.Context
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import com.example.sheeptracker.R
 import kotlin.math.max
 
-@Entity(tableName = "counter_table")
+@Entity(tableName = "counter_table",
+    foreignKeys = [
+        ForeignKey(
+            entity = Observation::class,
+            parentColumns = arrayOf("observation_id"),
+            childColumns = arrayOf("counter_owner_observation_id"),
+            onDelete = ForeignKey.CASCADE)
+    ])
 data class Counter (
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "counter_id")

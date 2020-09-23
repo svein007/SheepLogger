@@ -12,7 +12,7 @@ import java.util.*
                 entity = MapArea::class,
                 parentColumns = arrayOf("map_area_id"),
                 childColumns = arrayOf("trip_owner_map_area_id"),
-                onDelete = ForeignKey.NO_ACTION)
+                onDelete = ForeignKey.CASCADE)
         ])
 data class Trip (
     @PrimaryKey(autoGenerate = true)
