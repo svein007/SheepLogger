@@ -1,6 +1,7 @@
 package com.example.sheeptracker.ui.observationdetails
 
 import android.app.Application
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
@@ -81,6 +82,12 @@ class ObservationDetailsViewModel(
         }
     }
 
+    fun addImageResource(drawable: Drawable) {
+        uiScope.launch {
+            addImgResToDB(drawable)
+        }
+    }
+
     /** Helpers **/
 
     private suspend fun updateObservation(observation: Observation) {
@@ -125,5 +132,20 @@ class ObservationDetailsViewModel(
             appDao.update(imgRes)
         }
     }
+
+    private suspend fun addImgResToDB(drawable: Drawable) {
+        withContext(Dispatchers.IO) {
+            val newImgRes = ImageResource(imageResourceObservationId = observationId)
+            val newId = appDao.insert(newImgRes)
+            val uriString = storeDrawableWithName(getApplication<Application>().applicationContext, drawable, "img_${observationId}_$newId")
+            val imgRes = appDao.getImageResource(newId)
+
+            imgRes.imageResourceUri = uriString
+
+            appDao.update(imgRes)
+        }
+    }
+
+
 
 }

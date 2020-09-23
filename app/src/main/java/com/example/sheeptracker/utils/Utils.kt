@@ -6,6 +6,7 @@ import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.net.Uri
+import android.os.Environment
 import androidx.core.net.toFile
 import com.example.sheeptracker.database.AppDao
 import com.example.sheeptracker.database.entities.TripMapPoint
@@ -14,6 +15,8 @@ import kotlinx.coroutines.withContext
 import org.osmdroid.util.GeoPoint
 import java.io.*
 import java.lang.Exception
+import java.text.SimpleDateFormat
+import java.util.*
 
 /** Gets observation-position to be associated with the observation **/
 suspend fun getObservedFromPoint(appDao: AppDao, tripId: Long, currentPosition: TripMapPoint): TripMapPoint {
@@ -70,4 +73,15 @@ fun deleteFile(fileUri: Uri) {
     if(file.exists()) {
         file.delete()
     }
+}
+
+@Throws(IOException::class)
+fun createImageFile(context: Context): File {
+    val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+    val storageDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+    return File.createTempFile(
+        "JPEG_${timeStamp}_", /* prefix */
+        ".jpg", /* suffix */
+        storageDir /* directory */
+    )
 }

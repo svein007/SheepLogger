@@ -1,10 +1,14 @@
 package com.example.sheeptracker.ui.observationdetails
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Intent
+import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.*
-import android.widget.Toast
+import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
@@ -15,14 +19,21 @@ import com.example.sheeptracker.database.AppDatabase
 import com.example.sheeptracker.databinding.ObservationDetailsFragmentBinding
 import com.example.sheeptracker.ui.addobservation.CounterAdapter
 import com.example.sheeptracker.ui.addobservation.CounterListItemListener
+import com.example.sheeptracker.utils.*
+import java.io.File
+import java.io.IOException
+import java.lang.Exception
 
 class ObservationDetailsFragment : Fragment() {
 
     private val SELECT_IMG_RES_INTENT_CODE = 1
+    private val TAKE_IMG_INTENT_CODE = 2
 
     private lateinit var viewModel: ObservationDetailsViewModel
     private lateinit var binding: ObservationDetailsFragmentBinding
     private lateinit var arguments: ObservationDetailsFragmentArgs
+
+    var currentPhotoPath: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -92,15 +103,10 @@ class ObservationDetailsFragment : Fragment() {
         binding.imagesRV.addItemDecoration(DividerItemDecoration(application, DividerItemDecoration.VERTICAL))
 
         binding.addImageButton.setOnClickListener {
-            addImgRes()
+            showAddImageDialog()
         }
 
         return binding.root
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        // TODO: Use the ViewModel
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -109,7 +115,6 @@ class ObservationDetailsFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-
         if (item.itemId == R.id.mi_observation_details_save) {
             viewModel.onUpdateObservation()
             findNavController().navigateUp()
@@ -129,6 +134,18 @@ class ObservationDetailsFragment : Fragment() {
                         viewModel.addImageResource(selectedImageUri.toString())
                     }
                 }
+                TAKE_IMG_INTENT_CODE -> {
+                    data?.let {
+                        currentPhotoPath?.also {
+                            val drawable = Drawable.createFromPath(it)
+                            viewModel.addImageResource(drawable!!)
+                            try {
+                                File(it).delete()
+                                currentPhotoPath = null
+                            } catch (e: Exception) {}
+                        }
+                    }
+                }
             }
         }
     }
@@ -136,12 +153,59 @@ class ObservationDetailsFragment : Fragment() {
 
     /** Helpers **/
 
-    private fun addImgRes() {
+    private fun dispatchChooseImageIntent() {
         val intent = Intent()
         intent.type = "image/*"
         intent.action = Intent.ACTION_GET_CONTENT
         startActivityForResult(Intent.createChooser(intent, "Select an image"), SELECT_IMG_RES_INTENT_CODE)
     }
 
+    private fun dispatchTakeImageIntent(){
+        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
+            // Ensure that there's a camera activity to handle the intent
+            takePictureIntent.resolveActivity(requireActivity().packageManager)?.also {
+                // Create the File where the photo should go
+                val photoFile: File? = try {
+                    createImageFile(requireContext())
+                } catch (ex: IOException) {
+                    // Error occurred while creating the File
+                    null
+                }
+                // Continue only if the File was successfully created
+                photoFile?.also {
+                    val photoURI: Uri = FileProvider.getUriForFile(
+                        requireContext(),
+                        "com.example.android.fileprovider",
+                        it
+                    )
+                    currentPhotoPath = it.absolutePath
+                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                    startActivityForResult(takePictureIntent, TAKE_IMG_INTENT_CODE)
+                }
+            }
+        }
+    }
+
+    private fun showAddImageDialog() {
+        val observationTypeAlertDialog = activity?.let {
+            val builder = AlertDialog.Builder(it)
+            builder.apply {
+                setTitle("Add image")
+                setItems(arrayOf("Take image", "Choose from gallery")){ dialogInterface, index ->
+                    when (index) {
+                        0 -> {
+                            dispatchTakeImageIntent()
+                        }
+                        1 -> {
+                            dispatchChooseImageIntent()
+                        }
+                    }
+                }
+            }
+            builder.create()
+        }
+
+        observationTypeAlertDialog?.show()
+    }
 
 }
