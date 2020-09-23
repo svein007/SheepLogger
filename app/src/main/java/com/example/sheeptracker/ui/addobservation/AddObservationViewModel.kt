@@ -33,6 +33,8 @@ class AddObservationViewModel(
     val counters: LiveData<List<Counter>>
         get() =_counters
 
+    val countType = MutableLiveData<Counter.CountType>(Counter.CountType.SHEEP)
+
     val expectedSheepCount = Transformations.map(counters) {
         it.sumBy { counter -> counter.sheepChildCount() }
     }

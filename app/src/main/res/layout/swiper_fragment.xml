@@ -27,43 +27,85 @@
 
         <TextView
             android:id="@+id/textView13"
-            android:background="@drawable/ic_baseline_arrow_upward_24"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="32dp"
+            android:background="@drawable/ic_baseline_arrow_upward_24"
             app:layout_constraintBottom_toTopOf="@+id/swipeText"
-            app:layout_constraintEnd_toEndOf="@+id/swipeText"
-            app:layout_constraintStart_toStartOf="@+id/swipeText" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
             android:id="@+id/textView16"
-            android:background="@drawable/ic_baseline_arrow_downward_24"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            app:layout_constraintEnd_toEndOf="@+id/swipeText"
-            app:layout_constraintStart_toStartOf="@+id/swipeText"
+            android:layout_marginTop="32dp"
+            android:background="@drawable/ic_baseline_arrow_downward_24"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/swipeText" />
 
         <TextView
             android:id="@+id/textView17"
-            android:background="@drawable/ic_baseline_arrow_forward_24"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/ic_baseline_arrow_forward_24"
             app:layout_constraintBottom_toBottomOf="@+id/swipeText"
-            app:layout_constraintStart_toEndOf="@+id/swipeText"
+            app:layout_constraintEnd_toStartOf="@+id/nextTextView"
             app:layout_constraintTop_toTopOf="@+id/swipeText" />
 
         <TextView
             android:id="@+id/textView18"
-            android:background="@drawable/ic_baseline_arrow_back_24"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/ic_baseline_arrow_back_24"
             app:layout_constraintBottom_toBottomOf="@+id/swipeText"
-            app:layout_constraintEnd_toStartOf="@+id/swipeText"
+            app:layout_constraintStart_toEndOf="@+id/prevTextView"
             app:layout_constraintTop_toTopOf="@+id/swipeText" />
+
+        <TextView
+            android:id="@+id/textView21"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="+1"
+            app:layout_constraintBottom_toTopOf="@+id/textView13"
+            app:layout_constraintEnd_toEndOf="@+id/textView13"
+            app:layout_constraintStart_toStartOf="@+id/textView13" />
+
+        <TextView
+            android:id="@+id/textView22"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="-1"
+            app:layout_constraintEnd_toEndOf="@+id/textView16"
+            app:layout_constraintStart_toStartOf="@+id/textView16"
+            app:layout_constraintTop_toBottomOf="@+id/textView16" />
+
+        <TextView
+            android:id="@+id/nextTextView"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text="Black"
+            android:textAlignment="center"
+            app:layout_constraintBottom_toBottomOf="@+id/textView17"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/textView17" />
+
+        <TextView
+            android:id="@+id/prevTextView"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="Green Tie"
+            android:textAlignment="center"
+            app:layout_constraintBottom_toBottomOf="@+id/textView18"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/textView18" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

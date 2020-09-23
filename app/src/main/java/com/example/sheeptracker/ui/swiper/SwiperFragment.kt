@@ -26,8 +26,6 @@ class SwiperFragment : Fragment() {
 
     private var toast: Toast? = null
 
-    private var countType = Counter.CountType.SHEEP
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -44,27 +42,31 @@ class SwiperFragment : Fragment() {
             @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
             override fun onSwipeDown() {
                 getCurrentCounter()?.dec()
+                updateTypeCountText()
                 echoSelectedCount()
             }
 
             @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
             override fun onSwipeUp() {
                 getCurrentCounter()?.inc()
+                updateTypeCountText()
                 echoSelectedCount()
             }
 
             @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
             override fun onSwipeLeft() {
-                countType = countType.next()
+                addObsViewModel.countType.value = addObsViewModel.countType.value?.next()
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    updateTypeCountText()
                     echoSelectedCountType()
                     echoSelectedCount()
                 }
             }
 
             override fun onSwipeRight() {
-                countType = countType.prev()
+                addObsViewModel.countType.value = addObsViewModel.countType.value?.prev()
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    updateTypeCountText()
                     echoSelectedCountType()
                     echoSelectedCount()
                 }
@@ -84,6 +86,8 @@ class SwiperFragment : Fragment() {
             echoSelectedCountType()
             echoSelectedCount()
         }
+
+        updateTypeCountText()
     }
 
     override fun onDestroy() {
@@ -92,19 +96,19 @@ class SwiperFragment : Fragment() {
     }
 
     private fun getCurrentCounter(): Counter? {
-        return addObsViewModel.counters.value?.firstOrNull { c -> c.counterType == countType }
+        return addObsViewModel.counters.value?.firstOrNull { c -> c.counterType == addObsViewModel.countType.value }
     }
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     private fun echoSelectedCountType() {
-        val textToSpeak = "${countType.str(requireContext())} Selected"
+        val textToSpeak = "${addObsViewModel.countType.value?.str(requireContext())} Selected"
         showToast(textToSpeak)
         textToSpeech.speak(textToSpeak, TextToSpeech.QUEUE_ADD, null, null)
     }
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     private fun echoSelectedCount() {
-        val textToSpeak = "${getCurrentCounter()?.counterValue ?: "--"} ${countType.str(requireContext())}"
+        val textToSpeak = "${getCurrentCounter()?.counterValue ?: "--"} ${addObsViewModel.countType.value?.str(requireContext())}"
 
         showToast(textToSpeak)
         textToSpeech.speak(textToSpeak, TextToSpeech.QUEUE_FLUSH, null, null)
@@ -114,6 +118,18 @@ class SwiperFragment : Fragment() {
         toast?.cancel()
         toast = Toast.makeText(requireContext(), text, Toast.LENGTH_SHORT)
         toast?.show()
+    }
+
+    private fun updateTypeCountText() {
+        val counterValue = addObsViewModel.counters.value?.firstOrNull { counter -> counter.counterType == addObsViewModel.countType.value }?.counterValue
+        binding.swipeText.text = "${addObsViewModel.countType.value?.str(requireContext())}: ${counterValue}"
+
+        val nextTypeText = addObsViewModel.countType.value?.next()?.str(requireContext())
+        binding.nextTextView.text = nextTypeText
+
+        val prevTypeText = addObsViewModel.countType.value?.prev()?.str(requireContext())
+        binding.prevTextView.text = prevTypeText
+
     }
 
 }
