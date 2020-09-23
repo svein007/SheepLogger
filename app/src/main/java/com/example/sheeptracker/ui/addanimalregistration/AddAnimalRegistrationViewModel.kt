@@ -60,7 +60,7 @@ class AddAnimalRegistrationViewModel(
         _observation.value = newObservation
 
         val newDeadAnimal = AnimalRegistration(
-            deadAnimalOwnerObservationId = -1
+            ownerObservationId = -1
         )
         _deadAnimal.value = newDeadAnimal
     }
@@ -79,7 +79,7 @@ class AddAnimalRegistrationViewModel(
                 val obsId = observation.value?.let { insert(it) }
 
                 if (obsId != null && animalRegistration.value != null) {
-                    _deadAnimal.value!!.deadAnimalOwnerObservationId = obsId
+                    _deadAnimal.value!!.ownerObservationId = obsId
                     insert(animalRegistration.value!!)
                 }
 
