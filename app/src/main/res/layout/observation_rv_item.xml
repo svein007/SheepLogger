@@ -51,7 +51,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:src='@{observationTypeIcon}' />
+            android:src='@{observationTypeIcon}'
+            tools:src="@drawable/ic_baseline_warning_red_24"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
