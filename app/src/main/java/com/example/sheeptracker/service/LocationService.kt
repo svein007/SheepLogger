@@ -171,6 +171,7 @@ class LocationService : Service() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val serviceChannel = NotificationChannel(NOTIFICATION_CHANNEL_ID, "SheepTracker LocationService",
                 NotificationManager.IMPORTANCE_DEFAULT)
+            serviceChannel.setSound(null, null)
             val manager = getSystemService(NotificationManager::class.java)
             manager!!.createNotificationChannel(serviceChannel)
         }
