@@ -135,15 +135,13 @@ class ObservationDetailsFragment : Fragment() {
                     }
                 }
                 TAKE_IMG_INTENT_CODE -> {
-                    data?.let {
-                        currentPhotoPath?.also {
-                            val drawable = Drawable.createFromPath(it)
-                            viewModel.addImageResource(drawable!!)
-                            try {
-                                File(it).delete()
-                                currentPhotoPath = null
-                            } catch (e: Exception) {}
-                        }
+                    currentPhotoPath?.also {
+                        val drawable = Drawable.createFromPath(it)
+                        viewModel.addImageResource(drawable!!)
+                        try {
+                            File(it).delete()
+                            currentPhotoPath = null
+                        } catch (e: Exception) {}
                     }
                 }
             }
