@@ -1,5 +1,6 @@
 package com.example.sheeptracker.ui.trip
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.graphics.Color
 import android.os.Bundle
@@ -15,6 +16,7 @@ import com.example.sheeptracker.R
 import com.example.sheeptracker.database.AppDao
 import com.example.sheeptracker.database.AppDatabase
 import com.example.sheeptracker.database.entities.Counter
+import com.example.sheeptracker.database.entities.MapArea
 import com.example.sheeptracker.database.entities.Observation
 import com.example.sheeptracker.databinding.TripFragmentBinding
 import com.example.sheeptracker.service.LocationService
@@ -40,6 +42,8 @@ import kotlin.collections.ArrayList
 
 class TripFragment : Fragment() {
 
+    private val preferedZoomLevel = 18.0
+
     private lateinit var viewModel: TripViewModel
     private lateinit var binding: TripFragmentBinding
     private lateinit var arguments: TripFragmentArgs
@@ -57,7 +61,6 @@ class TripFragment : Fragment() {
 
         override fun longPressHelper(geoPoint: GeoPoint?): Boolean {
             showNewObservationDialog(geoPoint)
-
             return true
         }
 
@@ -97,7 +100,7 @@ class TripFragment : Fragment() {
 
                 val mapAreaString = it.getSqliteFilename()
                 Log.d("#####", "MapArea sql: mapAreaString")
-                setupMapView(binding.tripMapView, mapAreaString)
+                setupMapView(binding.tripMapView, mapAreaString, it)
             }
         })
 
@@ -142,6 +145,14 @@ class TripFragment : Fragment() {
             }
         }
 
+        binding.startGpsLogButton.setOnClickListener {
+            startLocationService()
+        }
+
+        binding.stopGpsLogButton.setOnClickListener {
+            stopLocationService()
+        }
+
         binding.lifecycleOwner = viewLifecycleOwner
         binding.tripViewModel = viewModel
 
@@ -150,7 +161,8 @@ class TripFragment : Fragment() {
         return binding.root
     }
 
-    private fun setupMapView(mapView: MapView, mapAreaName: String) {
+    @SuppressLint("ClickableViewAccessibility")
+    private fun setupMapView(mapView: MapView, mapAreaName: String, mapArea: MapArea) {
         mapView.setUseDataConnection(false)
         mapView.isTilesScaledToDpi = true
         mapView.setMultiTouchControls(true)
@@ -181,17 +193,15 @@ class TripFragment : Fragment() {
 
         mapView.overlayManager.add(eventsOverlay)
 
-        viewModel.mapArea.value?.let {
-            Log.d("########", it.boundingBox.centerWithDateLine.toString())
+        mapArea.let {
             binding.tripMapView.controller.animateTo(it.boundingBox.centerWithDateLine)
-        }
-
-        binding.startGpsLogButton.setOnClickListener {
-            startLocationService()
-        }
-
-        binding.stopGpsLogButton.setOnClickListener {
-            stopLocationService()
+            if (it.mapAreaMinZoom <= preferedZoomLevel && it.mapAreaMaxZoom >= preferedZoomLevel) {
+                binding.tripMapView.controller.setZoom(preferedZoomLevel)
+            } else if (it.mapAreaMinZoom > preferedZoomLevel) {
+                binding.tripMapView.controller.setZoom(it.mapAreaMinZoom)
+            } else {
+                binding.tripMapView.controller.setZoom(it.mapAreaMaxZoom)
+            }
         }
 
         mapView.setOnTouchListener { view, motionEvent ->
@@ -212,6 +222,9 @@ class TripFragment : Fragment() {
             return
         }
 
+        binding.tripMapView.overlayManager.removeAll(observationMarkers)
+        observationMarkers.clear()
+
         val observationsGeoPoints = viewModel.observations.value!!.map { observation ->
             GeoPoint(observation.observationLat, observation.observationLon)
         }
@@ -222,9 +235,6 @@ class TripFragment : Fragment() {
             }
             GeoPoint(tripMapPoint!!.tripMapPointLat, tripMapPoint!!.tripMapPointLon)
         }
-
-        binding.tripMapView.overlayManager.removeAll(observationMarkers)
-        observationMarkers.clear()
 
         observationsGeoPoints.forEachIndexed { i, geoPoint ->
             val marker = Marker(binding.tripMapView)
@@ -241,8 +251,8 @@ class TripFragment : Fragment() {
                     Observation.ObservationType.DEAD -> "DEAD #${getAnimalRegisterNumber(observation)}"
                     Observation.ObservationType.INJURED -> "INJURED #${getAnimalRegisterNumber(observation)}"
                 }
-                marker.title = SimpleDateFormat("dd/MM/yyyy HH:mm").format(observation.observationDate) +
-                        "\n${observationShortDescription}"
+                marker.title = SimpleDateFormat("dd/MM/yyyy HH:mm").format(observation.observationDate)
+                marker.snippet = "\n${observationShortDescription}"
             }
 
             observationMarkers.add(marker)
@@ -254,7 +264,7 @@ class TripFragment : Fragment() {
         for (i in observationTripMapGeoPoints.indices) {
             val line = Polyline()
             line.setPoints(listOf(observationTripMapGeoPoints[i], observationsGeoPoints[i]))
-            line.outlinePaint.color = Color.BLUE
+            line.outlinePaint.color = Color.MAGENTA
             observationPolylines.add(line)
         }
 
@@ -283,10 +293,14 @@ class TripFragment : Fragment() {
             gpsMarkers.add(marker)
         }
 
+        val tripMapPointDateString = SimpleDateFormat("dd/MM/yyyy HH:mm").format(
+            viewModel.tripMapPoints.value!!.first().tripMapPointDate)
+
         gpsMarkers.first().let {marker ->
             marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
             marker.icon = ResourcesCompat.getDrawable(resources, R.drawable.ic_baseline_trip_origin_24, null)
-            marker.title = "Start"
+            marker.title = tripMapPointDateString
+            marker.snippet = "Start"
         }
 
         // binding.tripMapView.overlayManager.addAll(gpsMarkers)
@@ -387,7 +401,7 @@ class TripFragment : Fragment() {
 
     private suspend fun getCountersDesc(observation: Observation): String {
         return withContext(Dispatchers.IO) {
-            "${appDao.getCounter(observation.observationId, Counter.CountType.SHEEP).counterValue} sheep" +
+            "${appDao.getCounter(observation.observationId, Counter.CountType.SHEEP).counterValue} sheep" + ", " +
                 "\n${appDao.getCounter(observation.observationId, Counter.CountType.LAMB).counterValue} lamb"
         }
     }

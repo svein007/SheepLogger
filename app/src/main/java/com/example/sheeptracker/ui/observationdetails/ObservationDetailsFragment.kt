@@ -78,8 +78,6 @@ class ObservationDetailsFragment : Fragment() {
             }
         })
 
-        binding.counterRV.addItemDecoration(DividerItemDecoration(application, DividerItemDecoration.VERTICAL))
-
         viewModel.observation.observe(viewLifecycleOwner) {
             binding.animalRegistrationIcon.setImageDrawable(it.observationType.getDrawable(resources))
         }
@@ -160,16 +158,13 @@ class ObservationDetailsFragment : Fragment() {
 
     private fun dispatchTakeImageIntent(){
         Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
-            // Ensure that there's a camera activity to handle the intent
             takePictureIntent.resolveActivity(requireActivity().packageManager)?.also {
-                // Create the File where the photo should go
                 val photoFile: File? = try {
                     createImageFile(requireContext())
                 } catch (ex: IOException) {
-                    // Error occurred while creating the File
                     null
                 }
-                // Continue only if the File was successfully created
+
                 photoFile?.also {
                     val photoURI: Uri = FileProvider.getUriForFile(
                         requireContext(),

@@ -24,6 +24,8 @@ class ObservationDetailsViewModel(
     private var viewModelJob = Job()
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
 
+    /** VM fields **/
+
     val observation = MutableLiveData<Observation>()
 
     val counters = appDao.getCountersLD(observationId)
