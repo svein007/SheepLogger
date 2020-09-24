@@ -14,7 +14,7 @@
     <fragment
         android:id="@+id/mapAreasFragment"
         android:name="com.example.sheeptracker.ui.mapareas.MapAreasFragment"
-        android:label="Map Areas"
+        android:label="@string/map_areas"
         tools:layout="@layout/map_areas_fragment">
         <action
             android:id="@+id/action_mapAreasFragment_to_mapAreaFragment"
@@ -47,7 +47,7 @@
     <fragment
         android:id="@+id/startFragment"
         android:name="com.example.sheeptracker.ui.start.StartFragment"
-        android:label="Sheep Logger"
+        android:label="@string/app_name"
         tools:layout="@layout/start_fragment">
         <action
             android:id="@+id/action_startFragment_to_mapAreasFragment"
@@ -59,7 +59,7 @@
     <fragment
         android:id="@+id/tripsFragment"
         android:name="com.example.sheeptracker.ui.trips.TripsFragment"
-        android:label="My Trips"
+        android:label="@string/my_trips"
         tools:layout="@layout/trips_fragment" >
         <action
             android:id="@+id/action_tripsFragment_to_addTripFragment"
