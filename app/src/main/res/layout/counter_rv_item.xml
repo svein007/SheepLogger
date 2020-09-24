@@ -19,12 +19,12 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:background="@drawable/rounded_rect"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
         android:layout_margin="4dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:layout_width="match_parent"
-        android:layout_height="70dp">
+        android:background="@drawable/rounded_rect_light">
 
         <Button
             android:id="@+id/button6"
@@ -32,11 +32,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
-            android:background="@color/colorAccent"
+            android:background="@drawable/rounded_button"
             android:onClick="@{() -> decClickListener.onClick(counter)}"
             android:text="-"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textColor="#FFFFFF"
+            android:textSize="24sp"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/editTextNumberSigned9"
             app:layout_constraintTop_toTopOf="parent" />
@@ -46,12 +48,14 @@
             style="@style/Widget.AppCompat.Button.Small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:background="@color/colorAccent"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/rounded_button"
             android:onClick="@{() -> incClickListener.onClick(counter)}"
             android:text="+"
+            android:textAllCaps="false"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textColor="#FFFFFF"
+            android:textSize="24sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -79,6 +83,7 @@
             android:inputType="numberSigned"
             android:text="@={``+counter.counterValue}"
             android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/button5"
             app:layout_constraintTop_toTopOf="parent"
