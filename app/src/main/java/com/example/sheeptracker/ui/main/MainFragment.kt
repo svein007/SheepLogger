@@ -5,8 +5,10 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.location.LocationManager
 import android.os.Bundle
+import android.text.InputType
 import android.view.*
 import android.widget.EditText
+import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
@@ -206,13 +208,22 @@ class MainFragment : Fragment() {
     }
 
     private fun showMapAreaNameDialog() {
+        val viewGroup = LinearLayout(requireContext())
+        viewGroup.setPadding(48, 0, 48, 0)
+
         val editText = EditText(requireContext())
-        editText.hint = "map area name"
+        editText.hint = "Map area name"
+        editText.inputType = editText.inputType or InputType.TYPE_TEXT_FLAG_CAP_SENTENCES
+        editText.layoutParams = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.MATCH_PARENT)
+
+        viewGroup.addView(editText)
 
         AlertDialog.Builder(requireContext())
             .setTitle("Download Map Area")
             .setMessage("Enter the name of the selected map area")
-            .setView(editText)
+            .setView(viewGroup)
             .setPositiveButton("Download") { dialog, which ->
                 val mapAreaName = editText.text.toString()
                 saveMapArea(mapAreaName)

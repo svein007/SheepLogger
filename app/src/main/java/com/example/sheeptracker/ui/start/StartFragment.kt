@@ -95,13 +95,18 @@ class StartFragment : Fragment() {
     }
 
     private fun performRequestPermissions(requestCode: Int) {
-        requestPermissions(
-            arrayOf(
-                Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.READ_EXTERNAL_STORAGE,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE
-            ),
-            requestCode)
+        if (checkHasAllPermissions(requireContext())) {
+            Toast.makeText(requireContext(), "Permissions already granted", Toast.LENGTH_LONG).show()
+        } else {
+            requestPermissions(
+                arrayOf(
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ),
+                requestCode)
+        }
+
     }
 
 }
