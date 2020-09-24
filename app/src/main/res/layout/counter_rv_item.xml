@@ -24,7 +24,7 @@
         android:layout_margin="4dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:background="@drawable/rounded_rect_light">
+        android:background="@drawable/rounded_rect_shadow">
 
         <Button
             android:id="@+id/button6"
