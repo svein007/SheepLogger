@@ -9,4 +9,6 @@
     <string name="blue_tie">blue tie</string>
     <string name="green_tie">green tie</string>
     <string name="yellow_tie">yellow tie</string>
+    <string name="map_areas">Map Areas</string>
+    <string name="my_trips">My Trips</string>
 </resources>

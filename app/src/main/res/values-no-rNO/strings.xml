@@ -10,4 +10,6 @@
     <string name="blue_tie">blått slips</string>
     <string name="green_tie">grønt slips</string>
     <string name="yellow_tie">gult slips</string>
+    <string name="map_areas">Kartområder</string>
+    <string name="my_trips">Mine turer</string>
 </resources>
