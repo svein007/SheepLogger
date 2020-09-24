@@ -13,6 +13,7 @@ import com.example.sheeptracker.database.entities.Observation
 import com.example.sheeptracker.utils.getDrawableFromUri
 import com.example.sheeptracker.utils.storeDrawableWithName
 import kotlinx.coroutines.*
+import java.text.SimpleDateFormat
 
 class ObservationDetailsViewModel(
     private val observationId: Long,
@@ -50,6 +51,10 @@ class ObservationDetailsViewModel(
 
     val showEmptyImageListTextView = Transformations.map(imageResources) {
         it.isNullOrEmpty()
+    }
+
+    val observationTimeString = Transformations.map(observation) {
+        SimpleDateFormat("HH:mm").format(it.observationDate)
     }
 
     init {
