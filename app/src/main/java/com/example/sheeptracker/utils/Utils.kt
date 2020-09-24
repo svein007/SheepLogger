@@ -1,12 +1,15 @@
 package com.example.sheeptracker.utils
 
+import android.Manifest
 import android.content.Context
 import android.content.ContextWrapper
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Environment
+import androidx.core.app.ActivityCompat
 import androidx.core.net.toFile
 import com.example.sheeptracker.database.AppDao
 import com.example.sheeptracker.database.entities.TripMapPoint
@@ -84,4 +87,17 @@ fun createImageFile(context: Context): File {
         ".jpg", /* suffix */
         storageDir /* directory */
     )
+}
+
+fun checkHasAllPermissions(context: Context): Boolean {
+    return ActivityCompat.checkSelfPermission(
+        context,
+        Manifest.permission.ACCESS_FINE_LOCATION
+    ) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+        context,
+        Manifest.permission.READ_EXTERNAL_STORAGE
+    ) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+        context,
+        Manifest.permission.WRITE_EXTERNAL_STORAGE
+    ) == PackageManager.PERMISSION_GRANTED
 }
