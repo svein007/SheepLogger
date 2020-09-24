@@ -30,4 +30,7 @@ data class MapArea (
         return "map_area_$cleanedMapAreaName.sqlite"
     }
 
+    val zoomIntervalString: String
+        get() = "${mapAreaMinZoom.toInt()}-${mapAreaMaxZoom.toInt()}"
+
 }
