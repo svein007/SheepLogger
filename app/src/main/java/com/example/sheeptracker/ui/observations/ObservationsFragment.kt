@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.sheeptracker.R
 import com.example.sheeptracker.database.AppDatabase
+import com.example.sheeptracker.database.entities.Observation
 import com.example.sheeptracker.databinding.ObservationsFragmentBinding
 
 class ObservationsFragment : Fragment() {
@@ -40,10 +41,21 @@ class ObservationsFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
 
-        val adapter = ObservationAdapter(application, ObservationListItemListener { observationId ->
-            findNavController().navigate(
-                ObservationsFragmentDirections.actionObservationsFragmentToObservationDetailsFragment(observationId)
-            )
+        val adapter = ObservationAdapter(application, ObservationListItemListener { observationId, observationType ->
+
+            when (observationType) {
+                Observation.ObservationType.COUNT -> {
+                    findNavController().navigate(
+                        ObservationsFragmentDirections.actionObservationsFragmentToAnimalCountersDetailsFragment(observationId)
+                    )
+                }
+                else -> {
+                    findNavController().navigate(
+                        ObservationsFragmentDirections.actionObservationsFragmentToAnimalRegistrationDetailsFragment(observationId)
+                    )
+                }
+            }
+
         })
 
         binding.observationsRV.adapter = adapter

@@ -1,10 +1,9 @@
-package com.example.sheeptracker.ui.observationdetails
+package com.example.sheeptracker.ui.animalregistrationdetails
 
 import android.app.Application
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.example.sheeptracker.database.AppDao
 import com.example.sheeptracker.database.entities.AnimalRegistration
@@ -15,10 +14,11 @@ import com.example.sheeptracker.utils.storeDrawableWithName
 import kotlinx.coroutines.*
 import java.text.SimpleDateFormat
 
-class ObservationDetailsViewModel(
+class AnimalRegistrationDetailsViewModel(
     private val observationId: Long,
     app: Application,
-    private val appDao: AppDao) : AndroidViewModel(app) {
+    private val appDao: AppDao
+) : AndroidViewModel(app) {
 
     /** Private fields **/
 
@@ -27,19 +27,11 @@ class ObservationDetailsViewModel(
 
     /** VM fields **/
 
-    val observation = MutableLiveData<Observation>()
-
-    val counters = appDao.getCountersLD(observationId)
-
-    val observationNote = MutableLiveData<String>()
+    val observation = appDao.getObservationLD(observationId)
 
     val deadAnimal = appDao.getDeadAnimal(observationId)
 
     val imageResources = appDao.getImageResourcesLD(observationId)
-
-    val showDeadAnimal = Transformations.map(deadAnimal) {
-        it != null
-    }
 
     val observationTypeTitle = Transformations.map(observation) {
         when (observation.value?.observationType) {
@@ -57,28 +49,13 @@ class ObservationDetailsViewModel(
         SimpleDateFormat("HH:mm").format(it.observationDate)
     }
 
-    init {
-        uiScope.launch {
-            observation.value = getObservation(observationId)
-
-            observation.value?.let {
-                observationNote.value = it.observationNote
-            }
-        }
-    }
-
     /** ViewModel methods **/
 
     fun onUpdateObservation() {
         uiScope.launch {
-            if (observation.value != null) {
-                observation.value!!.observationNote = observationNote.value!!
-
-                updateObservation(observation.value!!)
-                updateCounters()
-                deadAnimal.value?.let {
-                    updateDeadAnimal(it)
-                }
+            updateObservation(observation.value!!)
+            deadAnimal.value?.let {
+                updateDeadAnimal(it)
             }
         }
     }
@@ -103,23 +80,9 @@ class ObservationDetailsViewModel(
         }
     }
 
-    private suspend fun updateCounters() {
-        withContext(Dispatchers.IO) {
-            for (counter in counters.value!!) {
-                appDao.update(counter)
-            }
-        }
-    }
-
     private suspend fun updateDeadAnimal(animalRegistration: AnimalRegistration) {
         withContext(Dispatchers.IO) {
             appDao.update(animalRegistration)
-        }
-    }
-
-    private suspend fun getObservation(id: Long): Observation? {
-        return withContext(Dispatchers.IO) {
-            appDao.getObservation(id)
         }
     }
 
@@ -152,7 +115,5 @@ class ObservationDetailsViewModel(
             appDao.update(imgRes)
         }
     }
-
-
 
 }

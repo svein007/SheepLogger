@@ -16,7 +16,7 @@
             type="android.graphics.drawable.Drawable" />
         <variable
             name="clickListener"
-            type="com.example.sheeptracker.ui.observationdetails.ImgResourceListItemListener"/>
+            type="com.example.sheeptracker.ui.animalregistrationdetails.ImgResourceListItemListener"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

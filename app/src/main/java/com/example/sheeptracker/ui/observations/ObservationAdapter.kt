@@ -63,6 +63,6 @@ class ObservationDiffCallback : DiffUtil.ItemCallback<Observation>() {
     }
 }
 
-class ObservationListItemListener(val clickListener: (observationId: Long) -> Unit) {
-    fun onClick(observation: Observation) = clickListener(observation.observationId)
+class ObservationListItemListener(val clickListener: (observationId: Long, observationType: Observation.ObservationType) -> Unit) {
+    fun onClick(observation: Observation) = clickListener(observation.observationId, observation.observationType)
 }

@@ -1,4 +1,4 @@
-package com.example.sheeptracker.ui.observationdetails
+package com.example.sheeptracker.ui.animalregistrationdetails
 
 import android.app.Activity
 import android.app.AlertDialog
@@ -8,30 +8,28 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.*
-import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
+import androidx.core.content.FileProvider
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.sheeptracker.R
 import com.example.sheeptracker.database.AppDatabase
-import com.example.sheeptracker.databinding.ObservationDetailsFragmentBinding
-import com.example.sheeptracker.ui.addobservation.CounterAdapter
-import com.example.sheeptracker.ui.addobservation.CounterListItemListener
-import com.example.sheeptracker.utils.*
+import com.example.sheeptracker.databinding.AnimalRegistrationDetailsFragmentBinding
+import com.example.sheeptracker.utils.createImageFile
 import java.io.File
 import java.io.IOException
 import java.lang.Exception
 
-class ObservationDetailsFragment : Fragment() {
+class AnimalRegistrationDetailsFragment : Fragment() {
 
     private val SELECT_IMG_RES_INTENT_CODE = 1
     private val TAKE_IMG_INTENT_CODE = 2
 
-    private lateinit var viewModel: ObservationDetailsViewModel
-    private lateinit var binding: ObservationDetailsFragmentBinding
-    private lateinit var arguments: ObservationDetailsFragmentArgs
+    private lateinit var viewModel: AnimalRegistrationDetailsViewModel
+    private lateinit var binding: AnimalRegistrationDetailsFragmentBinding
+    private lateinit var arguments: AnimalRegistrationDetailsFragmentArgs
 
     var currentPhotoPath: String? = null
 
@@ -41,42 +39,22 @@ class ObservationDetailsFragment : Fragment() {
     ): View? {
 
         binding = DataBindingUtil.inflate(
-            inflater, R.layout.observation_details_fragment, container, false
+            inflater, R.layout.animal_registration_details_fragment, container, false
         )
 
-        arguments = ObservationDetailsFragmentArgs.fromBundle(requireArguments())
+        arguments = AnimalRegistrationDetailsFragmentArgs.fromBundle(requireArguments())
 
         setHasOptionsMenu(true)
 
         val application = requireNotNull(this.activity).application
 
         val appDao = AppDatabase.getInstance(application).appDatabaseDao
-        val viewModelFactory = ObservationDetailsViewModelFactory(arguments.observationId, application, appDao)
+        val viewModelFactory = AnimalRegistrationDetailsViewModelFactory(arguments.observationId, application, appDao)
 
-        viewModel = ViewModelProvider(
-            this, viewModelFactory)[ObservationDetailsViewModel::class.java]
+        viewModel = ViewModelProvider(this, viewModelFactory)[AnimalRegistrationDetailsViewModel::class.java]
 
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
-
-        val counterAdapter = CounterAdapter(
-            CounterListItemListener {
-                it.inc()
-                binding.counterRV.adapter?.notifyDataSetChanged()
-            },
-            CounterListItemListener {
-                it.dec()
-                binding.counterRV.adapter?.notifyDataSetChanged()
-            }
-        )
-
-        binding.counterRV.adapter = counterAdapter
-
-        viewModel.counters.observe(viewLifecycleOwner, {
-            it?.let {
-                counterAdapter.submitList(it)
-            }
-        })
 
         viewModel.observation.observe(viewLifecycleOwner) {
             binding.animalRegistrationIcon.setImageDrawable(it.observationType.getDrawable(resources))
@@ -85,7 +63,7 @@ class ObservationDetailsFragment : Fragment() {
         val imagesAdapter = ImageResourceAdapter(
             ImgResourceListItemListener { imgResId: Long, imgResUri: String ->
                 findNavController().navigate(
-                    ObservationDetailsFragmentDirections.actionObservationDetailsFragmentToImageResourceFragment(imgResId, imgResUri)
+                    AnimalRegistrationDetailsFragmentDirections.actionAnimalRegistrationDetailsFragmentToImageResourceFragment(imgResId, imgResUri)
                 )
             }
         )
@@ -105,21 +83,6 @@ class ObservationDetailsFragment : Fragment() {
         }
 
         return binding.root
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.observation_details_menu, menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.mi_observation_details_save) {
-            viewModel.onUpdateObservation()
-            findNavController().navigateUp()
-            return true
-        }
-
-        return false
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -146,6 +109,20 @@ class ObservationDetailsFragment : Fragment() {
         }
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.observation_details_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.mi_observation_details_save) {
+            viewModel.onUpdateObservation()
+            findNavController().navigateUp()
+            return true
+        }
+
+        return false
+    }
 
     /** Helpers **/
 
