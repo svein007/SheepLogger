@@ -98,7 +98,11 @@
             app:argType="string" />
         <action
             android:id="@+id/action_addObservationFragment_to_swiperFragment"
-            app:destination="@id/swiperFragment" />
+            app:destination="@id/swiperFragment" >
+            <argument
+                android:name="navFromFragment"
+                android:defaultValue="add" />
+        </action>
     </fragment>
     <fragment
         android:id="@+id/observationsFragment"
@@ -119,7 +123,11 @@
         android:id="@+id/swiperFragment"
         android:name="com.example.sheeptracker.ui.swiper.SwiperFragment"
         android:label="SwiperFragment"
-        tools:layout="@layout/swiper_fragment"/>
+        tools:layout="@layout/swiper_fragment">
+        <argument
+            android:name="navFromFragment"
+            app:argType="string" />
+    </fragment>
     <fragment
         android:id="@+id/addDeadAnimalFragment"
         android:name="com.example.sheeptracker.ui.addanimalregistration.AddAnimalRegistrationFragment"
@@ -160,7 +168,11 @@
             app:argType="long" />
         <action
             android:id="@+id/action_animalCountersDetailsFragment_to_swiperFragment"
-            app:destination="@id/swiperFragment" />
+            app:destination="@id/swiperFragment" >
+            <argument
+                android:name="navFromFragment"
+                android:defaultValue="details" />
+        </action>
     </fragment>
     <fragment
         android:id="@+id/animalRegistrationDetailsFragment"

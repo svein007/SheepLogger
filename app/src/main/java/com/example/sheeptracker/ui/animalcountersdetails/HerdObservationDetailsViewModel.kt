@@ -1,16 +1,18 @@
 package com.example.sheeptracker.ui.animalcountersdetails
 
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.MutableLiveData
 import com.example.sheeptracker.database.AppDao
+import com.example.sheeptracker.database.entities.Counter
 import com.example.sheeptracker.database.entities.Observation
+import com.example.sheeptracker.ui.swiper.SwiperViewModel
 import kotlinx.coroutines.*
 
 class HerdObservationDetailsViewModel(
     private val observationId: Long,
     app: Application,
     private val appDao: AppDao
-) : AndroidViewModel(app) {
+) : SwiperViewModel(app) {
 
     /** Private fields **/
 
@@ -19,9 +21,11 @@ class HerdObservationDetailsViewModel(
 
     /** VM fields **/
 
-    val observation = appDao.getObservationLD(observationId)
+    override val observation = appDao.getObservationLD(observationId)
 
-    val counters = appDao.getCountersLD(observationId)
+    override val counters = appDao.getCountersLD(observationId)
+
+    override val countType = MutableLiveData<Counter.CountType>(Counter.CountType.SHEEP)
 
     /** VM Methods **/
 

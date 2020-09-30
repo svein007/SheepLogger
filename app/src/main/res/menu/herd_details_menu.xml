@@ -6,4 +6,8 @@
         android:id="@+id/mi_save_herd"
         android:title="Save"
         app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/mi_swiper"
+        android:title="Swiper"
+        app:showAsAction="never" />
 </menu>

@@ -16,10 +16,11 @@ import com.example.sheeptracker.database.entities.Counter
 import com.example.sheeptracker.databinding.SwiperFragmentBinding
 import com.example.sheeptracker.ui.OnSwipeTouchListener
 import com.example.sheeptracker.ui.addobservation.AddObservationViewModel
+import com.example.sheeptracker.ui.animalcountersdetails.HerdObservationDetailsViewModel
 
 class SwiperFragment : Fragment() {
 
-    private lateinit var addObsViewModel: AddObservationViewModel
+    private lateinit var swiperViewModel: SwiperViewModel
     private lateinit var binding: SwiperFragmentBinding
 
     private lateinit var textToSpeech: TextToSpeech
@@ -33,8 +34,11 @@ class SwiperFragment : Fragment() {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.swiper_fragment, container, false)
 
-        addObsViewModel = ViewModelProvider(
-            requireActivity())[AddObservationViewModel::class.java]
+        val args = SwiperFragmentArgs.fromBundle(requireArguments())
+
+        swiperViewModel = if (args.navFromFragment == "add") ViewModelProvider(
+            requireActivity())[AddObservationViewModel::class.java] else ViewModelProvider(
+            requireActivity())[HerdObservationDetailsViewModel::class.java]
 
         textToSpeech = TextToSpeech(requireContext()){}
 
@@ -55,7 +59,7 @@ class SwiperFragment : Fragment() {
 
             @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
             override fun onSwipeLeft() {
-                addObsViewModel.countType.value = addObsViewModel.countType.value?.next()
+                swiperViewModel.countType.value = swiperViewModel.countType.value?.next()
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     updateTypeCountText()
                     echoSelectedCountType()
@@ -64,7 +68,7 @@ class SwiperFragment : Fragment() {
             }
 
             override fun onSwipeRight() {
-                addObsViewModel.countType.value = addObsViewModel.countType.value?.prev()
+                swiperViewModel.countType.value = swiperViewModel.countType.value?.prev()
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     updateTypeCountText()
                     echoSelectedCountType()
@@ -96,19 +100,19 @@ class SwiperFragment : Fragment() {
     }
 
     private fun getCurrentCounter(): Counter? {
-        return addObsViewModel.counters.value?.firstOrNull { c -> c.counterType == addObsViewModel.countType.value }
+        return swiperViewModel.counters.value?.firstOrNull { c -> c.counterType == swiperViewModel.countType.value }
     }
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     private fun echoSelectedCountType() {
-        val textToSpeak = "${addObsViewModel.countType.value?.str(requireContext())} Selected"
+        val textToSpeak = "${swiperViewModel.countType.value?.str(requireContext())} Selected"
         showToast(textToSpeak)
         textToSpeech.speak(textToSpeak, TextToSpeech.QUEUE_ADD, null, null)
     }
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     private fun echoSelectedCount() {
-        val textToSpeak = "${getCurrentCounter()?.counterValue ?: "--"} ${addObsViewModel.countType.value?.str(requireContext())}"
+        val textToSpeak = "${getCurrentCounter()?.counterValue ?: "--"} ${swiperViewModel.countType.value?.str(requireContext())}"
 
         showToast(textToSpeak)
         textToSpeech.speak(textToSpeak, TextToSpeech.QUEUE_FLUSH, null, null)
@@ -121,13 +125,13 @@ class SwiperFragment : Fragment() {
     }
 
     private fun updateTypeCountText() {
-        val counterValue = addObsViewModel.counters.value?.firstOrNull { counter -> counter.counterType == addObsViewModel.countType.value }?.counterValue
-        binding.swipeText.text = "${addObsViewModel.countType.value?.str(requireContext())}: ${counterValue}"
+        val counterValue = swiperViewModel.counters.value?.firstOrNull { counter -> counter.counterType == swiperViewModel.countType.value }?.counterValue
+        binding.swipeText.text = "${swiperViewModel.countType.value?.str(requireContext())}: ${counterValue}"
 
-        val nextTypeText = addObsViewModel.countType.value?.next()?.str(requireContext())
+        val nextTypeText = swiperViewModel.countType.value?.next()?.str(requireContext())
         binding.nextTextView.text = nextTypeText
 
-        val prevTypeText = addObsViewModel.countType.value?.prev()?.str(requireContext())
+        val prevTypeText = swiperViewModel.countType.value?.prev()?.str(requireContext())
         binding.prevTextView.text = prevTypeText
 
     }

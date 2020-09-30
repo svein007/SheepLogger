@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.example.sheeptracker.database.AppDao
 import com.example.sheeptracker.database.entities.*
+import com.example.sheeptracker.ui.swiper.SwiperViewModel
 import com.example.sheeptracker.utils.*
 import kotlinx.coroutines.*
 import java.util.*
@@ -16,7 +17,7 @@ class AddObservationViewModel(
     private val tripId: Long,
     private val currentPosition: TripMapPoint,
     application: Application,
-    private val appDao: AppDao) : AndroidViewModel(application) {
+    private val appDao: AppDao) : SwiperViewModel(application) {
 
     private var viewModelJob = Job()
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
@@ -26,14 +27,14 @@ class AddObservationViewModel(
     val trip: LiveData<Trip?> = appDao.getTripLD(tripId)
 
     private val _observation = MutableLiveData<Observation>()
-    val observation: LiveData<Observation>
+    override val observation: LiveData<Observation>
         get() = _observation
 
     private val _counters = MutableLiveData<List<Counter>>()
-    val counters: LiveData<List<Counter>>
+    override val counters: LiveData<List<Counter>>
         get() =_counters
 
-    val countType = MutableLiveData<Counter.CountType>(Counter.CountType.SHEEP)
+    override val countType = MutableLiveData<Counter.CountType>(Counter.CountType.SHEEP)
 
     val expectedSheepCount = Transformations.map(counters) {
         it.sumBy { counter -> counter.sheepChildCount() }

@@ -37,7 +37,7 @@ class HerdObservationDetailsFragment : Fragment() {
         val viewModelFactory = AnimalCountersDetailsViewModelFactory(arguments.observationId, application, appDao)
 
         viewModel = ViewModelProvider(
-            this, viewModelFactory
+            requireActivity(), viewModelFactory
         )[HerdObservationDetailsViewModel::class.java]
 
         binding.lifecycleOwner = viewLifecycleOwner
@@ -75,9 +75,18 @@ class HerdObservationDetailsFragment : Fragment() {
             viewModel.onUpdateObservation()
             findNavController().navigateUp()
             return true
+        } else if (item.itemId == R.id.mi_swiper) {
+            findNavController().navigate(
+                HerdObservationDetailsFragmentDirections.actionAnimalCountersDetailsFragmentToSwiperFragment()
+            )
         }
 
         return false
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        requireActivity().viewModelStore.clear() // DANGEROUS??
     }
 
 }
