@@ -53,4 +53,5 @@
     <string name="enter_map_area_name">Skriv inn navn på kartområde</string>
     <string name="download">Last Ned</string>
     <string name="cancel">Avbryt</string>
+    <string name="request_permissions">Forespør Tillatelser</string>
 </resources>
