@@ -34,7 +34,7 @@ class StartFragment : Fragment() {
 
         viewModel = ViewModelProvider(this)[StartViewModel::class.java]
 
-        binding.offlineMapAreasButton.setOnClickListener {
+        binding.mapAreasConstraintLayout.setOnClickListener {
             if (checkHasAllPermissions(requireContext())) {
                 findNavController().navigate(
                     StartFragmentDirections.actionStartFragmentToMapAreasFragment()
@@ -44,7 +44,7 @@ class StartFragment : Fragment() {
             }
         }
 
-        binding.tripsButton.setOnClickListener {
+        binding.tripsConstraintLayout.setOnClickListener {
             if (checkHasAllPermissions(requireContext())) {
                 findNavController().navigate(
                     StartFragmentDirections.actionStartFragmentToTripsFragment()
