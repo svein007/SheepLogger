@@ -258,7 +258,7 @@ class TripFragment : Fragment() {
             observationMarkers.add(marker)
         }
 
-
+        binding.tripMapView.overlayManager.removeAll(observationPolylines)
         observationPolylines.clear()
 
         for (i in observationTripMapGeoPoints.indices) {
@@ -408,7 +408,10 @@ class TripFragment : Fragment() {
 
     private suspend fun getAnimalRegisterNumber(observation: Observation): String {
         return withContext(Dispatchers.IO) {
-            appDao.getAnimalRegistration(observation.observationId).animalNumber
+            appDao.getAnimalRegistrationForObservation(observation.observationId)?.let {
+                return@let it.animalNumber
+            }
+            return@withContext ""
         }
     }
 

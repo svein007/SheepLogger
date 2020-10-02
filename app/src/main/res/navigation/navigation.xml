@@ -145,6 +145,9 @@
         <argument
             android:name="obsType"
             app:argType="integer" />
+        <action
+            android:id="@+id/action_addDeadAnimalFragment_to_imageResourceFragment"
+            app:destination="@id/imageResourceFragment" />
     </fragment>
     <fragment
         android:id="@+id/imageResourceFragment"

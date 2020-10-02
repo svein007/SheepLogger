@@ -1,22 +1,26 @@
 package com.example.sheeptracker.ui.addanimalregistration
 
 import android.app.Application
-import android.database.sqlite.SQLiteConstraintException
+import android.graphics.drawable.Drawable
+import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.example.sheeptracker.database.AppDao
-import com.example.sheeptracker.database.entities.AnimalRegistration
-import com.example.sheeptracker.database.entities.Observation
-import com.example.sheeptracker.database.entities.Trip
-import com.example.sheeptracker.database.entities.TripMapPoint
+import com.example.sheeptracker.database.entities.*
+import com.example.sheeptracker.utils.deleteFile
+import com.example.sheeptracker.utils.getDrawableFromUri
 import com.example.sheeptracker.utils.getObservedFromPoint
+import com.example.sheeptracker.utils.storeDrawableWithName
 import kotlinx.coroutines.*
 import java.util.*
 
 class AddAnimalRegistrationViewModel(
     private val tripId: Long,
+    private val obsLat: Double,
+    private val obsLon: Double,
     private val currentPosition: TripMapPoint,
     private val observationType: Observation.ObservationType,
     application: Application,
@@ -34,9 +38,13 @@ class AddAnimalRegistrationViewModel(
     val observation: LiveData<Observation>
         get() = _observation
 
-    private val _deadAnimal = MutableLiveData<AnimalRegistration>()
+    private val _animalRegistration = MutableLiveData<AnimalRegistration>()
     val animalRegistration: LiveData<AnimalRegistration>
-        get() = _deadAnimal
+        get() = _animalRegistration
+
+    private var _imageResources = MutableLiveData<List<ImageResource>>()
+    val imageResources: LiveData<List<ImageResource>>
+        get() = _imageResources
 
     val observationTypeTitle = Transformations.map(observation) {
         when (observation.value!!.observationType) {
@@ -46,47 +54,66 @@ class AddAnimalRegistrationViewModel(
         }
     }
 
-    init {
-        val newObservation = Observation(
-            observationLat = 0.0,
-            observationLon = 0.0,
-            observationNote = "",
-            observationDate = observationDate,
-            observationOwnerTripId = tripId,
-            observationOwnerTripMapPointId = -1,
-            observationType = observationType
-        )
-
-        _observation.value = newObservation
-
-        val newDeadAnimal = AnimalRegistration(
-            ownerObservationId = -1
-        )
-        _deadAnimal.value = newDeadAnimal
+    val showEmptyImageListTextView = Transformations.map(imageResources) {
+        it.isNullOrEmpty()
     }
 
-    fun addObservation(lat: Double, lon: Double, onSuccess: () -> Unit, onFail: () -> Unit) {
+    init {
+
         uiScope.launch {
-            try {
-                val observationPoint = getObservedFromPoint(appDao, tripId, currentPosition)
+            val observationPoint = getObservedFromPoint(appDao, tripId, currentPosition)
 
-                observation.value?.apply {
-                    observationLat = lat
-                    observationLon = lon
-                    observationOwnerTripMapPointId = observationPoint.tripMapPointId
-                }
+            val newObservation = Observation(
+                observationLat = obsLat,
+                observationLon = obsLon,
+                observationNote = "",
+                observationDate = observationDate,
+                observationOwnerTripId = tripId,
+                observationOwnerTripMapPointId = observationPoint.tripMapPointId,
+                observationType = observationType
+            )
 
-                val obsId = observation.value?.let { insert(it) }
+            val obsId = insert(newObservation)
+            _observation.value = getObservation(obsId)
 
-                if (obsId != null && animalRegistration.value != null) {
-                    _deadAnimal.value!!.ownerObservationId = obsId
-                    insert(animalRegistration.value!!)
-                }
+            val newAnimalRegistration = AnimalRegistration(
+                ownerObservationId = _observation.value!!.observationId
+            )
+            val aniRegId = insert(newAnimalRegistration)
+            _animalRegistration.value = getAnimalRegistration(aniRegId)
 
-                onSuccess()
-            } catch (e: SQLiteConstraintException) {
-                onFail()
-            }
+        }
+    }
+
+    fun deleteObservation() {
+        uiScope.launch {
+            delete()
+        }
+    }
+
+    fun updateObservation() {
+        uiScope.launch {
+            update()
+        }
+    }
+
+    fun addImageResource(imgUri: String) {
+        uiScope.launch {
+            addImgResToDB(imgUri)
+            _imageResources.value = getImgResources()
+        }
+    }
+
+    fun addImageResource(drawable: Drawable) {
+        uiScope.launch {
+            addImgResToDB(drawable)
+            _imageResources.value = getImgResources()
+        }
+    }
+
+    fun refreshImageResources() {
+        uiScope.launch {
+            _imageResources.value = getImgResources()
         }
     }
 
@@ -98,9 +125,89 @@ class AddAnimalRegistrationViewModel(
         }
     }
 
-    private suspend fun insert(animalRegistration: AnimalRegistration) {
+    private suspend fun insert(animalRegistration: AnimalRegistration): Long {
         return withContext(Dispatchers.IO) {
             appDao.insert(animalRegistration)
+        }
+    }
+
+    private suspend fun getObservation(key: Long): Observation? {
+        return withContext(Dispatchers.IO) {
+            return@withContext appDao.getObservation(key)
+        }
+    }
+
+    private suspend fun getAnimalRegistration(key: Long): AnimalRegistration? {
+        return withContext(Dispatchers.IO) {
+            return@withContext appDao.getAnimalRegistration(key)
+        }
+    }
+
+    private suspend fun delete() {
+        withContext(Dispatchers.IO) {
+            imageResources.value?.let {
+                for (imgRes in it) {
+                    deleteFile(imgRes.getImgUri())
+                }
+            }
+
+            animalRegistration.value?.let {
+                appDao.deleteAnimalRegistration(it.id)
+            }
+
+            observation.value?.let {
+                appDao.deleteObservation(it.observationId)
+            }
+        }
+    }
+
+    private suspend fun update() {
+        withContext(Dispatchers.IO){
+            observation.value?.let {
+                appDao.update(it)
+            }
+            animalRegistration.value?.let {
+                appDao.update(it)
+            }
+        }
+    }
+
+    private suspend fun getImgResources(): List<ImageResource>? {
+        return withContext(Dispatchers.IO){
+            observation.value?.let {
+                return@withContext appDao.getImageResources(it.observationId)
+            }
+            return@withContext null
+        }
+    }
+
+    /**
+     * Creates and stores a copy of the given file, and creates a ImageResource entry in DB.
+     */
+    private suspend fun addImgResToDB(imgUri: String) {
+        withContext(Dispatchers.IO) {
+            val drawable = getDrawableFromUri(getApplication<Application>().applicationContext, Uri.parse(imgUri))
+            val newImgRes = ImageResource(imageResourceObservationId = observation.value!!.observationId)
+            val newId = appDao.insert(newImgRes)
+            val uriString = storeDrawableWithName(getApplication<Application>().applicationContext, drawable!!, "img_${observation.value!!.observationId}_$newId")
+            val imgRes = appDao.getImageResource(newId)
+
+            imgRes.imageResourceUri = uriString
+
+            appDao.update(imgRes)
+        }
+    }
+
+    private suspend fun addImgResToDB(drawable: Drawable) {
+        withContext(Dispatchers.IO) {
+            val newImgRes = ImageResource(imageResourceObservationId = observation.value!!.observationId)
+            val newId = appDao.insert(newImgRes)
+            val uriString = storeDrawableWithName(getApplication<Application>().applicationContext, drawable, "img_${observation.value!!.observationId}_$newId")
+            val imgRes = appDao.getImageResource(newId)
+
+            imgRes.imageResourceUri = uriString
+
+            appDao.update(imgRes)
         }
     }
 

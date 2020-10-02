@@ -9,6 +9,8 @@ import com.example.sheeptracker.database.entities.TripMapPoint
 
 class AddAnimalRegistrationViewModelFactory(
     private val tripId: Long,
+    private val obsLat: Double,
+    private val obsLon: Double,
     private val currentPosition: TripMapPoint,
     private val observationType: Observation.ObservationType,
     private val application: Application,
@@ -19,7 +21,7 @@ class AddAnimalRegistrationViewModelFactory(
     @Suppress("unchecked_cast")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(AddAnimalRegistrationViewModel::class.java)) {
-            return AddAnimalRegistrationViewModel(tripId, currentPosition, observationType, application, appDao) as T
+            return AddAnimalRegistrationViewModel(tripId, obsLat, obsLon, currentPosition, observationType, application, appDao) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

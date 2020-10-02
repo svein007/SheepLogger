@@ -93,6 +93,9 @@ interface AppDao {
     @Update(onConflict = OnConflictStrategy.REPLACE)
     fun update(observation: Observation)
 
+    @Query("DELETE FROM observation_table WHERE observation_id = :key")
+    fun deleteObservation(key: Long)
+
 
     /** Counter **/
 
@@ -112,7 +115,7 @@ interface AppDao {
     fun update(counter: Counter)
 
 
-    /** DeadAnimal **/
+    /** AnimalRegistration **/
 
     @Insert
     fun insert(animalRegistration: AnimalRegistration): Long
@@ -121,13 +124,19 @@ interface AppDao {
     fun getDeadAnimal(observationId: Long): LiveData<AnimalRegistration>
 
     @Query("SELECT * FROM animal_registration_table WHERE animal_registration_owner_observation_id = :observationId")
-    fun getAnimalRegistration(observationId: Long): AnimalRegistration
+    fun getAnimalRegistrationForObservation(observationId: Long): AnimalRegistration?
+
+    @Query("SELECT * FROM animal_registration_table WHERE animal_registration_id = :key")
+    fun getAnimalRegistration(key: Long): AnimalRegistration?
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
     fun update(animalRegistration: AnimalRegistration)
 
     @Query("SELECT animal_registration_id FROM animal_registration_table WHERE animal_registration_owner_observation_id = :observationId")
     fun getAnimalRegistrationId(observationId: Long): Long
+
+    @Query("DELETE FROM animal_registration_table WHERE animal_registration_id = :key")
+    fun deleteAnimalRegistration(key: Long)
 
 
     /** ImageResource **/
@@ -137,6 +146,9 @@ interface AppDao {
 
     @Query("SELECT * FROM image_resource_table WHERE image_resource_observation_id = :observationId")
     fun getImageResourcesLD(observationId: Long): LiveData<List<ImageResource>>
+
+    @Query("SELECT * FROM image_resource_table WHERE image_resource_observation_id = :observationId")
+    fun getImageResources(observationId: Long): List<ImageResource>
 
     @Query("SELECT * FROM image_resource_table WHERE image_resource_id = :key")
     fun getImageResource(key: Long): ImageResource
