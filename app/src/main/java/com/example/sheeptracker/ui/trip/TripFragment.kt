@@ -358,8 +358,8 @@ class TripFragment : Fragment() {
         val observationTypeAlertDialog = activity?.let {
             val builder = AlertDialog.Builder(it)
             builder.apply {
-                setTitle("Select Observation Type")
-                setItems(arrayOf("Count", "Dead", "Injured")){ dialogInterface, index ->
+                setTitle(getString(R.string.select_observation_type))
+                setItems(arrayOf(getString(R.string.count), getString(R.string.dead), getString(R.string.injured))){ dialogInterface, index ->
                     when (index) {
                         0 -> {
                             findNavController().navigate(

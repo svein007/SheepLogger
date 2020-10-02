@@ -8,6 +8,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
+import com.example.sheeptracker.R
 import com.example.sheeptracker.database.AppDao
 import com.example.sheeptracker.database.entities.*
 import com.example.sheeptracker.utils.deleteFile
@@ -48,8 +49,8 @@ class AddAnimalRegistrationViewModel(
 
     val observationTypeTitle = Transformations.map(observation) {
         when (observation.value!!.observationType) {
-            Observation.ObservationType.DEAD -> "DEAD ANIMAL"
-            Observation.ObservationType.INJURED -> "INJURED ANIMAL"
+            Observation.ObservationType.DEAD -> application.getString(R.string.dead_animal)
+            Observation.ObservationType.INJURED -> application.getString(R.string.injured_animal)
             else -> "-"
         }
     }

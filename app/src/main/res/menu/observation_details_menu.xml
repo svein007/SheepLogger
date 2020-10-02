@@ -4,10 +4,10 @@
 
     <item
         android:id="@+id/mi_delete_observation"
-        android:title="Delete"
+        android:title="@string/delete"
         app:showAsAction="never" />
     <item
         android:id="@+id/mi_observation_details_save"
-        android:title="Save"
+        android:title="@string/save"
         app:showAsAction="ifRoom" />
 </menu>

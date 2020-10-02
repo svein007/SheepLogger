@@ -85,7 +85,7 @@
     <fragment
         android:id="@+id/addObservationFragment"
         android:name="com.example.sheeptracker.ui.addobservation.AddObservationFragment"
-        android:label="Register Observation"
+        android:label="@string/register_observation"
         tools:layout="@layout/add_observation_fragment">
         <argument
             android:name="tripId"
@@ -98,7 +98,7 @@
             app:argType="string" />
         <action
             android:id="@+id/action_addObservationFragment_to_swiperFragment"
-            app:destination="@id/swiperFragment" >
+            app:destination="@id/swiperFragment">
             <argument
                 android:name="navFromFragment"
                 android:defaultValue="add" />
@@ -122,7 +122,7 @@
     <fragment
         android:id="@+id/swiperFragment"
         android:name="com.example.sheeptracker.ui.swiper.SwiperFragment"
-        android:label="SwiperFragment"
+        android:label="@string/swiper"
         tools:layout="@layout/swiper_fragment">
         <argument
             android:name="navFromFragment"
@@ -131,7 +131,7 @@
     <fragment
         android:id="@+id/addDeadAnimalFragment"
         android:name="com.example.sheeptracker.ui.addanimalregistration.AddAnimalRegistrationFragment"
-        android:label="Register Animal Info"
+        android:label="@string/register_animal_info"
         tools:layout="@layout/add_animal_registration_fragment">
         <argument
             android:name="tripId"
@@ -152,7 +152,7 @@
     <fragment
         android:id="@+id/imageResourceFragment"
         android:name="com.example.sheeptracker.ui.imageresource.ImageResourceFragment"
-        android:label="ImageResourceFragment"
+        android:label="@string/image"
         tools:layout="@layout/image_resource_fragment">
         <argument
             android:name="imageResourceId"
@@ -164,14 +164,14 @@
     <fragment
         android:id="@+id/animalCountersDetailsFragment"
         android:name="com.example.sheeptracker.ui.animalcountersdetails.HerdObservationDetailsFragment"
-        android:label="Herd Observation"
+        android:label="@string/herd_observation"
         tools:layout="@layout/herd_observation_details_fragment">
         <argument
             android:name="observationId"
             app:argType="long" />
         <action
             android:id="@+id/action_animalCountersDetailsFragment_to_swiperFragment"
-            app:destination="@id/swiperFragment" >
+            app:destination="@id/swiperFragment">
             <argument
                 android:name="navFromFragment"
                 android:defaultValue="details" />
@@ -180,7 +180,7 @@
     <fragment
         android:id="@+id/animalRegistrationDetailsFragment"
         android:name="com.example.sheeptracker.ui.animalregistrationdetails.AnimalRegistrationDetailsFragment"
-        android:label="AnimalRegistrationDetailsFragment"
+        android:label="@string/animal_registration"
         tools:layout="@layout/animal_registration_details_fragment">
         <argument
             android:name="observationId"

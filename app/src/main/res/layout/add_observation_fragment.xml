@@ -23,7 +23,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:ems="10"
-            android:hint="Observation notes"
+            android:hint="@string/observation_notes"
             android:inputType="textMultiLine|textPersonName|textCapSentences"
             android:singleLine="false"
             android:text="@={viewModel.observation.observationNote}"
@@ -52,7 +52,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:text="Expected lambs: "
+            android:text="@string/expected_lamb_count"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName3" />
@@ -63,7 +63,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:text="Notes:"
+            android:text="@string/notes"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -72,11 +72,12 @@
             android:id="@+id/expectedSheepCountTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@{``+viewModel.expectedSheepCount}"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             app:layout_constraintBottom_toBottomOf="@+id/textView4"
             app:layout_constraintStart_toEndOf="@+id/textView4"
             app:layout_constraintTop_toTopOf="@+id/textView4"
-            android:text="@{``+viewModel.expectedSheepCount}"
             tools:text="9" />
 
         <View

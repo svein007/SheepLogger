@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable
 import android.net.Uri
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.Transformations
+import com.example.sheeptracker.R
 import com.example.sheeptracker.database.AppDao
 import com.example.sheeptracker.database.entities.AnimalRegistration
 import com.example.sheeptracker.database.entities.ImageResource
@@ -36,8 +37,8 @@ class AnimalRegistrationDetailsViewModel(
 
     val observationTypeTitle = Transformations.map(observation) {
         when (observation.value?.observationType) {
-            Observation.ObservationType.DEAD -> "DEAD ANIMAL"
-            Observation.ObservationType.INJURED -> "INJURED ANIMAL"
+            Observation.ObservationType.DEAD -> getApplication<Application>().getString(R.string.dead_animal)
+            Observation.ObservationType.INJURED -> getApplication<Application>().getString(R.string.injured_animal)
             else -> "-"
         }
     }

@@ -4,10 +4,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/mi_swiper"
-        android:title="Swiper"
+        android:title="@string/swiper"
         app:showAsAction="never" />
     <item
         android:id="@+id/mi_add_observation"
-        android:title="Add"
-        app:showAsAction="ifRoom"/>
+        android:title="@string/add"
+        app:showAsAction="ifRoom" />
 </menu>

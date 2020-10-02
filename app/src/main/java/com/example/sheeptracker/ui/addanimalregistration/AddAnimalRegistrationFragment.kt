@@ -162,7 +162,7 @@ class AddAnimalRegistrationFragment : Fragment() {
         val intent = Intent()
         intent.type = "image/*"
         intent.action = Intent.ACTION_GET_CONTENT
-        startActivityForResult(Intent.createChooser(intent, "Select an image"), SELECT_IMG_RES_INTENT_CODE)
+        startActivityForResult(Intent.createChooser(intent, getString(R.string.select_image)), SELECT_IMG_RES_INTENT_CODE)
     }
 
     private fun dispatchTakeImageIntent(){
@@ -192,8 +192,8 @@ class AddAnimalRegistrationFragment : Fragment() {
         val observationTypeAlertDialog = activity?.let {
             val builder = AlertDialog.Builder(it)
             builder.apply {
-                setTitle("Add image")
-                setItems(arrayOf("Take image", "Choose from gallery")){ dialogInterface, index ->
+                setTitle(getString(R.string.add_image))
+                setItems(arrayOf(getString(R.string.take_image), getString(R.string.choose_from_gallery))){ dialogInterface, index ->
                     when (index) {
                         0 -> {
                             dispatchTakeImageIntent()
