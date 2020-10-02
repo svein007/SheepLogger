@@ -48,4 +48,9 @@
     <string name="take_image">Ta bilde</string>
     <string name="choose_from_gallery">Velg fra galleri</string>
     <string name="animal_registration">Registrering Dyr</string>
+    <string name="map_area_name">Kartområde navn</string>
+    <string name="download_mapArea">Last ned kartområde</string>
+    <string name="enter_map_area_name">Skriv inn navn på kartområde</string>
+    <string name="download">Last Ned</string>
+    <string name="cancel">Avbryt</string>
 </resources>

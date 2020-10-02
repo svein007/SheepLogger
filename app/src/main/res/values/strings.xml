@@ -47,4 +47,9 @@
     <string name="take_image">Take image</string>
     <string name="choose_from_gallery">Choose from gallery</string>
     <string name="animal_registration">Animal Registration</string>
+    <string name="map_area_name">Map area name</string>
+    <string name="download_mapArea">Download Map Area</string>
+    <string name="enter_map_area_name">Enter the name of the selected map area</string>
+    <string name="download">Download</string>
+    <string name="cancel">Cancel</string>
 </resources>

@@ -212,7 +212,7 @@ class MainFragment : Fragment() {
         viewGroup.setPadding(48, 0, 48, 0)
 
         val editText = EditText(requireContext())
-        editText.hint = "Map area name"
+        editText.hint = getString(R.string.map_area_name)
         editText.inputType = editText.inputType or InputType.TYPE_TEXT_FLAG_CAP_SENTENCES
         editText.layoutParams = LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.MATCH_PARENT,
@@ -221,14 +221,14 @@ class MainFragment : Fragment() {
         viewGroup.addView(editText)
 
         AlertDialog.Builder(requireContext())
-            .setTitle("Download Map Area")
-            .setMessage("Enter the name of the selected map area")
+            .setTitle(getString(R.string.download_mapArea))
+            .setMessage(getString(R.string.enter_map_area_name))
             .setView(viewGroup)
-            .setPositiveButton("Download") { dialog, which ->
+            .setPositiveButton(getString(R.string.download)) { dialog, which ->
                 val mapAreaName = editText.text.toString()
                 saveMapArea(mapAreaName)
             }
-            .setNegativeButton("Cancel") { dialog, which ->
+            .setNegativeButton(getString(R.string.cancel)) { dialog, which ->
             }
             .show()
 
