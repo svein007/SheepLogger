@@ -9,6 +9,7 @@ import com.example.sheeptracker.database.AppDao
 import com.example.sheeptracker.database.entities.AnimalRegistration
 import com.example.sheeptracker.database.entities.ImageResource
 import com.example.sheeptracker.database.entities.Observation
+import com.example.sheeptracker.utils.deleteFile
 import com.example.sheeptracker.utils.getDrawableFromUri
 import com.example.sheeptracker.utils.storeDrawableWithName
 import kotlinx.coroutines.*
@@ -29,7 +30,7 @@ class AnimalRegistrationDetailsViewModel(
 
     val observation = appDao.getObservationLD(observationId)
 
-    val deadAnimal = appDao.getDeadAnimal(observationId)
+    val animalRegistration = appDao.getDeadAnimal(observationId)
 
     val imageResources = appDao.getImageResourcesLD(observationId)
 
@@ -46,7 +47,10 @@ class AnimalRegistrationDetailsViewModel(
     }
 
     val observationTimeString = Transformations.map(observation) {
-        SimpleDateFormat("HH:mm").format(it.observationDate)
+        it?.let {
+            SimpleDateFormat("HH:mm").format(it.observationDate)
+        }
+        null
     }
 
     /** ViewModel methods **/
@@ -54,7 +58,7 @@ class AnimalRegistrationDetailsViewModel(
     fun onUpdateObservation() {
         uiScope.launch {
             updateObservation(observation.value!!)
-            deadAnimal.value?.let {
+            animalRegistration.value?.let {
                 updateDeadAnimal(it)
             }
         }
@@ -72,6 +76,12 @@ class AnimalRegistrationDetailsViewModel(
         }
     }
 
+    fun deleteObservation() {
+        uiScope.launch {
+            delete()
+        }
+    }
+
     /** Helpers **/
 
     private suspend fun updateObservation(observation: Observation) {
@@ -83,6 +93,24 @@ class AnimalRegistrationDetailsViewModel(
     private suspend fun updateDeadAnimal(animalRegistration: AnimalRegistration) {
         withContext(Dispatchers.IO) {
             appDao.update(animalRegistration)
+        }
+    }
+
+    private suspend fun delete() {
+        withContext(Dispatchers.IO) {
+            imageResources.value?.let {
+                for (imgRes in it) {
+                    deleteFile(imgRes.getImgUri())
+                }
+            }
+
+            animalRegistration.value?.let {
+                appDao.deleteAnimalRegistration(it.id)
+            }
+
+            observation.value?.let {
+                appDao.deleteObservation(it.observationId)
+            }
         }
     }
 

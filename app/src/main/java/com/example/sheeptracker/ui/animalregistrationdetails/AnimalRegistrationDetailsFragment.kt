@@ -57,7 +57,9 @@ class AnimalRegistrationDetailsFragment : Fragment() {
         binding.viewModel = viewModel
 
         viewModel.observation.observe(viewLifecycleOwner) {
-            binding.animalRegistrationIcon.setImageDrawable(it.observationType.getDrawable(resources))
+            it?.let {
+                binding.animalRegistrationIcon.setImageDrawable(it.observationType.getDrawable(resources))
+            }
         }
 
         val imagesAdapter = ImageResourceAdapter(
@@ -117,6 +119,10 @@ class AnimalRegistrationDetailsFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.mi_observation_details_save) {
             viewModel.onUpdateObservation()
+            findNavController().navigateUp()
+            return true
+        } else if (item.itemId == R.id.mi_delete_observation) {
+            viewModel.deleteObservation()
             findNavController().navigateUp()
             return true
         }
