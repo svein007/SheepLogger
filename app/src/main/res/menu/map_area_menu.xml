@@ -4,6 +4,6 @@
 
     <item
         android:id="@+id/mi_delete_map_area"
-        android:title="Delete"
+        android:title="@string/delete"
         app:showAsAction="never"/>
 </menu>

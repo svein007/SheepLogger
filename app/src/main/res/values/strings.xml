@@ -11,4 +11,16 @@
     <string name="yellow_tie">yellow tie</string>
     <string name="map_areas">Map Areas</string>
     <string name="my_trips">My Trips</string>
+    <string name="map_area">Map area</string>
+    <string name="delete">Delete</string>
+    <string name="new_trip">New Trip</string>
+    <string name="add">Add</string>
+    <string name="trip_name">Trip name</string>
+    <string name="select_map_area">Select Map Area:</string>
+    <string name="trip">Trip</string>
+    <string name="map">Map</string>
+    <string name="observations">Observations</string>
+    <string name="start">Start</string>
+    <string name="stop">Stop</string>
+    <string name="no_observations">No Observations</string>
 </resources>

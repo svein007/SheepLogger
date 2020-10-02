@@ -4,6 +4,6 @@
 
     <item
         android:id="@+id/mi_delete_trip"
-        android:title="Delete"
-        app:showAsAction="never"/>
+        android:title="@string/delete"
+        app:showAsAction="never" />
 </menu>

@@ -12,4 +12,16 @@
     <string name="yellow_tie">gult slips</string>
     <string name="map_areas">Kartområder</string>
     <string name="my_trips">Mine turer</string>
+    <string name="map_area">Kartområde</string>
+    <string name="delete">Slett</string>
+    <string name="new_trip">Ny Tur</string>
+    <string name="add">Legg Til</string>
+    <string name="trip_name">Turnavn</string>
+    <string name="select_map_area">Velg Kartområde:</string>
+    <string name="trip">Tur</string>
+    <string name="map">Kart</string>
+    <string name="observations">Observasjoner</string>
+    <string name="start">Start</string>
+    <string name="stop">Stopp</string>
+    <string name="no_observations">Ingen Observasjoner</string>
 </resources>

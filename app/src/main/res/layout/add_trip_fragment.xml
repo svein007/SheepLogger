@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:ems="10"
-            android:hint="Trip name"
+            android:hint="@string/trip_name"
             android:inputType="textPersonName|textCapSentences"
             android:text="@={viewModel.tripName}"
             app:layout_constraintEnd_toEndOf="parent"
@@ -63,7 +63,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:layout_marginTop="8dp"
-            android:text="Select Map Area:"
+            android:text="@string/select_map_area"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/editTextTextPersonName2" />

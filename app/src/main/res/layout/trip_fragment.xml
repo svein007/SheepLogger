@@ -27,21 +27,21 @@
 
         <Button
             android:id="@+id/startGpsLogButton"
-            android:enabled="@{!tripViewModel.isTrackingGPS}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:text="Start"
+            android:enabled="@{!tripViewModel.isTrackingGPS}"
+            android:text="@string/start"
             app:layout_constraintStart_toEndOf="@+id/textView7"
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
             android:id="@+id/stopGpsLogButton"
-            android:enabled="@{tripViewModel.isTrackingGPS}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:text="Stop"
+            android:enabled="@{tripViewModel.isTrackingGPS}"
+            android:text="@string/stop"
             app:layout_constraintStart_toEndOf="@+id/startGpsLogButton"
             app:layout_constraintTop_toTopOf="@+id/startGpsLogButton" />
 
@@ -73,7 +73,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:text="Observations"
+            android:text="@string/observations"
             app:layout_constraintStart_toEndOf="@+id/textView8"
             app:layout_constraintTop_toBottomOf="@+id/startGpsLogButton" />
 

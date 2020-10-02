@@ -9,8 +9,8 @@
     <fragment
         android:id="@+id/mainFragment"
         android:name="com.example.sheeptracker.ui.main.MainFragment"
-        android:label="Map"
-        tools:layout="@layout/main_fragment"/>
+        android:label="@string/map"
+        tools:layout="@layout/main_fragment" />
     <fragment
         android:id="@+id/mapAreasFragment"
         android:name="com.example.sheeptracker.ui.mapareas.MapAreasFragment"
@@ -26,7 +26,7 @@
     <fragment
         android:id="@+id/tripFragment"
         android:name="com.example.sheeptracker.ui.trip.TripFragment"
-        android:label="Trip"
+        android:label="@string/trip"
         tools:layout="@layout/trip_fragment">
         <argument
             android:name="tripId"
@@ -71,12 +71,12 @@
     <fragment
         android:id="@+id/addTripFragment"
         android:name="com.example.sheeptracker.ui.addtrip.AddTripFragment"
-        android:label="New Trip"
-        tools:layout="@layout/add_trip_fragment"/>
+        android:label="@string/new_trip"
+        tools:layout="@layout/add_trip_fragment" />
     <fragment
         android:id="@+id/mapAreaFragment"
         android:name="com.example.sheeptracker.ui.maparea.MapAreaFragment"
-        android:label="Map Area"
+        android:label="@string/map_area"
         tools:layout="@layout/map_area_fragment">
         <argument
             android:name="mapAreaId"
@@ -107,7 +107,7 @@
     <fragment
         android:id="@+id/observationsFragment"
         android:name="com.example.sheeptracker.ui.observations.ObservationsFragment"
-        android:label="Observations"
+        android:label="@string/observations"
         tools:layout="@layout/observations_fragment">
         <argument
             android:name="tripId"
