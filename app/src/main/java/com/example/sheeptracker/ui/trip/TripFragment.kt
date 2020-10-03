@@ -63,7 +63,6 @@ class TripFragment : Fragment() {
             showNewObservationDialog(geoPoint)
             return true
         }
-
     })
 
     override fun onCreateView(
@@ -264,7 +263,7 @@ class TripFragment : Fragment() {
         for (i in observationTripMapGeoPoints.indices) {
             val line = Polyline()
             line.setPoints(listOf(observationTripMapGeoPoints[i], observationsGeoPoints[i]))
-            line.outlinePaint.color = Color.MAGENTA
+            line.outlinePaint.color = Color.parseColor("#33691E")
             observationPolylines.add(line)
         }
 
