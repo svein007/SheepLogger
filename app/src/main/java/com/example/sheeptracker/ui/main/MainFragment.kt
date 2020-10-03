@@ -54,8 +54,6 @@ class MainFragment : Fragment() {
             inflater, R.layout.main_fragment, container, false
         )
 
-        setHasOptionsMenu(true)
-
         val application = requireNotNull(this.activity).application
 
         val appDao = AppDatabase.getInstance(application).appDatabaseDao
@@ -130,6 +128,10 @@ class MainFragment : Fragment() {
         scaleBarOverlay.setCentred(true)
         scaleBarOverlay.setScaleBarOffset(dm.widthPixels / 2, 10)
         binding.mapView.overlays.add(scaleBarOverlay)
+
+        binding.floatingActionButton.setOnClickListener {
+            showMapAreaNameDialog()
+        }
     }
 
 
@@ -160,20 +162,6 @@ class MainFragment : Fragment() {
             }
         }
     }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.map_area_download_menu, menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.mi_download_map_area) {
-            showMapAreaNameDialog()
-            return true
-        }
-        return false
-    }
-
 
     private fun saveMapArea(mapAreaName: String) {
         val possibleNumOfTiles = cacheManager?.possibleTilesInArea(
