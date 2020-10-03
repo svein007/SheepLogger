@@ -25,37 +25,6 @@
 
         </org.osmdroid.views.MapView>
 
-        <Button
-            android:id="@+id/startGpsLogButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:enabled="@{!tripViewModel.isTrackingGPS}"
-            android:text="@string/start"
-            app:layout_constraintStart_toEndOf="@+id/textView7"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Button
-            android:id="@+id/stopGpsLogButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:enabled="@{tripViewModel.isTrackingGPS}"
-            android:text="@string/stop"
-            app:layout_constraintStart_toEndOf="@+id/startGpsLogButton"
-            app:layout_constraintTop_toTopOf="@+id/startGpsLogButton" />
-
-        <TextView
-            android:id="@+id/textView7"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:text="GPS: "
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/startGpsLogButton"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/startGpsLogButton" />
-
         <ImageButton
             android:id="@+id/gpsFollowButton"
             android:onClick="@{() -> tripViewModel.toggleFollowGPS()}"

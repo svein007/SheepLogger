@@ -3,6 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/mi_start_tracking"
+        android:title="@string/start_tracking" />
+    <item
+        android:id="@+id/mi_stop_tracking"
+        android:title="@string/stop_tracking"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/mi_observations"
         android:title="@string/observations"
         app:showAsAction="never" />

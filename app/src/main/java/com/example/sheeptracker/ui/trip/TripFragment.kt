@@ -9,6 +9,7 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.forEachIndexed
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -136,14 +137,6 @@ class TripFragment : Fragment() {
                     binding.gpsFollowButton.setImageResource(R.drawable.ic_baseline_gps_not_fixed_24)
                 }
             }
-        }
-
-        binding.startGpsLogButton.setOnClickListener {
-            startLocationService()
-        }
-
-        binding.stopGpsLogButton.setOnClickListener {
-            stopLocationService()
         }
 
         binding.lifecycleOwner = viewLifecycleOwner
@@ -326,16 +319,42 @@ class TripFragment : Fragment() {
         inflater.inflate(R.menu.trip_menu, menu)
     }
 
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        super.onPrepareOptionsMenu(menu)
+        menu.forEachIndexed { index, item ->
+            if (item.itemId == R.id.mi_start_tracking) {
+                viewModel.isTrackingGPS.value?.let {
+                    item.setVisible(!it)
+                }
+            } else if (item.itemId == R.id.mi_stop_tracking) {
+                viewModel.isTrackingGPS.value?.let {
+                    item.setVisible(it)
+                }
+            }
+        }
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.mi_delete_trip) {
-            viewModel.deleteTrip()
-            findNavController().navigateUp()
-            return true
-        } else if (item.itemId == R.id.mi_observations) {
-            findNavController().navigate(
-                TripFragmentDirections.actionTripFragmentToObservationsFragment(arguments.tripId)
-            )
-            return true
+        when (item.itemId) {
+            R.id.mi_delete_trip -> {
+                viewModel.deleteTrip()
+                findNavController().navigateUp()
+                return true
+            }
+            R.id.mi_observations -> {
+                findNavController().navigate(
+                    TripFragmentDirections.actionTripFragmentToObservationsFragment(arguments.tripId)
+                )
+                return true
+            }
+            R.id.mi_start_tracking -> {
+                startLocationService()
+                return true
+            }
+            R.id.mi_stop_tracking -> {
+                stopLocationService()
+                return true
+            }
         }
         return false
     }
