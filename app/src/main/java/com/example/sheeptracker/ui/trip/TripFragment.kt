@@ -407,7 +407,7 @@ class TripFragment : Fragment() {
     private suspend fun getAnimalRegisterNumber(observation: Observation): String {
         return withContext(Dispatchers.IO) {
             appDao.getAnimalRegistrationForObservation(observation.observationId)?.let {
-                return@let it.animalNumber
+                return@withContext it.animalNumber
             }
             return@withContext ""
         }
