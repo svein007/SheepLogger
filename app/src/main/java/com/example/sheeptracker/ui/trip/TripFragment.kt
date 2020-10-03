@@ -120,12 +120,6 @@ class TripFragment : Fragment() {
             }
         })
 
-        binding.observationsButton.setOnClickListener {
-            findNavController().navigate(
-                TripFragmentDirections.actionTripFragmentToObservationsFragment(arguments.tripId)
-            )
-        }
-
         viewModel.latestLocation.observe(viewLifecycleOwner) {
             it?.let {
                 if (viewModel.isFollowingGPS.value!!) {
@@ -336,6 +330,11 @@ class TripFragment : Fragment() {
         if (item.itemId == R.id.mi_delete_trip) {
             viewModel.deleteTrip()
             findNavController().navigateUp()
+            return true
+        } else if (item.itemId == R.id.mi_observations) {
+            findNavController().navigate(
+                TripFragmentDirections.actionTripFragmentToObservationsFragment(arguments.tripId)
+            )
             return true
         }
         return false

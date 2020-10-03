@@ -56,27 +56,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/startGpsLogButton" />
 
-        <TextView
-            android:id="@+id/textView8"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:text="Obs: "
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/observationsButton"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/observationsButton" />
-
-        <Button
-            android:id="@+id/observationsButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:text="@string/observations"
-            app:layout_constraintStart_toEndOf="@+id/textView8"
-            app:layout_constraintTop_toBottomOf="@+id/startGpsLogButton" />
-
         <ImageButton
             android:id="@+id/gpsFollowButton"
             android:onClick="@{() -> tripViewModel.toggleFollowGPS()}"

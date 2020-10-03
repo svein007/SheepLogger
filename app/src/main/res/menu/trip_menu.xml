@@ -3,6 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/mi_observations"
+        android:title="@string/observations"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/mi_delete_trip"
         android:title="@string/delete"
         app:showAsAction="never" />
