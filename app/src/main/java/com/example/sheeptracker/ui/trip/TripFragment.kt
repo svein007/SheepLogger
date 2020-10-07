@@ -337,8 +337,7 @@ class TripFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.mi_delete_trip -> {
-                viewModel.deleteTrip()
-                findNavController().navigateUp()
+                showDeleteTripDialog()
                 return true
             }
             R.id.mi_observations -> {
@@ -430,6 +429,19 @@ class TripFragment : Fragment() {
             }
             return@withContext ""
         }
+    }
+
+    private fun showDeleteTripDialog() {
+        AlertDialog.Builder(requireContext())
+            .setTitle(getString(R.string.delete_trip))
+            .setMessage(getString(R.string.delete_trip_query))
+            .setPositiveButton(getString(R.string.delete)) { dialog, which ->
+                viewModel.deleteTrip()
+                findNavController().navigateUp()
+            }
+            .setNegativeButton(getString(R.string.cancel)) { dialog, which ->
+            }
+            .show()
     }
 
 }
