@@ -151,7 +151,7 @@ class AnimalRegistrationDetailsFragment : Fragment() {
                 photoFile?.also {
                     val photoURI: Uri = FileProvider.getUriForFile(
                         requireContext(),
-                        "com.example.android.fileprovider",
+                        "com.example.sheeptracker.fileprovider",
                         it
                     )
                     currentPhotoPath = it.absolutePath

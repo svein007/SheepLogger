@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:shortcutId="compose"
+        android:enabled="true"
+        android:shortcutShortLabel="@string/new_trip">
+
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.example.sheeptracker"
+            android:targetClass="com.example.sheeptracker.ui.MainActivity"
+            android:data="sheeptracker://new_trip" />
+
+    </shortcut>
+</shortcuts>
