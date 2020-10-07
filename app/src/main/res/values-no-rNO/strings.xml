@@ -54,4 +54,8 @@
     <string name="download">Last Ned</string>
     <string name="cancel">Avbryt</string>
     <string name="request_permissions">Forespør Tillatelser</string>
+    <string name="start_tracking">Start Sporing</string>
+    <string name="stop_tracking">Stopp Sporing</string>
+    <string name="delete_map_area">Slett Kartområde</string>
+    <string name="delete_map_area_query">Er du sikker på at du ønsker å slette kartområdet?</string>
 </resources>

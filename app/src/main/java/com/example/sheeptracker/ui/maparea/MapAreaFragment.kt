@@ -1,5 +1,6 @@
 package com.example.sheeptracker.ui.maparea
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -89,8 +90,7 @@ class MapAreaFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.mi_delete_map_area) {
-            viewModel.deleteMapArea()
-            findNavController().popBackStack()
+            showDeleteMapAreaDialog()
             return true
         }
         return false
@@ -128,6 +128,19 @@ class MapAreaFragment : Fragment() {
             mapView.controller.animateTo(it.boundingBox.centerWithDateLine)
         }
 
+    }
+
+    private fun showDeleteMapAreaDialog() {
+        AlertDialog.Builder(requireContext())
+            .setTitle(getString(R.string.delete_map_area))
+            .setMessage(getString(R.string.delete_map_area_query))
+            .setPositiveButton(getString(R.string.delete)) { dialog, which ->
+                viewModel.deleteMapArea()
+                findNavController().popBackStack()
+            }
+            .setNegativeButton(getString(R.string.cancel)) { dialog, which ->
+            }
+            .show()
     }
 
 }

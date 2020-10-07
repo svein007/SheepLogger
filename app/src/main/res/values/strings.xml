@@ -55,4 +55,6 @@
     <string name="request_permissions">Request Permissions</string>
     <string name="start_tracking">Start Tracking</string>
     <string name="stop_tracking">Stop Tracking</string>
+    <string name="delete_map_area">Delete Map Area</string>
+    <string name="delete_map_area_query">Are you sure you want to delete this map area?</string>
 </resources>

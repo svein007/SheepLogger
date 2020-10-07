@@ -13,13 +13,8 @@ class MapAreaViewModel(
     application: Application,
     private val appDao: AppDao
 ) : AndroidViewModel(application) {
-    // TODO: Implement the ViewModel
 
-    val mapArea: LiveData<MapArea?>
-
-    init {
-        mapArea = appDao.getMapAreaLD(mapAreaId)
-    }
+    val mapArea: LiveData<MapArea?> = appDao.getMapAreaLD(mapAreaId)
 
     /** Private fields **/
 
