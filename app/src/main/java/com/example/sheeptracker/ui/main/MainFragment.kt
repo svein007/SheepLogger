@@ -208,9 +208,14 @@ class MainFragment : Fragment() {
 
         viewGroup.addView(editText)
 
+        val possibleNumOfTiles = cacheManager?.possibleTilesInArea(
+            binding.mapView.boundingBox,
+            binding.mapView.zoomLevelDouble.toInt(), 20
+        ) ?: 0
+
         AlertDialog.Builder(requireContext())
             .setTitle(getString(R.string.download_mapArea))
-            .setMessage(getString(R.string.enter_map_area_name))
+            .setMessage("\n$possibleNumOfTiles tiles.\n\n" + getString(R.string.enter_map_area_name)+":")
             .setView(viewGroup)
             .setPositiveButton(getString(R.string.download)) { dialog, which ->
                 val mapAreaName = editText.text.toString()
