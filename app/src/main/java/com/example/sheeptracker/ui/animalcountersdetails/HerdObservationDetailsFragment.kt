@@ -1,5 +1,6 @@
 package com.example.sheeptracker.ui.animalcountersdetails
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
@@ -71,14 +72,22 @@ class HerdObservationDetailsFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.mi_save_herd) {
-            viewModel.onUpdateObservation()
-            findNavController().navigateUp()
-            return true
-        } else if (item.itemId == R.id.mi_swiper) {
-            findNavController().navigate(
-                HerdObservationDetailsFragmentDirections.actionAnimalCountersDetailsFragmentToSwiperFragment()
-            )
+        when (item.itemId) {
+            R.id.mi_save_herd -> {
+                viewModel.onUpdateObservation()
+                findNavController().navigateUp()
+                return true
+            }
+            R.id.mi_swiper -> {
+                findNavController().navigate(
+                    HerdObservationDetailsFragmentDirections.actionAnimalCountersDetailsFragmentToSwiperFragment()
+                )
+                return true
+            }
+            R.id.mi_delete_herd_obs -> {
+                showDeleteObservationDialog()
+                return true
+            }
         }
 
         return false
@@ -87,6 +96,21 @@ class HerdObservationDetailsFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         requireActivity().viewModelStore.clear() // DANGEROUS??
+    }
+
+    /** Helpers **/
+
+    private fun showDeleteObservationDialog() {
+        AlertDialog.Builder(requireContext())
+            .setTitle(getString(R.string.delete_observation))
+            .setMessage(getString(R.string.delete_observation_query))
+            .setPositiveButton(getString(R.string.delete)) { dialog, which ->
+                viewModel.onDeleteObservation()
+                findNavController().navigateUp()
+            }
+            .setNegativeButton(getString(R.string.cancel)) { dialog, which ->
+            }
+            .show()
     }
 
 }

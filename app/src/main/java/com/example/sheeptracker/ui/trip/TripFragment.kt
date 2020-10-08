@@ -417,8 +417,9 @@ class TripFragment : Fragment() {
 
     private suspend fun getCountersDesc(observation: Observation): String {
         return withContext(Dispatchers.IO) {
-            "${appDao.getCounter(observation.observationId, Counter.CountType.SHEEP).counterValue} sheep" + ", " +
-                "\n${appDao.getCounter(observation.observationId, Counter.CountType.LAMB).counterValue} lamb"
+
+            "${appDao.getCounter(observation.observationId, Counter.CountType.SHEEP)?.counterValue} sheep" + ", " +
+                "\n${appDao.getCounter(observation.observationId, Counter.CountType.LAMB)?.counterValue} lamb"
         }
     }
 

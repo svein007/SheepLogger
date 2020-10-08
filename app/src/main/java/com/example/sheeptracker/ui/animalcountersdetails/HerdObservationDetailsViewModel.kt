@@ -38,6 +38,12 @@ class HerdObservationDetailsViewModel(
         }
     }
 
+    fun onDeleteObservation() {
+        uiScope.launch {
+            delete()
+        }
+    }
+
     /** Helpers **/
 
     private suspend fun updateObservation(observation: Observation) {
@@ -54,5 +60,18 @@ class HerdObservationDetailsViewModel(
         }
     }
 
+    private suspend fun delete() {
+        withContext(Dispatchers.IO) {
+            counters.value?.let {
+                for (counter in it) {
+                    appDao.deleteCounter(counter.counterId)
+                }
+            }
+
+            observation.value?.let {
+                appDao.deleteObservation(it.observationId)
+            }
+        }
+    }
 
 }

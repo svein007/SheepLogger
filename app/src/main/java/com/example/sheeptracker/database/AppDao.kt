@@ -109,10 +109,13 @@ interface AppDao {
     fun getCountersLD(observationId: Long): LiveData<List<Counter>>
 
     @Query("SELECT * FROM counter_table WHERE counter_owner_observation_id = :observationId AND counter_type = :countType")
-    fun getCounter(observationId: Long, countType: Counter.CountType): Counter
+    fun getCounter(observationId: Long, countType: Counter.CountType): Counter?
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
     fun update(counter: Counter)
+
+    @Query("DELETE FROM counter_table WHERE counter_id = :key")
+    fun deleteCounter(key: Long)
 
 
     /** AnimalRegistration **/
