@@ -126,6 +126,8 @@ class MapAreaFragment : Fragment() {
 
         viewModel.mapArea.value?.let {
             mapView.controller.animateTo(it.boundingBox.centerWithDateLine)
+            mapView.setScrollableAreaLimitLatitude(it.boundingBox.latNorth, it.boundingBox.latSouth, 500)
+            mapView.setScrollableAreaLimitLongitude(it.boundingBox.lonWest, it.boundingBox.lonEast, 500)
         }
 
     }

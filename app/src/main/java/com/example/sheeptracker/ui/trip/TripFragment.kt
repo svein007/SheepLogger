@@ -97,6 +97,8 @@ class TripFragment : Fragment() {
                 binding.tripMapView.maxZoomLevel = it.mapAreaMaxZoom
                 binding.tripMapView.controller.zoomTo(it.mapAreaMinZoom)
                 binding.tripMapView.controller.animateTo(it.boundingBox.centerWithDateLine)
+                binding.tripMapView.setScrollableAreaLimitLatitude(it.boundingBox.latNorth, it.boundingBox.latSouth, 500)
+                binding.tripMapView.setScrollableAreaLimitLongitude(it.boundingBox.lonWest, it.boundingBox.lonEast, 500)
 
                 val mapAreaString = it.getSqliteFilename()
                 Log.d("#####", "MapArea sql: mapAreaString")
