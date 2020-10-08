@@ -48,10 +48,12 @@ class HerdObservationDetailsFragment : Fragment() {
             CounterListItemListener {
                 it.inc()
                 binding.counterRV.adapter?.notifyDataSetChanged()
+                viewModel.onUpdateCounter(it)
             },
             CounterListItemListener {
                 it.dec()
                 binding.counterRV.adapter?.notifyDataSetChanged()
+                viewModel.onUpdateCounter(it)
             }
         )
 

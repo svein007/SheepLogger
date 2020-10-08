@@ -2,6 +2,7 @@ package com.example.sheeptracker.ui.animalcountersdetails
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import com.example.sheeptracker.database.AppDao
 import com.example.sheeptracker.database.entities.Counter
 import com.example.sheeptracker.database.entities.Observation
@@ -27,6 +28,17 @@ class HerdObservationDetailsViewModel(
 
     override val countType = MutableLiveData<Counter.CountType>(Counter.CountType.SHEEP)
 
+    val expectedLambCount = Transformations.map(counters) {
+        it.sumBy { counter -> counter.sheepChildCount() }
+    }
+
+    val lambCount = Transformations.map(counters) {
+        it.firstOrNull { c -> c.counterType == Counter.CountType.LAMB }?.let { counter ->
+            return@map counter.counterValue
+        }
+        0
+    }
+
     /** VM Methods **/
 
     fun onUpdateObservation() {
@@ -44,6 +56,12 @@ class HerdObservationDetailsViewModel(
         }
     }
 
+    fun onUpdateCounter(counter: Counter) {
+        uiScope.launch {
+            updateCounter(counter)
+        }
+    }
+
     /** Helpers **/
 
     private suspend fun updateObservation(observation: Observation) {
@@ -57,6 +75,12 @@ class HerdObservationDetailsViewModel(
             for (counter in counters.value!!) {
                 appDao.update(counter)
             }
+        }
+    }
+
+    private suspend fun updateCounter(counter: Counter) {
+        withContext(Dispatchers.IO) {
+            appDao.update(counter)
         }
     }
 

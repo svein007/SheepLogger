@@ -86,11 +86,6 @@ class AddObservationFragment : Fragment() {
         return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        // TODO: Use the ViewModel
-    }
-
     override fun onDestroy() {
         super.onDestroy()
         requireActivity().viewModelStore.clear() // DANGEROUS??
