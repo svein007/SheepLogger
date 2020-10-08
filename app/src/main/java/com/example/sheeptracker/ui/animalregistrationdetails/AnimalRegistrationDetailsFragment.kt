@@ -122,8 +122,7 @@ class AnimalRegistrationDetailsFragment : Fragment() {
             findNavController().navigateUp()
             return true
         } else if (item.itemId == R.id.mi_delete_observation) {
-            viewModel.deleteObservation()
-            findNavController().navigateUp()
+            showDeleteAnimalRegistrationDialog()
             return true
         }
 
@@ -182,6 +181,19 @@ class AnimalRegistrationDetailsFragment : Fragment() {
         }
 
         observationTypeAlertDialog?.show()
+    }
+
+    private fun showDeleteAnimalRegistrationDialog() {
+        AlertDialog.Builder(requireContext())
+            .setTitle(getString(R.string.delete_observation))
+            .setMessage(getString(R.string.delete_observation_query))
+            .setPositiveButton(getString(R.string.delete)) { dialog, which ->
+                viewModel.deleteObservation()
+                findNavController().navigateUp()
+            }
+            .setNegativeButton(getString(R.string.cancel)) { dialog, which ->
+            }
+            .show()
     }
 
 }

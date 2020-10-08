@@ -58,6 +58,8 @@
     <string name="stop_tracking">Stopp Sporing</string>
     <string name="delete_map_area">Slett Kartområde</string>
     <string name="delete_map_area_query">Er du sikker på at du ønsker å slette kartområdet?</string>
-    <string name="delete_trip">Slette Tur</string>
+    <string name="delete_trip">Slett Tur</string>
     <string name="delete_trip_query">Er du sikker på at du ønsker å slette turen?</string>
+    <string name="delete_observation">Slett Observasjon</string>
+    <string name="delete_observation_query">Er du sikker på at du ønsker å slette observasjonen?</string>
 </resources>
