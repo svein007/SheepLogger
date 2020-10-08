@@ -62,4 +62,6 @@
     <string name="delete_trip_query">Er du sikker på at du ønsker å slette turen?</string>
     <string name="delete_observation">Slett Observasjon</string>
     <string name="delete_observation_query">Er du sikker på at du ønsker å slette observasjonen?</string>
+    <string name="delete_image">Slett Bilde</string>
+    <string name="delete_image_query">Er du sikker på at du ønsker å slette bildet?</string>
 </resources>

@@ -1,5 +1,6 @@
 package com.example.sheeptracker.ui.imageresource
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
@@ -44,10 +45,6 @@ class ImageResourceFragment : Fragment() {
         return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-    }
-
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.image_resource_menu, menu)
@@ -55,11 +52,25 @@ class ImageResourceFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.mi_delete_image) {
-            viewModel.deleteImage()
-            findNavController().popBackStack()
+            showDeleteImageDialog()
             return true
         }
         return false
+    }
+
+    /** Helpers **/
+
+    private fun showDeleteImageDialog() {
+        AlertDialog.Builder(requireContext())
+            .setTitle(getString(R.string.delete_image))
+            .setMessage(getString(R.string.delete_image_query))
+            .setPositiveButton(getString(R.string.delete)) { dialog, which ->
+                viewModel.deleteImage()
+                findNavController().navigateUp()
+            }
+            .setNegativeButton(getString(R.string.cancel)) { dialog, which ->
+            }
+            .show()
     }
 
 }
