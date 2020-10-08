@@ -2,7 +2,6 @@ package com.example.sheeptracker.ui.addobservation
 
 import android.app.Application
 import android.database.sqlite.SQLiteConstraintException
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
@@ -36,8 +35,15 @@ class AddObservationViewModel(
 
     override val countType = MutableLiveData<Counter.CountType>(Counter.CountType.SHEEP)
 
-    val expectedSheepCount = Transformations.map(counters) {
+    val expectedLambCount = Transformations.map(counters) {
         it.sumBy { counter -> counter.sheepChildCount() }
+    }
+
+    val lambCount = Transformations.map(counters) {
+        it.firstOrNull { c -> c.counterType == Counter.CountType.LAMB }?.let { counter ->
+            return@map counter.counterValue
+        }
+        0
     }
 
     init {
