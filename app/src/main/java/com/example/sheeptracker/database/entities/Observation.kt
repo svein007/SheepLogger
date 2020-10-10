@@ -48,6 +48,9 @@ data class Observation(
     @ColumnInfo(name = "observation_owner_trip_map_point_id")
     var observationOwnerTripMapPointId: Long,
 
+    @ColumnInfo(name = "observation_secondary_trip_map_point_id")
+    var observationSecondaryTripMapPointId: Long? = null,
+
     @ColumnInfo(name = "observation_owner_trip_id")
     var observationOwnerTripId: Long
 

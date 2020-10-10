@@ -11,6 +11,12 @@
         android:title="@string/swiper"
         app:showAsAction="never" />
     <item
+        android:id="@+id/mi_set_secondary_trip_map_point"
+        android:title="@string/add_observation_point" />
+    <item
+        android:id="@+id/mi_delete_secondary_trip_map_point"
+        android:title="@string/delete_observation_point" />
+    <item
         android:id="@+id/mi_delete_herd_obs"
         android:title="@string/delete"
         app:showAsAction="never" />

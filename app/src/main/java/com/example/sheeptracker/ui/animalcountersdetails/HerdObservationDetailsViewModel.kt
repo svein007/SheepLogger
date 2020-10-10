@@ -6,8 +6,12 @@ import androidx.lifecycle.Transformations
 import com.example.sheeptracker.database.AppDao
 import com.example.sheeptracker.database.entities.Counter
 import com.example.sheeptracker.database.entities.Observation
+import com.example.sheeptracker.database.entities.TripMapPoint
 import com.example.sheeptracker.ui.swiper.SwiperViewModel
+import com.example.sheeptracker.utils.getObservedFromPoint
 import kotlinx.coroutines.*
+import org.osmdroid.util.GeoPoint
+import java.util.*
 
 class HerdObservationDetailsViewModel(
     private val observationId: Long,
@@ -62,6 +66,18 @@ class HerdObservationDetailsViewModel(
         }
     }
 
+    fun onAddSecondaryTripMapPoint(currentPosition: GeoPoint) {
+        uiScope.launch {
+            addSecondaryTripMapPoint(currentPosition)
+        }
+    }
+
+    fun onDeleteSecondaryTripMapPoint() {
+        uiScope.launch {
+            deleteSecondaryTripMapPoint()
+        }
+    }
+
     /** Helpers **/
 
     private suspend fun updateObservation(observation: Observation) {
@@ -94,6 +110,35 @@ class HerdObservationDetailsViewModel(
 
             observation.value?.let {
                 appDao.deleteObservation(it.observationId)
+            }
+        }
+    }
+
+    private suspend fun addSecondaryTripMapPoint(currentPosition: GeoPoint) {
+        withContext(Dispatchers.IO) {
+            val tripId = observation.value!!.observationOwnerTripId
+            val tripMapPoint = getObservedFromPoint(
+                appDao,
+                tripId,
+                TripMapPoint(
+                    tripMapPointLat =  currentPosition.latitude,
+                    tripMapPointLon =  currentPosition.longitude,
+                    tripMapPointDate = Date(),
+                    tripMapPointOwnerTripId = tripId
+                )
+            )
+
+            observation.value!!.observationSecondaryTripMapPointId = tripMapPoint.tripMapPointId
+
+            appDao.update(observation.value!!)
+        }
+    }
+
+    private suspend fun deleteSecondaryTripMapPoint() {
+        withContext(Dispatchers.IO) {
+            observation.value?.observationSecondaryTripMapPointId?.let {
+                observation.value!!.observationSecondaryTripMapPointId = null
+                appDao.update(observation.value!!)
             }
         }
     }

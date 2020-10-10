@@ -93,11 +93,25 @@ class TripViewModel(
         }
     }
 
+    fun getTripMapPoint(id: Long): TripMapPoint? {
+        var point: TripMapPoint? = null
+        runBlocking {
+            point = getTripMapPointDb(id)
+        }
+        return point
+    }
+
     /** Helpers **/
 
     private suspend fun delete(tripId: Long) {
         return withContext(Dispatchers.IO) {
             appDao.deletTrip(tripId)
+        }
+    }
+
+    private suspend fun getTripMapPointDb(id: Long): TripMapPoint? {
+        return withContext(Dispatchers.IO) {
+            return@withContext appDao.getTripMapPoint(id)
         }
     }
 
