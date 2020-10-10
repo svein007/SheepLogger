@@ -6,13 +6,13 @@
     <data>
         <variable
             name="viewModel"
-            type="com.example.sheeptracker.ui.animalcountersdetails.HerdObservationDetailsViewModel" />
+            type="com.example.sheeptracker.ui.herdobservationdetails.HerdObservationDetailsViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="com.example.sheeptracker.ui.animalcountersdetails.HerdObservationDetailsFragment">
+        tools:context="com.example.sheeptracker.ui.herdobservationdetails.HerdObservationDetailsFragment">
 
         <TextView
             android:id="@+id/textView31"

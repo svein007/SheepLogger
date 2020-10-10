@@ -1,4 +1,4 @@
-package com.example.sheeptracker.ui.animalcountersdetails
+package com.example.sheeptracker.ui.herdobservationdetails
 
 import android.app.AlertDialog
 import android.os.Bundle
@@ -40,7 +40,7 @@ class HerdObservationDetailsFragment : Fragment() {
         val application = requireNotNull(this.activity).application
 
         appDao = AppDatabase.getInstance(application).appDatabaseDao
-        val viewModelFactory = AnimalCountersDetailsViewModelFactory(arguments.observationId, application, appDao)
+        val viewModelFactory = HerdObservationDetailsViewModelFactory(arguments.observationId, application, appDao)
 
         viewModel = ViewModelProvider(
             requireActivity(), viewModelFactory

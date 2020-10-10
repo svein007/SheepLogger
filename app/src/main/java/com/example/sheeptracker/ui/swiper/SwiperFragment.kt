@@ -16,7 +16,7 @@ import com.example.sheeptracker.database.entities.Counter
 import com.example.sheeptracker.databinding.SwiperFragmentBinding
 import com.example.sheeptracker.ui.OnSwipeTouchListener
 import com.example.sheeptracker.ui.addobservation.AddObservationViewModel
-import com.example.sheeptracker.ui.animalcountersdetails.HerdObservationDetailsViewModel
+import com.example.sheeptracker.ui.herdobservationdetails.HerdObservationDetailsViewModel
 
 class SwiperFragment : Fragment() {
 

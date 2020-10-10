@@ -172,7 +172,7 @@
         </fragment>
         <fragment
             android:id="@+id/animalCountersDetailsFragment"
-            android:name="com.example.sheeptracker.ui.animalcountersdetails.HerdObservationDetailsFragment"
+            android:name="com.example.sheeptracker.ui.herdobservationdetails.HerdObservationDetailsFragment"
             android:label="@string/herd_observation"
             tools:layout="@layout/herd_observation_details_fragment">
             <argument

@@ -1,4 +1,4 @@
-package com.example.sheeptracker.ui.animalcountersdetails
+package com.example.sheeptracker.ui.herdobservationdetails
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData

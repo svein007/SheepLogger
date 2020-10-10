@@ -1,11 +1,11 @@
-package com.example.sheeptracker.ui.animalcountersdetails
+package com.example.sheeptracker.ui.herdobservationdetails
 
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.sheeptracker.database.AppDao
 
-class AnimalCountersDetailsViewModelFactory(
+class HerdObservationDetailsViewModelFactory(
     private val observationId: Long,
     private val application: Application,
     private val appDao: AppDao
