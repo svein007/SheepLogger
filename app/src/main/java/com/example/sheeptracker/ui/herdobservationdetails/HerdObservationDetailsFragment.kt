@@ -108,7 +108,7 @@ class HerdObservationDetailsFragment : Fragment() {
             R.id.mi_delete_secondary_trip_map_point -> {
                 viewModel.onDeleteSecondaryTripMapPoint()
                 Snackbar
-                    .make(binding.root, getString(R.string.secondary_trip_map_point_added), Snackbar.LENGTH_LONG)
+                    .make(binding.root, getString(R.string.secondary_trip_map_point_deleted), Snackbar.LENGTH_LONG)
                     .show()
                 return true
             }
