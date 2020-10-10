@@ -128,9 +128,10 @@ class HerdObservationDetailsViewModel(
                 )
             )
 
-            observation.value!!.observationSecondaryTripMapPointId = tripMapPoint.tripMapPointId
-
-            appDao.update(observation.value!!)
+            if (observation.value!!.observationOwnerTripMapPointId != tripMapPoint.tripMapPointId) {
+                observation.value!!.observationSecondaryTripMapPointId = tripMapPoint.tripMapPointId
+                appDao.update(observation.value!!)
+            }
         }
     }
 
