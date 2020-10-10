@@ -3,10 +3,6 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/mi_save_herd"
-        android:title="@string/save"
-        app:showAsAction="ifRoom" />
-    <item
         android:id="@+id/mi_swiper"
         android:title="@string/swiper"
         app:showAsAction="never" />

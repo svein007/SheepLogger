@@ -91,11 +91,6 @@ class HerdObservationDetailsFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.mi_save_herd -> {
-                viewModel.onUpdateObservation()
-                findNavController().navigateUp()
-                return true
-            }
             R.id.mi_swiper -> {
                 findNavController().navigate(
                     HerdObservationDetailsFragmentDirections.actionAnimalCountersDetailsFragmentToSwiperFragment()
@@ -124,6 +119,7 @@ class HerdObservationDetailsFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
+        viewModel.onUpdateObservation()
         requireActivity().viewModelStore.clear() // DANGEROUS??
     }
 
