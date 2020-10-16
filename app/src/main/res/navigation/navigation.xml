@@ -34,6 +34,9 @@
         <action
             android:id="@+id/action_startFragment_to_tripsFragment"
             app:destination="@id/navigationTrip" />
+        <action
+            android:id="@+id/action_startFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
     </fragment>
     <fragment
         android:id="@+id/mapAreaFragment"
@@ -196,5 +199,9 @@
                 app:argType="string" />
         </fragment>
     </navigation>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.example.sheeptracker.ui.settings.SettingsFragment"
+        android:label="SettingsFragment" />
 
 </navigation>

@@ -67,4 +67,15 @@
     <string name="delete_observation_point">Delete Secondary Observation Point</string>
     <string name="secondary_trip_map_point_added">Secondary Observation Point Added</string>
     <string name="secondary_trip_map_point_deleted">Secondary Observation Point Deleted</string>
+
+    <string name="settings">Settings</string>
+    <!-- Preference Titles -->
+
+    <!-- Messages Preferences -->
+
+    <!-- Sync Preferences -->
+    <string name="gps" translatable="false">GPS</string>
+    <string name="gps_dist">GPS Tracking - Location Distance Interval</string>
+    <string name="gps_time">GPS Tracking - Location Time Interval</string>
+
 </resources>

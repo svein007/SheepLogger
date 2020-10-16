@@ -54,6 +54,12 @@ class StartFragment : Fragment() {
             }
         }
 
+        binding.settingsConstraintLayout.setOnClickListener {
+            findNavController().navigate(
+                StartFragmentDirections.actionStartFragmentToSettingsFragment()
+            )
+        }
+
         return binding.root
     }
 

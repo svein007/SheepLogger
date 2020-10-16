@@ -18,6 +18,7 @@ import android.util.Log
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
+import androidx.preference.PreferenceManager
 import com.example.sheeptracker.R
 import com.example.sheeptracker.database.AppDatabase
 import com.example.sheeptracker.database.entities.TripMapPoint
@@ -57,8 +58,9 @@ class LocationService : Service() {
         }
 
         private fun logLocationToTripTrail(location: Location) {
-            // Min 5 meters between adjacent points, TODO: use settings
-            val minDistance = 5.0f
+            val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(applicationContext)
+            val minDistance =
+                sharedPreferences.getString("gps_distance_meters", "5")!!.toFloat()
 
             if (lastLocation == null || location.distanceTo(lastLocation) > minDistance) {
                 // Log new location
@@ -132,7 +134,14 @@ class LocationService : Service() {
         ) {
             return
         }
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 20.0f, locationListener)
+
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(applicationContext)
+        val minTimeInterval =
+            sharedPreferences.getString("gps_distance_time", "60")!!.toLong() * 1000
+        val minDistance =
+            sharedPreferences.getString("gps_distance_meters", "5")!!.toFloat()
+
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, minTimeInterval, minDistance, locationListener)
     }
 
     override fun onDestroy() {

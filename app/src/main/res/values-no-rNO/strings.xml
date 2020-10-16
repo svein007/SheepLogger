@@ -68,4 +68,7 @@
     <string name="delete_observation_point">Slett Sekundært Observasjonspunkt</string>
     <string name="secondary_trip_map_point_added">Sekundært Observasjonspunkt Lagret</string>
     <string name="secondary_trip_map_point_deleted">Sekundært Observasjonspunkt Slettet</string>
+    <string name="settings">Innstillinger</string>
+    <string name="gps_dist">GPS - Distanseinterval</string>
+    <string name="gps_time">GPS - Tidsinterval</string>
 </resources>
