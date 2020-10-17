@@ -254,7 +254,8 @@ class TripFragment : Fragment() {
         for (i in observationTripMapGeoPoints.indices) {
             val line = Polyline()
             line.setPoints(listOf(observationTripMapGeoPoints[i], observationsGeoPoints[i]))
-            line.outlinePaint.color = Color.parseColor("#33691E")
+            line.outlinePaint.color = Color.parseColor("#3399ff")
+            line.outlinePaint.strokeWidth = 6.0f
             observationPolylines.add(line)
 
             viewModel.observations.value?.get(i)?.observationSecondaryTripMapPointId?.let {
@@ -265,7 +266,8 @@ class TripFragment : Fragment() {
                         GeoPoint(p.tripMapPointLat, p.tripMapPointLon),
                         observationsGeoPoints[i]
                     ))
-                    line.outlinePaint.color = Color.parseColor("#7CB342")
+                    line.outlinePaint.color = Color.parseColor("#3399ff")
+                    line.outlinePaint.strokeWidth = 6.0f
                     observationPolylines.add(line)
                 }
             }
@@ -315,6 +317,9 @@ class TripFragment : Fragment() {
 
         binding.tripMapView.onResume()
 
+        gpsTrail.outlinePaint.alpha = 200
+        gpsTrail.outlinePaint.color = Color.parseColor("#404040")
+        gpsTrail.outlinePaint.strokeWidth = 10.0f
         binding.tripMapView.overlayManager.add(gpsTrail)
     }
 
