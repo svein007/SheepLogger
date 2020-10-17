@@ -37,6 +37,9 @@
         <action
             android:id="@+id/action_startFragment_to_settingsFragment"
             app:destination="@id/settingsFragment" />
+        <action
+            android:id="@+id/action_startFragment_to_simpleRapportDialog"
+            app:destination="@id/simpleRapportDialog" />
     </fragment>
     <fragment
         android:id="@+id/mapAreaFragment"
@@ -203,5 +206,9 @@
         android:id="@+id/settingsFragment"
         android:name="com.example.sheeptracker.ui.settings.SettingsFragment"
         android:label="SettingsFragment" />
+    <dialog
+        android:id="@+id/simpleRapportDialog"
+        android:name="com.example.sheeptracker.ui.rapport.SimpleRapportDialog"
+        android:label="SimpleRapportDialog" />
 
 </navigation>

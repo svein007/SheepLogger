@@ -71,4 +71,6 @@
     <string name="settings">Innstillinger</string>
     <string name="gps_dist">GPS - Distanseinterval</string>
     <string name="gps_time">GPS - Tidsinterval</string>
+    <string name="rapport">Rapport</string>
+    <string name="simple_rapport_text"><![CDATA[<p>Døde dyr: %1$d<br/> Skadd dyr: %2$d</p>]]></string>
 </resources>

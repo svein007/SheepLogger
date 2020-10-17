@@ -54,6 +54,14 @@ class StartFragment : Fragment() {
             }
         }
 
+        binding.rapportConstraintLayout.setOnClickListener {
+            if (checkHasAllPermissions(requireContext())) {
+                findNavController().navigate(
+                    StartFragmentDirections.actionStartFragmentToSimpleRapportDialog()
+                )
+            }
+        }
+
         binding.settingsConstraintLayout.setOnClickListener {
             findNavController().navigate(
                 StartFragmentDirections.actionStartFragmentToSettingsFragment()

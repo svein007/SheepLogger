@@ -163,4 +163,12 @@ interface AppDao {
     fun deleteImageResource(key: Long)
 
 
+    /** Util methods **/
+
+    @Query("SELECT COUNT(*) FROM observation_table WHERE observation_type = 2")
+    fun getInjuredAnimalCount(): Int
+
+    @Query("SELECT COUNT(*) FROM observation_table WHERE observation_type = 1")
+    fun getDeadAnimalCount(): Int
+
 }
