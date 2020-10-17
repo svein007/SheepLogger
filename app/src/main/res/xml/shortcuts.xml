@@ -12,4 +12,17 @@
             android:data="sheeptracker://new_trip" />
 
     </shortcut>
+
+    <shortcut
+        android:shortcutId="rapport"
+        android:enabled="true"
+        android:shortcutShortLabel="@string/rapport">
+
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.example.sheeptracker"
+            android:targetClass="com.example.sheeptracker.ui.MainActivity"
+            android:data="sheeptracker://rapport" />
+
+    </shortcut>
 </shortcuts>

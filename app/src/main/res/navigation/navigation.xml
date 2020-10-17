@@ -209,6 +209,10 @@
     <dialog
         android:id="@+id/simpleRapportDialog"
         android:name="com.example.sheeptracker.ui.rapport.SimpleRapportDialog"
-        android:label="SimpleRapportDialog" />
+        android:label="SimpleRapportDialog">
+        <deepLink
+            android:id="@+id/deepLink2"
+            app:uri="sheeptracker://rapport" />
+    </dialog>
 
 </navigation>
