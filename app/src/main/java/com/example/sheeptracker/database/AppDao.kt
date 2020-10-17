@@ -171,4 +171,7 @@ interface AppDao {
     @Query("SELECT COUNT(*) FROM observation_table WHERE observation_type = 1")
     fun getDeadAnimalCount(): Int
 
+    @Query("SELECT COUNT(*) FROM trip_table")
+    fun getTripCount(): Int
+
 }

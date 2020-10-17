@@ -13,8 +13,14 @@ suspend fun generateSimpleRapport(context: Context): String {
     return withContext(Dispatchers.IO){
         val injuredAnimals = appDao.getInjuredAnimalCount()
         val deadAnimals = appDao.getDeadAnimalCount()
+        val tripCount = appDao.getTripCount()
 
-        context.getString(R.string.simple_rapport_text, deadAnimals, injuredAnimals)
+        context.getString(
+            R.string.simple_rapport_text,
+            deadAnimals,
+            injuredAnimals,
+            tripCount
+        )
     }
 
 }
