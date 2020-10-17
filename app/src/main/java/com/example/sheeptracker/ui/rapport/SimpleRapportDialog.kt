@@ -30,9 +30,8 @@ class SimpleRapportDialog : BottomSheetDialogFragment() {
         CoroutineScope(Dispatchers.Main).launch {
             val rapportText = generateSimpleRapport(requireContext())
 
-            rapportTextView.text = Html.fromHtml(rapportText)
+            rapportTextView?.text = Html.fromHtml(rapportText)
 
-            // TODO: in progress...
             sendEmailRapportFloatingActionButton.setOnClickListener {
                 val emailIntent = Intent(Intent.ACTION_SEND).apply {
                     putExtra(Intent.EXTRA_SUBJECT, "Sheep Tracker Rapport")
