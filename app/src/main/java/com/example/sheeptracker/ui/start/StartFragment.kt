@@ -30,8 +30,6 @@ class StartFragment : Fragment() {
             inflater, R.layout.start_fragment, container, false
         )
 
-        setHasOptionsMenu(true)
-
         viewModel = ViewModelProvider(this)[StartViewModel::class.java]
 
         binding.mapAreasConstraintLayout.setOnClickListener {
@@ -69,19 +67,6 @@ class StartFragment : Fragment() {
         }
 
         return binding.root
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.start_menu, menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.mi_request_permissions) {
-            performRequestPermissions(0)
-            return true
-        }
-        return false
     }
 
     override fun onRequestPermissionsResult(

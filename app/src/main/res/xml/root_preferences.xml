@@ -25,5 +25,15 @@
 
     </PreferenceCategory>
 
+    <PreferenceCategory
+        app:title="@string/other">
+
+        <Preference
+            app:key="request_permissions"
+            app:title="@string/request_permissions"
+            />
+
+    </PreferenceCategory>
+
 
 </PreferenceScreen>

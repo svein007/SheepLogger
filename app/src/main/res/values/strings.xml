@@ -79,5 +79,9 @@
     <string name="gps_time">GPS Tracking - Location Time Interval</string>
     <string name="rapport">Rapport</string>
     <string name="simple_rapport_text"><![CDATA[<p>Dead animals: %1$d <br/> Injured animals: %2$d <br/> Trips: %3$d </p>]]></string>
+    <string name="other">Other</string>
+    <string name="permissions_already_granted">Permissions already granted</string>
+    <string name="some_permissions_not_granted">Some permissions not granted</string>
+    <string name="permissions_granted">Permissions granted</string>
 
 </resources>
