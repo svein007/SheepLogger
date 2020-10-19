@@ -205,7 +205,7 @@
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.example.sheeptracker.ui.settings.SettingsFragment"
-        android:label="SettingsFragment" />
+        android:label="@string/settings" />
     <dialog
         android:id="@+id/simpleRapportDialog"
         android:name="com.example.sheeptracker.ui.rapport.SimpleRapportDialog"
