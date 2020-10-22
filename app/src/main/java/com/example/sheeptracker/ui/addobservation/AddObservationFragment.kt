@@ -88,7 +88,9 @@ class AddObservationFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        requireActivity().viewModelStore.clear() // DANGEROUS??
+        if (!requireActivity().isChangingConfigurations) {
+            requireActivity().viewModelStore.clear() // DANGEROUS??
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

@@ -120,7 +120,9 @@ class HerdObservationDetailsFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         viewModel.onUpdateObservation()
-        requireActivity().viewModelStore.clear() // DANGEROUS??
+        if (!requireActivity().isChangingConfigurations) {
+            requireActivity().viewModelStore.clear() // DANGEROUS??
+        }
     }
 
     /** Helpers **/

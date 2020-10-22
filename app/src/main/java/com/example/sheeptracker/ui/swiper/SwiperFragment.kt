@@ -97,6 +97,7 @@ class SwiperFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         toast?.cancel()
+        textToSpeech.stop()
     }
 
     private fun getCurrentCounter(): Counter? {
