@@ -11,6 +11,7 @@ import androidx.core.app.ActivityCompat
 import org.osmdroid.tileprovider.cachemanager.CacheManager
 import org.osmdroid.tileprovider.modules.SqliteArchiveTileWriter
 import org.osmdroid.tileprovider.tilesource.OnlineTileSourceBase
+import org.osmdroid.util.BoundingBox
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.util.MapTileIndex
 import org.osmdroid.views.MapView
@@ -58,6 +59,55 @@ class MapAreaManager {
                 mapView.boundingBox,
                 mapView.zoomLevelDouble.toInt(),
                 mapView.maxZoomLevel.toInt(),
+                object : CacheManager.CacheManagerCallback {
+                    override fun downloadStarted() {
+                    }
+
+                    override fun updateProgress(
+                        progress: Int,
+                        currentZoomLevel: Int,
+                        zoomMin: Int,
+                        zoomMax: Int
+                    ) {
+                    }
+
+                    override fun setPossibleTilesInArea(total: Int) {
+                    }
+
+                    override fun onTaskComplete() {
+                        Toast.makeText(context, "Downloaded: $mapAreaFilename", Toast.LENGTH_LONG).show()
+                        onDownloaded()
+                    }
+
+                    override fun onTaskFailed(errors: Int) {
+                        Toast.makeText(context, "ERROR: Download failed!", Toast.LENGTH_LONG).show()
+                    }
+                }
+            )
+
+        }
+
+        fun storeMapArea(context: Context,
+                         boundingBox: BoundingBox,
+                         minZoom: Int,
+                         maxZoom: Int,
+                         mapAreaFilename: String,
+                         onDownloaded: () -> Unit) {
+            //val mapAreaFilename = context.getDatabasePath("map_area_$mapAreaName.sqlite").toString()
+            val mapAreaFilenamePath = context.getDatabasePath(mapAreaFilename).toString()
+            Log.d("#######", "Should store map-area at: $mapAreaFilenamePath")
+
+            val sqliteArchiveTileWriterCacheManager = CacheManager(
+                getOnlineTileSource(),
+                SqliteArchiveTileWriter(mapAreaFilenamePath),
+                minZoom,
+                maxZoom
+            )
+
+            sqliteArchiveTileWriterCacheManager.downloadAreaAsync(context,
+                boundingBox,
+                minZoom,
+                maxZoom,
                 object : CacheManager.CacheManagerCallback {
                     override fun downloadStarted() {
                     }

@@ -10,7 +10,11 @@
         android:id="@+id/mapAreaDownloadFragment"
         android:name="com.example.sheeptracker.ui.mapareadownload.MapAreaDownloadFragment"
         android:label="@string/map"
-        tools:layout="@layout/map_area_download_fragment" />
+        tools:layout="@layout/map_area_download_fragment" >
+        <action
+            android:id="@+id/action_mapAreaDownloadFragment_to_nameMapAreaDialog"
+            app:destination="@id/nameMapAreaDialog" />
+    </fragment>
     <fragment
         android:id="@+id/mapAreasFragment"
         android:name="com.example.sheeptracker.ui.mapareas.MapAreasFragment"
@@ -214,5 +218,10 @@
             android:id="@+id/deepLink2"
             app:uri="sheeptracker://rapport" />
     </dialog>
+    <dialog
+        android:id="@+id/nameMapAreaDialog"
+        android:name="com.example.sheeptracker.ui.mapareadownload.NameMapAreaDialog"
+        android:label="NameMapAreaDialog"
+        tools:layout="@layout/name_map_area_dialog" />
 
 </navigation>

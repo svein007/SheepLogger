@@ -1,22 +1,16 @@
 package com.example.sheeptracker.ui.mapareadownload
 
-import android.app.AlertDialog
 import android.content.Context
 import android.content.pm.PackageManager
 import android.location.LocationManager
 import android.os.Bundle
-import android.text.InputType
 import android.view.*
-import android.widget.EditText
-import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.sheeptracker.R
 import com.example.sheeptracker.database.AppDatabase
-import com.example.sheeptracker.database.entities.MapArea
 import com.example.sheeptracker.databinding.MapAreaDownloadFragmentBinding
 import com.example.sheeptracker.map.MapAreaManager
 
@@ -59,7 +53,7 @@ class MapAreaDownloadFragment : Fragment() {
         val viewModelFactory = MapAreaDownloadViewModelFactory(application, appDao)
 
         viewModel = ViewModelProvider(
-            this, viewModelFactory
+            requireActivity(), viewModelFactory
         )[MapAreaDownloadViewModel::class.java]
 
         Configuration.getInstance().userAgentValue = BuildConfig.APPLICATION_ID  // Required to do API calls to OSM servers
@@ -129,7 +123,21 @@ class MapAreaDownloadFragment : Fragment() {
         binding.mapView.overlays.add(scaleBarOverlay)
 
         binding.floatingActionButton.setOnClickListener {
-            showMapAreaNameDialog()
+            val possibleNumOfTiles = cacheManager?.possibleTilesInArea(
+                binding.mapView.boundingBox,
+                binding.mapView.zoomLevelDouble.toInt(), 20
+            ) ?: 0
+
+            viewModel.apply {
+                tileCount = possibleNumOfTiles
+                minZoom = floor(binding.mapView.zoomLevelDouble)
+                maxZoom = binding.mapView.maxZoomLevel
+                boundingBox = binding.mapView.boundingBox
+            }
+
+            findNavController().navigate(
+                MapAreaDownloadFragmentDirections.actionMapAreaDownloadFragmentToNameMapAreaDialog()
+            )
         }
     }
 
@@ -146,6 +154,11 @@ class MapAreaDownloadFragment : Fragment() {
         binding.mapView.onPause()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        requireActivity().viewModelStore.clear()  // DANGEROUS?? maybe check if isConfigChange?
+    }
+
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -160,70 +173,6 @@ class MapAreaDownloadFragment : Fragment() {
                 }
             }
         }
-    }
-
-    private fun saveMapArea(mapAreaName: String) {
-        val possibleNumOfTiles = cacheManager?.possibleTilesInArea(
-            binding.mapView.boundingBox,
-            binding.mapView.zoomLevelDouble.toInt(), 20
-        ) ?: 0
-        Toast.makeText(context, "#Tiles=" + possibleNumOfTiles, Toast.LENGTH_LONG).show()
-
-        if (possibleNumOfTiles > 10000) {
-            Toast.makeText(context, ">10000 tiles, use smaller area", Toast.LENGTH_LONG).show()
-        } else if (binding.mapView.zoomLevelDouble.toInt() > 18 || possibleNumOfTiles < 40) {
-            Toast.makeText(context, "Area too small, zoom out", Toast.LENGTH_LONG).show()
-        } else {
-
-            val mapArea = MapArea(
-                mapAreaName = mapAreaName,
-                mapAreaMinZoom = floor(binding.mapView.zoomLevelDouble),
-                mapAreaMaxZoom = binding.mapView.maxZoomLevel,
-                boundingBox = binding.mapView.boundingBox
-            )
-
-            viewModel.storeMapArea(mapArea)
-
-            MapAreaManager.storeMapArea(
-                requireContext(),
-                binding.mapView,
-                mapArea.getSqliteFilename()
-            ) {
-                findNavController().popBackStack()
-            }
-        }
-    }
-
-    private fun showMapAreaNameDialog() {
-        val viewGroup = LinearLayout(requireContext())
-        viewGroup.setPadding(48, 0, 48, 0)
-
-        val editText = EditText(requireContext())
-        editText.hint = getString(R.string.map_area_name)
-        editText.inputType = editText.inputType or InputType.TYPE_TEXT_FLAG_CAP_SENTENCES
-        editText.layoutParams = LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.MATCH_PARENT,
-            LinearLayout.LayoutParams.MATCH_PARENT)
-
-        viewGroup.addView(editText)
-
-        val possibleNumOfTiles = cacheManager?.possibleTilesInArea(
-            binding.mapView.boundingBox,
-            binding.mapView.zoomLevelDouble.toInt(), 20
-        ) ?: 0
-
-        AlertDialog.Builder(requireContext())
-            .setTitle(getString(R.string.download_mapArea))
-            .setMessage("\n$possibleNumOfTiles tiles.\n\n" + getString(R.string.enter_map_area_name)+":")
-            .setView(viewGroup)
-            .setPositiveButton(getString(R.string.download)) { dialog, which ->
-                val mapAreaName = editText.text.toString()
-                saveMapArea(mapAreaName)
-            }
-            .setNegativeButton(getString(R.string.cancel)) { dialog, which ->
-            }
-            .show()
-
     }
 
 }
