@@ -1,4 +1,4 @@
-package com.example.sheeptracker.ui.main
+package com.example.sheeptracker.ui.mapareadownload
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
@@ -6,7 +6,7 @@ import com.example.sheeptracker.database.AppDao
 import com.example.sheeptracker.database.entities.MapArea
 import kotlinx.coroutines.*
 
-class MainViewModel(
+class MapAreaDownloadViewModel(
     application: Application,
     private val appDao: AppDao
     ) : AndroidViewModel(application) {

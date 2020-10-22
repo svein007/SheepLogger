@@ -7,10 +7,10 @@
     app:startDestination="@id/startFragment">
 
     <fragment
-        android:id="@+id/mainFragment"
-        android:name="com.example.sheeptracker.ui.main.MainFragment"
+        android:id="@+id/mapAreaDownloadFragment"
+        android:name="com.example.sheeptracker.ui.mapareadownload.MapAreaDownloadFragment"
         android:label="@string/map"
-        tools:layout="@layout/main_fragment" />
+        tools:layout="@layout/map_area_download_fragment" />
     <fragment
         android:id="@+id/mapAreasFragment"
         android:name="com.example.sheeptracker.ui.mapareas.MapAreasFragment"
@@ -21,7 +21,7 @@
             app:destination="@id/mapAreaFragment" />
         <action
             android:id="@+id/action_mapAreasFragment_to_mainFragment"
-            app:destination="@id/mainFragment" />
+            app:destination="@id/mapAreaDownloadFragment" />
     </fragment>
     <fragment
         android:id="@+id/startFragment"

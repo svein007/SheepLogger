@@ -1,4 +1,4 @@
-package com.example.sheeptracker.ui.main
+package com.example.sheeptracker.ui.mapareadownload
 
 import android.app.AlertDialog
 import android.content.Context
@@ -17,9 +17,8 @@ import androidx.navigation.fragment.findNavController
 import com.example.sheeptracker.R
 import com.example.sheeptracker.database.AppDatabase
 import com.example.sheeptracker.database.entities.MapArea
-import com.example.sheeptracker.databinding.MainFragmentBinding
+import com.example.sheeptracker.databinding.MapAreaDownloadFragmentBinding
 import com.example.sheeptracker.map.MapAreaManager
-import kotlinx.android.synthetic.main.main_fragment.*
 
 import org.osmdroid.config.Configuration
 import org.osmdroid.events.DelayedMapListener
@@ -35,10 +34,10 @@ import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
 import kotlin.math.floor
 
-class MainFragment : Fragment() {
+class MapAreaDownloadFragment : Fragment() {
 
-    private lateinit var viewModel: MainViewModel
-    private lateinit var binding: MainFragmentBinding
+    private lateinit var viewModel: MapAreaDownloadViewModel
+    private lateinit var binding: MapAreaDownloadFragmentBinding
 
     private var cacheManager: CacheManager? = null
 
@@ -51,17 +50,17 @@ class MainFragment : Fragment() {
                               savedInstanceState: Bundle?): View {
 
         binding = DataBindingUtil.inflate(
-            inflater, R.layout.main_fragment, container, false
+            inflater, R.layout.map_area_download_fragment, container, false
         )
 
         val application = requireNotNull(this.activity).application
 
         val appDao = AppDatabase.getInstance(application).appDatabaseDao
-        val viewModelFactory = MainViewModelFactory(application, appDao)
+        val viewModelFactory = MapAreaDownloadViewModelFactory(application, appDao)
 
         viewModel = ViewModelProvider(
             this, viewModelFactory
-        )[MainViewModel::class.java]
+        )[MapAreaDownloadViewModel::class.java]
 
         Configuration.getInstance().userAgentValue = BuildConfig.APPLICATION_ID  // Required to do API calls to OSM servers
 
@@ -98,7 +97,7 @@ class MainFragment : Fragment() {
 
         //textView.text = "Zoom = %.2f".format(binding.mapView.zoomLevelDouble)
 
-        mapView.addMapListener(DelayedMapListener(object : MapListener {
+        binding.mapView.addMapListener(DelayedMapListener(object : MapListener {
             override fun onZoom(event: ZoomEvent?): Boolean {
                 //textView.text = "Zoom = %.2f".format(binding.mapView.zoomLevelDouble)
                 return false
