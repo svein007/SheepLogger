@@ -3,7 +3,8 @@
     <shortcut
         android:shortcutId="compose"
         android:enabled="true"
-        android:shortcutShortLabel="@string/new_trip">
+        android:shortcutShortLabel="@string/new_trip"
+        android:icon="@drawable/ic_baseline_gesture_24_primary">
 
         <intent
             android:action="android.intent.action.VIEW"
@@ -16,7 +17,8 @@
     <shortcut
         android:shortcutId="rapport"
         android:enabled="true"
-        android:shortcutShortLabel="@string/rapport">
+        android:shortcutShortLabel="@string/rapport"
+        android:icon="@drawable/ic_baseline_assignment_24_primary">
 
         <intent
             android:action="android.intent.action.VIEW"
