@@ -57,8 +57,6 @@ class NameMapAreaDialog : DialogFragment() {
             boundingBox = viewModel.boundingBox!!
         )
 
-        viewModel.storeMapArea(mapArea)
-
         MapAreaManager.storeMapArea(
             requireContext(),
             viewModel.boundingBox!!,
@@ -66,6 +64,8 @@ class NameMapAreaDialog : DialogFragment() {
             viewModel.maxZoom.toInt(),
             mapArea.getSqliteFilename()
         ) {
+            viewModel.storeMapArea(mapArea)
+
             findNavController().popBackStack(R.id.mapAreaDownloadFragment, true)
         }
     }
