@@ -33,6 +33,8 @@ interface AppDao {
     @Query("DELETE FROM map_area_table WHERE map_area_id = :key")
     fun deleteMapArea(key: Long)
 
+    @Query("SELECT map_area_name FROM map_area_table ORDER BY map_area_name ASC")
+    fun getMapAreaNames(): List<String>
 
     /** Trip **/
 

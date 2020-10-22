@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
@@ -14,6 +15,7 @@ import com.example.sheeptracker.database.AppDatabase
 import com.example.sheeptracker.database.entities.MapArea
 import com.example.sheeptracker.databinding.NameMapAreaDialogBinding
 import com.example.sheeptracker.map.MapAreaManager
+import kotlinx.coroutines.*
 
 class NameMapAreaDialog : DialogFragment() {
 
@@ -36,7 +38,7 @@ class NameMapAreaDialog : DialogFragment() {
 
         binding.cancelButton.setOnClickListener { dismiss() }
 
-        binding.downloadButton.setOnClickListener { storeMapArea() }
+        binding.downloadButton.setOnClickListener { onStoreMapArea() }
 
         binding.tileCountTV.text = "${viewModel.tileCount} tiles"
 
@@ -47,6 +49,21 @@ class NameMapAreaDialog : DialogFragment() {
         super.onStart()
 
         dialog?.window?.setLayout(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT)
+    }
+
+    private fun onStoreMapArea() {
+
+        CoroutineScope(Dispatchers.Main).launch {
+            val mapAreaNames = withContext(Dispatchers.IO) {
+                 AppDatabase.getInstance(requireContext()).appDatabaseDao.getMapAreaNames()
+            }
+
+            if (!mapAreaNames.contains(viewModel.mapAreaName.value!!)) {
+                storeMapArea()
+            } else {
+                Toast.makeText(requireContext(), getString(R.string.name_already_in_use), Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     private fun storeMapArea() {
