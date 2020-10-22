@@ -156,7 +156,9 @@ class MapAreaDownloadFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        requireActivity().viewModelStore.clear()  // DANGEROUS?? maybe check if isConfigChange?
+        if (!requireActivity().isChangingConfigurations) {
+            requireActivity().viewModelStore.clear()  // DANGEROUS?? maybe check if isConfigChange?
+        }
     }
 
     override fun onRequestPermissionsResult(
