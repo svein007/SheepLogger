@@ -53,6 +53,9 @@ interface AppDao {
     @Query("SELECT * FROM trip_table ORDER BY trip_id ASC")
     fun getTripsLD(): LiveData<List<Trip>>
 
+    @Query("SELECT * FROM trip_table WHERE trip_finished = 1 ORDER BY trip_id ASC")
+    fun getFinishedTripsLD(): LiveData<List<Trip>>
+
     @Query("SELECT * FROM trip_table WHERE trip_owner_map_area_id = :mapAreaId ORDER BY trip_id ASC ")
     fun getTripsForMapArea(mapAreaId: Long): List<Trip>
 
