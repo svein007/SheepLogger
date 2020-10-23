@@ -50,6 +50,7 @@ class TripViewModel(
     val mapArea: LiveData<MapArea?> = appDao.getMapAreaLD(mapAreaId)
     val tripMapPoints: LiveData<List<TripMapPoint>> = appDao.getTripMapPointsForTripLD(tripId)
     val observations: LiveData<List<Observation>> = appDao.getObservationsForTripLD(tripId)
+    val isTripFinished: LiveData<Boolean?> = appDao.isTripFinishedLD(tripId)
 
     val isTrackingGPS = MutableLiveData<Boolean>(false)
     val isFollowingGPS = MutableLiveData<Boolean>(true)
@@ -80,6 +81,7 @@ class TripViewModel(
 
     @SuppressLint("MissingPermission")
     fun startLocationUpdates() {
+        //TODO: Use preferences values?
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 5.0f, gpsListener)
     }
 
@@ -101,11 +103,17 @@ class TripViewModel(
         return point
     }
 
+    fun onFinishTrip() {
+        uiScope.launch {
+            finishTrip()
+        }
+    }
+
     /** Helpers **/
 
     private suspend fun delete(tripId: Long) {
         return withContext(Dispatchers.IO) {
-            appDao.deletTrip(tripId)
+            appDao.deleteTrip(tripId)
         }
     }
 
@@ -115,5 +123,10 @@ class TripViewModel(
         }
     }
 
+    private suspend fun finishTrip() {
+        withContext(Dispatchers.IO) {
+            appDao.finishTrip(tripId)
+        }
+    }
 
 }

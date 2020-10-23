@@ -36,14 +36,20 @@
             android:id="@+id/action_startFragment_to_mapAreasFragment"
             app:destination="@id/mapAreasFragment" />
         <action
-            android:id="@+id/action_startFragment_to_tripsFragment"
-            app:destination="@id/navigationTrip" />
-        <action
             android:id="@+id/action_startFragment_to_settingsFragment"
             app:destination="@id/settingsFragment" />
         <action
             android:id="@+id/action_startFragment_to_simpleRapportDialog"
             app:destination="@id/simpleRapportDialog" />
+        <action
+            android:id="@+id/action_startFragment_to_tripsFragment"
+            app:destination="@id/tripsFragment" />
+        <action
+            android:id="@+id/action_startFragment_to_addTripFragment"
+            app:destination="@id/addTripFragment" />
+        <action
+            android:id="@+id/action_startFragment_to_tripFragment"
+            app:destination="@id/tripFragment" />
     </fragment>
     <fragment
         android:id="@+id/mapAreaFragment"
@@ -54,158 +60,159 @@
             android:name="mapAreaId"
             app:argType="long" />
     </fragment>
-    <navigation android:id="@+id/navigationTrip"
-        app:startDestination="@id/tripsFragment">
-        <fragment
-            android:id="@+id/tripsFragment"
-            android:name="com.example.sheeptracker.ui.trips.TripsFragment"
-            android:label="@string/my_trips"
-            tools:layout="@layout/trips_fragment">
-            <action
-                android:id="@+id/action_tripsFragment_to_addTripFragment"
-                app:destination="@id/addTripFragment" />
-            <action
-                android:id="@+id/action_tripsFragment_to_tripFragment"
-                app:destination="@id/tripFragment" />
-        </fragment>
-        <fragment
-            android:id="@+id/addTripFragment"
-            android:name="com.example.sheeptracker.ui.addtrip.AddTripFragment"
-            android:label="@string/new_trip"
-            tools:layout="@layout/add_trip_fragment">
-            <deepLink
-                android:id="@+id/deepLink"
-                app:uri="sheeptracker://new_trip" />
-        </fragment>
-        <fragment
-            android:id="@+id/tripFragment"
-            android:name="com.example.sheeptracker.ui.trip.TripFragment"
-            android:label="@string/trip"
-            tools:layout="@layout/trip_fragment">
-            <argument
-                android:name="tripId"
-                app:argType="long" />
-            <argument
-                android:name="mapAreaId"
-                app:argType="long" />
-            <action
-                android:id="@+id/action_tripFragment_to_addObservationFragment"
-                app:destination="@id/addObservationFragment" />
-            <action
-                android:id="@+id/action_tripFragment_to_observationsFragment"
-                app:destination="@id/observationsFragment" />
-            <action
-                android:id="@+id/action_tripFragment_to_addDeadAnimalFragment"
-                app:destination="@id/addDeadAnimalFragment" />
-        </fragment>
-        <fragment
-            android:id="@+id/observationsFragment"
-            android:name="com.example.sheeptracker.ui.observations.ObservationsFragment"
-            android:label="@string/observations"
-            tools:layout="@layout/observations_fragment">
-            <argument
-                android:name="tripId"
-                app:argType="long" />
-            <action
-                android:id="@+id/action_observationsFragment_to_animalCountersDetailsFragment"
-                app:destination="@id/animalCountersDetailsFragment" />
-            <action
-                android:id="@+id/action_observationsFragment_to_animalRegistrationDetailsFragment"
-                app:destination="@id/animalRegistrationDetailsFragment" />
-        </fragment>
-        <fragment
-            android:id="@+id/addObservationFragment"
-            android:name="com.example.sheeptracker.ui.addobservation.AddObservationFragment"
-            android:label="@string/register_observation"
-            tools:layout="@layout/add_observation_fragment">
-            <argument
-                android:name="tripId"
-                app:argType="long" />
-            <argument
-                android:name="obsLat"
-                app:argType="string" />
-            <argument
-                android:name="obsLon"
-                app:argType="string" />
-            <action
-                android:id="@+id/action_addObservationFragment_to_swiperFragment"
-                app:destination="@id/swiperFragment">
-                <argument
-                    android:name="navFromFragment"
-                    android:defaultValue="add" />
-            </action>
-        </fragment>
-        <fragment
-            android:id="@+id/addDeadAnimalFragment"
-            android:name="com.example.sheeptracker.ui.addanimalregistration.AddAnimalRegistrationFragment"
-            android:label="@string/register_animal_info"
-            tools:layout="@layout/add_animal_registration_fragment">
-            <argument
-                android:name="tripId"
-                app:argType="long" />
-            <argument
-                android:name="obsLat"
-                app:argType="string" />
-            <argument
-                android:name="obsLon"
-                app:argType="string" />
-            <argument
-                android:name="obsType"
-                app:argType="integer" />
-            <action
-                android:id="@+id/action_addDeadAnimalFragment_to_imageResourceFragment"
-                app:destination="@id/imageResourceFragment" />
-        </fragment>
-        <fragment
-            android:id="@+id/animalRegistrationDetailsFragment"
-            android:name="com.example.sheeptracker.ui.animalregistrationdetails.AnimalRegistrationDetailsFragment"
-            android:label="@string/animal_registration"
-            tools:layout="@layout/animal_registration_details_fragment">
-            <argument
-                android:name="observationId"
-                app:argType="long" />
-            <action
-                android:id="@+id/action_animalRegistrationDetailsFragment_to_imageResourceFragment"
-                app:destination="@id/imageResourceFragment" />
-        </fragment>
-        <fragment
-            android:id="@+id/imageResourceFragment"
-            android:name="com.example.sheeptracker.ui.imageresource.ImageResourceFragment"
-            android:label="@string/image"
-            tools:layout="@layout/image_resource_fragment">
-            <argument
-                android:name="imageResourceId"
-                app:argType="long" />
-            <argument
-                android:name="imageUri"
-                app:argType="string" />
-        </fragment>
-        <fragment
-            android:id="@+id/animalCountersDetailsFragment"
-            android:name="com.example.sheeptracker.ui.herdobservationdetails.HerdObservationDetailsFragment"
-            android:label="@string/herd_observation"
-            tools:layout="@layout/herd_observation_details_fragment">
-            <argument
-                android:name="observationId"
-                app:argType="long" />
-            <action
-                android:id="@+id/action_animalCountersDetailsFragment_to_swiperFragment"
-                app:destination="@id/swiperFragment">
-                <argument
-                    android:name="navFromFragment"
-                    android:defaultValue="details" />
-            </action>
-        </fragment>
-        <fragment
-            android:id="@+id/swiperFragment"
-            android:name="com.example.sheeptracker.ui.swiper.SwiperFragment"
-            android:label="@string/swiper"
-            tools:layout="@layout/swiper_fragment">
+    <fragment
+        android:id="@+id/tripsFragment"
+        android:name="com.example.sheeptracker.ui.trips.TripsFragment"
+        android:label="@string/my_trips"
+        tools:layout="@layout/trips_fragment">
+        <action
+            android:id="@+id/action_tripsFragment_to_addTripFragment"
+            app:destination="@id/addTripFragment" />
+        <action
+            android:id="@+id/action_tripsFragment_to_tripFragment"
+            app:destination="@id/tripFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addTripFragment"
+        android:name="com.example.sheeptracker.ui.addtrip.AddTripFragment"
+        android:label="@string/new_trip"
+        tools:layout="@layout/add_trip_fragment">
+        <deepLink
+            android:id="@+id/deepLink"
+            app:uri="sheeptracker://new_trip" />
+        <action
+            android:id="@+id/action_addTripFragment_to_tripFragment"
+            app:destination="@id/tripFragment"
+            app:popUpTo="@id/startFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/tripFragment"
+        android:name="com.example.sheeptracker.ui.trip.TripFragment"
+        android:label="@string/trip"
+        tools:layout="@layout/trip_fragment">
+        <argument
+            android:name="tripId"
+            app:argType="long" />
+        <argument
+            android:name="mapAreaId"
+            app:argType="long" />
+        <action
+            android:id="@+id/action_tripFragment_to_addObservationFragment"
+            app:destination="@id/addObservationFragment" />
+        <action
+            android:id="@+id/action_tripFragment_to_observationsFragment"
+            app:destination="@id/observationsFragment" />
+        <action
+            android:id="@+id/action_tripFragment_to_addDeadAnimalFragment"
+            app:destination="@id/addDeadAnimalFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/observationsFragment"
+        android:name="com.example.sheeptracker.ui.observations.ObservationsFragment"
+        android:label="@string/observations"
+        tools:layout="@layout/observations_fragment">
+        <argument
+            android:name="tripId"
+            app:argType="long" />
+        <action
+            android:id="@+id/action_observationsFragment_to_animalCountersDetailsFragment"
+            app:destination="@id/animalCountersDetailsFragment" />
+        <action
+            android:id="@+id/action_observationsFragment_to_animalRegistrationDetailsFragment"
+            app:destination="@id/animalRegistrationDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addObservationFragment"
+        android:name="com.example.sheeptracker.ui.addobservation.AddObservationFragment"
+        android:label="@string/register_observation"
+        tools:layout="@layout/add_observation_fragment">
+        <argument
+            android:name="tripId"
+            app:argType="long" />
+        <argument
+            android:name="obsLat"
+            app:argType="string" />
+        <argument
+            android:name="obsLon"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_addObservationFragment_to_swiperFragment"
+            app:destination="@id/swiperFragment">
             <argument
                 android:name="navFromFragment"
-                app:argType="string" />
-        </fragment>
-    </navigation>
+                android:defaultValue="add" />
+        </action>
+    </fragment>
+    <fragment
+        android:id="@+id/addDeadAnimalFragment"
+        android:name="com.example.sheeptracker.ui.addanimalregistration.AddAnimalRegistrationFragment"
+        android:label="@string/register_animal_info"
+        tools:layout="@layout/add_animal_registration_fragment">
+        <argument
+            android:name="tripId"
+            app:argType="long" />
+        <argument
+            android:name="obsLat"
+            app:argType="string" />
+        <argument
+            android:name="obsLon"
+            app:argType="string" />
+        <argument
+            android:name="obsType"
+            app:argType="integer" />
+        <action
+            android:id="@+id/action_addDeadAnimalFragment_to_imageResourceFragment"
+            app:destination="@id/imageResourceFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/animalRegistrationDetailsFragment"
+        android:name="com.example.sheeptracker.ui.animalregistrationdetails.AnimalRegistrationDetailsFragment"
+        android:label="@string/animal_registration"
+        tools:layout="@layout/animal_registration_details_fragment">
+        <argument
+            android:name="observationId"
+            app:argType="long" />
+        <action
+            android:id="@+id/action_animalRegistrationDetailsFragment_to_imageResourceFragment"
+            app:destination="@id/imageResourceFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/imageResourceFragment"
+        android:name="com.example.sheeptracker.ui.imageresource.ImageResourceFragment"
+        android:label="@string/image"
+        tools:layout="@layout/image_resource_fragment">
+        <argument
+            android:name="imageResourceId"
+            app:argType="long" />
+        <argument
+            android:name="imageUri"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/animalCountersDetailsFragment"
+        android:name="com.example.sheeptracker.ui.herdobservationdetails.HerdObservationDetailsFragment"
+        android:label="@string/herd_observation"
+        tools:layout="@layout/herd_observation_details_fragment">
+        <argument
+            android:name="observationId"
+            app:argType="long" />
+        <action
+            android:id="@+id/action_animalCountersDetailsFragment_to_swiperFragment"
+            app:destination="@id/swiperFragment">
+            <argument
+                android:name="navFromFragment"
+                android:defaultValue="details" />
+        </action>
+    </fragment>
+    <fragment
+        android:id="@+id/swiperFragment"
+        android:name="com.example.sheeptracker.ui.swiper.SwiperFragment"
+        android:label="@string/swiper"
+        tools:layout="@layout/swiper_fragment">
+        <argument
+            android:name="navFromFragment"
+            app:argType="string" />
+    </fragment>
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.example.sheeptracker.ui.settings.SettingsFragment"

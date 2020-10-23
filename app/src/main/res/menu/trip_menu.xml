@@ -14,6 +14,10 @@
         android:title="@string/observations"
         app:showAsAction="never" />
     <item
+        android:id="@+id/mi_finish_trip"
+        android:title="@string/finish_trip"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/mi_delete_trip"
         android:title="@string/delete"
         app:showAsAction="never" />

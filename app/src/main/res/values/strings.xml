@@ -84,5 +84,10 @@
     <string name="some_permissions_not_granted">Some permissions not granted</string>
     <string name="permissions_granted">Permissions granted</string>
     <string name="name_already_in_use">Name already in use</string>
+    <string name="start_new_trip">Start New Trip</string>
+    <string name="current_trip">Paused Trip:</string>
+    <string name="finish_trip">Finish Trip</string>
+    <string name="finish_trip_query">Are you sure you want to finish this trip?</string>
+    <string name="finish">Finish</string>
 
 </resources>

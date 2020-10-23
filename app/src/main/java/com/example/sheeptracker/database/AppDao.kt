@@ -57,8 +57,19 @@ interface AppDao {
     fun getTripsForMapArea(mapAreaId: Long): List<Trip>
 
     @Query("DELETE FROM trip_table WHERE trip_id = :key")
-    fun deletTrip(key: Long)
+    fun deleteTrip(key: Long)
 
+    @Query("SELECT * FROM trip_table WHERE trip_finished = 0 ORDER BY trip_date DESC LIMIT 1")
+    fun getActiveTrip(): LiveData<Trip?>
+
+    @Query("UPDATE trip_table SET trip_finished = 1 WHERE trip_id = :key")
+    fun finishTrip(key: Long)
+
+    @Query("SELECT trip_finished FROM trip_table WHERE trip_id = :key")
+    fun isTripFinished(key: Long): Boolean?
+
+    @Query("SELECT trip_finished FROM trip_table WHERE trip_id = :key")
+    fun isTripFinishedLD(key: Long): LiveData<Boolean?>
 
     /** TripMapPoint **/
 
@@ -98,6 +109,11 @@ interface AppDao {
     @Query("DELETE FROM observation_table WHERE observation_id = :key")
     fun deleteObservation(key: Long)
 
+    @Query("SELECT COUNT(*) FROM observation_table WHERE observation_owner_trip_id = :tripId")
+    fun getObservationCountForTrip(tripId: Long): Int
+
+    @Query("SELECT COUNT(*) FROM observation_table WHERE observation_owner_trip_id = (SELECT trip_id FROM trip_table WHERE trip_finished = 0 ORDER BY trip_date DESC LIMIT 1)")
+    fun getObservationCountForActiveTrip(): LiveData<Int>
 
     /** Counter **/
 

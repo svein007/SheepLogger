@@ -61,7 +61,11 @@ class TripFragment : Fragment() {
         }
 
         override fun longPressHelper(geoPoint: GeoPoint?): Boolean {
-            showNewObservationDialog(geoPoint)
+            viewModel.isTripFinished.value?.let {
+                if (!it) {
+                    showNewObservationDialog(geoPoint)
+                }
+            }
             return true
         }
     })
@@ -106,6 +110,10 @@ class TripFragment : Fragment() {
             }
         })
 
+        viewModel.trip.observe(viewLifecycleOwner, {
+            it //HACK: observe trip to make it populate in VM???
+        })
+
         viewModel.tripMapPoints.observe(viewLifecycleOwner, {
             it?.let {
                 if (it.isNotEmpty()) {
@@ -141,10 +149,17 @@ class TripFragment : Fragment() {
             }
         }
 
+        viewModel.isTripFinished.observe(viewLifecycleOwner) {
+            it?.let {
+                if (!it) {
+                    startLocationService()
+                }
+                viewModel.isFollowingGPS.value = !it
+            }
+        }
+
         binding.lifecycleOwner = viewLifecycleOwner
         binding.tripViewModel = viewModel
-
-        startLocationService()
 
         return binding.root
     }
@@ -344,13 +359,25 @@ class TripFragment : Fragment() {
     override fun onPrepareOptionsMenu(menu: Menu) {
         super.onPrepareOptionsMenu(menu)
         menu.forEachIndexed { index, item ->
-            if (item.itemId == R.id.mi_start_tracking) {
-                viewModel.isTrackingGPS.value?.let {
-                    item.setVisible(!it)
+            when (item.itemId) {
+                R.id.mi_start_tracking -> {
+                    viewModel.isTripFinished.value?.let { tripFinished ->
+                        viewModel.isTrackingGPS.value?.let {
+                            item.setVisible(!tripFinished && !it)
+                        }
+                    }
                 }
-            } else if (item.itemId == R.id.mi_stop_tracking) {
-                viewModel.isTrackingGPS.value?.let {
-                    item.setVisible(it)
+                R.id.mi_stop_tracking -> {
+                    viewModel.isTripFinished.value?.let { tripFinished ->
+                        viewModel.isTrackingGPS.value?.let {
+                            item.setVisible(!tripFinished && it)
+                        }
+                    }
+                }
+                R.id.mi_finish_trip -> {
+                    viewModel.isTripFinished.value?.let {
+                        item.setVisible(!it)
+                    }
                 }
             }
         }
@@ -376,8 +403,25 @@ class TripFragment : Fragment() {
                 stopLocationService()
                 return true
             }
+            R.id.mi_finish_trip -> {
+                showFinishTripDialog()
+                return true
+            }
         }
         return false
+    }
+
+    private fun showFinishTripDialog() {
+        AlertDialog.Builder(requireContext())
+            .setTitle(getString(R.string.finish_trip))
+            .setMessage(getString(R.string.finish_trip_query))
+            .setPositiveButton(getString(R.string.finish)) { dialog, which ->
+                viewModel.onFinishTrip()
+                findNavController().navigateUp()
+            }
+            .setNegativeButton(getString(R.string.cancel)) { dialog, which ->
+            }
+            .show()
     }
 
     private fun startLocationService() {

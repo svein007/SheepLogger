@@ -78,4 +78,9 @@
     <string name="permissions_granted">Tillatelser godkjent</string>
     <string name="some_permissions_not_granted">Noen tillatelser ikke godkjent</string>
     <string name="name_already_in_use">Navn allerede i bruk</string>
+    <string name="start_new_trip">Start ny tur</string>
+    <string name="current_trip">Pauset tur:</string>
+    <string name="finish_trip">Avslutt tur</string>
+    <string name="finish">Avslutt</string>
+    <string name="finish_trip_query">Er du sikker på at du ønsker å avslutte turen?</string>
 </resources>

@@ -25,6 +25,9 @@ data class Trip (
     @ColumnInfo(name="trip_date")
     var tripDate: Date,
 
+    @ColumnInfo(name="trip_finished")
+    var tripFinished: Boolean = false,
+
     @ColumnInfo(name = "trip_owner_map_area_id")
     var tripOwnerMapAreaId: Long
 

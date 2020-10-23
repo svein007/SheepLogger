@@ -7,9 +7,10 @@ import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.sheeptracker.R
+import com.example.sheeptracker.database.AppDatabase
 import com.example.sheeptracker.databinding.StartFragmentBinding
 import com.example.sheeptracker.utils.checkHasAllPermissions
 
@@ -17,8 +18,12 @@ class StartFragment : Fragment() {
 
     private val requestCodeMapAreas = 1
     private val requestCodeTrips = 2
+    private val requestCodeAddTrip = 3
+    private val requestCodeTrip = 4
 
-    private lateinit var viewModel: StartViewModel
+    private val viewModel: StartViewModel by viewModels {
+        StartViewModelFactory(AppDatabase.getInstance(requireContext().applicationContext).appDatabaseDao, requireActivity().application)
+    }
     private lateinit var binding: StartFragmentBinding
 
     override fun onCreateView(
@@ -30,7 +35,28 @@ class StartFragment : Fragment() {
             inflater, R.layout.start_fragment, container, false
         )
 
-        viewModel = ViewModelProvider(this)[StartViewModel::class.java]
+        binding.startViewModel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
+
+        binding.startTripConstraintLayout.setOnClickListener {
+            if (checkHasAllPermissions(requireContext())) {
+                if (viewModel.tripIsActive.value!!) {
+                    findNavController().navigate(
+                        StartFragmentDirections.actionStartFragmentToTripFragment(
+                            viewModel.activeTrip.value!!.tripId,
+                            viewModel.activeTrip.value!!.tripOwnerMapAreaId
+                        )
+                    )
+                } else {
+                    findNavController().navigate(
+                        StartFragmentDirections.actionStartFragmentToAddTripFragment()
+                    )
+                }
+            } else {
+                performRequestPermissions(
+                    if (viewModel.tripIsActive.value!!) requestCodeTrip else requestCodeAddTrip)
+            }
+        }
 
         binding.mapAreasConstraintLayout.setOnClickListener {
             if (checkHasAllPermissions(requireContext())) {
@@ -85,6 +111,19 @@ class StartFragment : Fragment() {
                 requestCodeTrips -> {
                     findNavController().navigate(
                         StartFragmentDirections.actionStartFragmentToTripsFragment()
+                    )
+                }
+                requestCodeAddTrip -> {
+                    findNavController().navigate(
+                        StartFragmentDirections.actionStartFragmentToAddTripFragment()
+                    )
+                }
+                requestCodeTrip -> {
+                    findNavController().navigate(
+                        StartFragmentDirections.actionStartFragmentToTripFragment(
+                            viewModel.activeTrip.value!!.tripId,
+                            viewModel.activeTrip.value!!.tripOwnerMapAreaId
+                        )
                     )
                 }
             }

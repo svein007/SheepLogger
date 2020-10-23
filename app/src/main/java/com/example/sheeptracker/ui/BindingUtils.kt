@@ -17,13 +17,18 @@ fun TextView.setTextFromLong(value: Long?) {
 }
 
 @BindingAdapter("textInt")
+fun TextView.setTextFromInt(value: Int?) {
+    text = value?.toString() ?: ""
+}
+
+@BindingAdapter("textInt")
 fun EditText.setTextFromInt(value: Int?) {
     setText(value?.toString() ?: "")
 }
 
 @BindingAdapter("textTime")
-fun TextView.setTextTimeFromDate(date: Date) {
-    text = timeFormatter.format(date)
+fun TextView.setTextTimeFromDate(date: Date?) {
+    text = if (date != null) timeFormatter.format(date) else ""
 }
 
 @BindingAdapter("textDate")
