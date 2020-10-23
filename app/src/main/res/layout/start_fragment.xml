@@ -186,7 +186,7 @@
             android:id="@+id/startTripConstraintLayout"
             android:layout_width="match_parent"
             android:layout_height="80dp"
-            android:background="@color/colorPrimary"
+            android:background="@drawable/rect_ripple_primary"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
