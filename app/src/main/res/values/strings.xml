@@ -89,5 +89,6 @@
     <string name="finish_trip">Finish Trip</string>
     <string name="finish_trip_query">Are you sure you want to finish this trip?</string>
     <string name="finish">Finish</string>
+    <string name="longpress_create_verdict">Longpress an area on the map to create a new observation.</string>
 
 </resources>

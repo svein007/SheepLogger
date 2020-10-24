@@ -94,6 +94,12 @@ class TripFragment : Fragment() {
         viewModel = ViewModelProvider(
             this, viewModelFactory)[TripViewModel::class.java]
 
+        binding.observationsFAB.setOnClickListener {
+            findNavController().navigate(
+                TripFragmentDirections.actionTripFragmentToObservationsFragment(arguments.tripId)
+            )
+        }
+
         viewModel.mapArea.observe(viewLifecycleOwner, {
             it?.let {
                 Log.d("#######", "MapArea: " + it.toString())
@@ -387,12 +393,6 @@ class TripFragment : Fragment() {
         when (item.itemId) {
             R.id.mi_delete_trip -> {
                 showDeleteTripDialog()
-                return true
-            }
-            R.id.mi_observations -> {
-                findNavController().navigate(
-                    TripFragmentDirections.actionTripFragmentToObservationsFragment(arguments.tripId)
-                )
                 return true
             }
             R.id.mi_start_tracking -> {
