@@ -7,7 +7,6 @@ import androidx.lifecycle.Transformations
 import com.example.sheeptracker.database.AppDao
 import com.example.sheeptracker.database.entities.Trip
 import kotlinx.coroutines.*
-import java.util.*
 
 class TripsViewModel(
     application: Application,
@@ -23,34 +22,6 @@ class TripsViewModel(
 
     val showEmptyListTextView = Transformations.map(trips) {
         it.isNullOrEmpty()
-    }
-
-    /** ViewModel methods **/
-
-    fun addTrip() {
-        uiScope.launch {
-            val trip = Trip(
-                tripName = "My Trip",
-                tripDate = Date(),
-                tripOwnerMapAreaId = getMapAreaId()
-            )
-
-            insert(trip)
-        }
-    }
-
-    /** Helpers **/
-
-    private suspend fun insert(trip: Trip): Long {
-        return withContext(Dispatchers.IO) {
-            appDao.insert(trip)
-        }
-    }
-
-    private suspend fun getMapAreaId(): Long {
-        return withContext(Dispatchers.IO) {
-            appDao.getMapAreas()[0].mapAreaId
-        }
     }
 
 }

@@ -25,8 +25,6 @@ class TripsFragment : Fragment() {
             inflater, R.layout.trips_fragment, container, false
         )
 
-        setHasOptionsMenu(true)
-
         val application = requireNotNull(this.activity).application
         val appDao = AppDatabase.getInstance(application).appDatabaseDao
 
@@ -58,25 +56,6 @@ class TripsFragment : Fragment() {
         })
 
         return binding.root
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.trips_menu, menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.mi_add_trips) {
-            findNavController().navigate(
-                TripsFragmentDirections.actionTripsFragmentToAddTripFragment()
-            )
-            return true
-        }
-        return false
     }
 
 }
