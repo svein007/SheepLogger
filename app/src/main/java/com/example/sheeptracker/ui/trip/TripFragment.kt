@@ -117,7 +117,12 @@ class TripFragment : Fragment() {
         })
 
         viewModel.trip.observe(viewLifecycleOwner, {
-            it //HACK: observe trip to make it populate in VM???
+            it?.let {
+                if (viewModel.tripMapPoints.value?.isNotEmpty() == true) {
+                    drawGpsTrail()
+                    binding.tripMapView.invalidate()
+                }
+            }
         })
 
         viewModel.tripMapPoints.observe(viewLifecycleOwner, {
@@ -322,11 +327,26 @@ class TripFragment : Fragment() {
         val tripMapPointDateString = SimpleDateFormat("dd/MM/yyyy HH:mm").format(
             viewModel.tripMapPoints.value!!.first().tripMapPointDate)
 
+        val endTripMapPointDateString = SimpleDateFormat("dd/MM/yyyy HH:mm").format(
+            viewModel.tripMapPoints.value!!.last().tripMapPointDate)
+
         gpsMarkers.first().let {marker ->
             marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
             marker.icon = ResourcesCompat.getDrawable(resources, R.drawable.ic_baseline_trip_origin_24, null)
             marker.title = tripMapPointDateString
             marker.snippet = "Start"
+        }
+
+        viewModel.trip.value?.let { trip ->
+            gpsMarkers.last().let { marker ->
+                if (marker != gpsMarkers.first() && trip.tripFinished) {
+                    marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
+                    marker.icon = ResourcesCompat.getDrawable(resources, R.drawable.ic_baseline_stop_circle_24, null)
+                    marker.title = endTripMapPointDateString
+                    marker.snippet = "End"
+                    binding.tripMapView.overlayManager.add(marker)
+                }
+            }
         }
 
         // binding.tripMapView.overlayManager.addAll(gpsMarkers)
