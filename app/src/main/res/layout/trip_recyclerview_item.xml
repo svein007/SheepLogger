@@ -16,10 +16,10 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:background="?android:attr/selectableItemBackground"
-        android:onClick="@{() -> clickListener.onClick(trip)}"
         android:layout_width="match_parent"
-        android:layout_height="50dp">
+        android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackground"
+        android:onClick="@{() -> clickListener.onClick(trip)}">
 
         <TextView
             android:id="@+id/tripNameTV"
@@ -29,6 +29,7 @@
             android:layout_marginTop="4dp"
             android:text="@{trip.tripName}"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/imageView4"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Ettermiddagstur" />
@@ -37,29 +38,31 @@
             android:id="@+id/tripDateTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            app:textDateTime="@{trip.tripDate}"
-            tools:text="07/05/18"
+            android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toStartOf="@+id/mapAreaNameTV"
+            app:layout_constraintTop_toBottomOf="@+id/mapAreaNameTV"
+            app:textDateTime="@{trip.tripDate}"
+            tools:text="07/05/18" />
 
         <TextView
             android:id="@+id/mapAreaNameTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
             android:text="@{mapAreaName}"
             android:textStyle="italic"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@+id/tripNameTV"
+            app:layout_constraintTop_toBottomOf="@+id/tripNameTV"
             tools:text="Langeholmen" />
 
         <ImageView
             android:id="@+id/imageView4"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:adjustViewBounds="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
