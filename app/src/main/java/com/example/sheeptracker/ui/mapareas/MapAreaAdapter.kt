@@ -5,8 +5,14 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.sheeptracker.R
+import com.example.sheeptracker.database.AppDatabase
 import com.example.sheeptracker.database.entities.MapArea
 import com.example.sheeptracker.databinding.MapAreaRecyclerviewItemBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MapAreaAdapter (val clickListener: MapAreaListItemListener)
     : ListAdapter<MapArea, MapAreaAdapter.ViewHolder>(MapAreaDiffCallback()) {
@@ -29,7 +35,18 @@ class MapAreaAdapter (val clickListener: MapAreaListItemListener)
         ) {
             binding.mapArea = item
             binding.clickListener = clickListener
+            CoroutineScope(Dispatchers.Main).launch {
+                val tripCount = getTripCount(item.mapAreaId)
+                binding.tripCount = tripCount
+                binding.mapAreaTripCountTV.text = binding.root.context.resources.getQuantityString(R.plurals.num_trips, tripCount, tripCount)
+            }
             binding.executePendingBindings()
+        }
+
+        private suspend fun getTripCount(mapAreaId: Long): Int {
+            return withContext(Dispatchers.IO) {
+                AppDatabase.getInstance(binding.root.context).appDatabaseDao.getTripCount(mapAreaId)
+            }
         }
     }
 

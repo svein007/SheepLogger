@@ -8,6 +8,9 @@
             name="mapArea"
             type="com.example.sheeptracker.database.entities.MapArea" />
         <variable
+            name="tripCount"
+            type="Integer" />
+        <variable
             name="clickListener"
             type="com.example.sheeptracker.ui.mapareas.MapAreaListItemListener" />
     </data>
@@ -16,16 +19,17 @@
         android:background="?android:attr/selectableItemBackground"
         android:layout_width="match_parent"
         android:onClick="@{() -> clickListener.onClick(mapArea)}"
-        android:layout_height="50dp">
+        android:layout_height="80dp">
 
         <TextView
             android:id="@+id/mapAreaName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
             android:text="@{mapArea.mapAreaName}"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/imageView3"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Oslo" />
@@ -34,22 +38,34 @@
             android:id="@+id/mapAreaDesc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
+            android:layout_marginTop="4dp"
             android:text="@{`Zoom: ` + mapArea.zoomIntervalString}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/mapAreaName"
+            app:layout_constraintTop_toBottomOf="@+id/mapAreaName"
             tools:text="823 tiles" />
 
         <ImageView
             android:id="@+id/imageView3"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_baseline_map_24" />
+
+        <TextView
+            android:id="@+id/mapAreaTripCountTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            app:layout_constraintStart_toStartOf="@+id/mapAreaDesc"
+            app:layout_constraintTop_toBottomOf="@+id/mapAreaDesc"
+            tools:text="4 trips" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

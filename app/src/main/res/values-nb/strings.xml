@@ -84,4 +84,8 @@
     <string name="finish">Avslutt</string>
     <string name="finish_trip_query">Er du sikker på at du ønsker å avslutte turen?</string>
     <string name="longpress_create_verdict">Hold ned på et område på kartet for å gjøre en observasjon.</string>
+    <plurals name="num_trips">
+        <item quantity="one">%d tur</item>
+        <item quantity="other">%d turer</item>
+    </plurals>
 </resources>

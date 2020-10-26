@@ -195,4 +195,7 @@ interface AppDao {
     @Query("SELECT COUNT(*) FROM trip_table")
     fun getTripCount(): Int
 
+    @Query("SELECT COUNT(*) FROM trip_table WHERE trip_owner_map_area_id = :mapAreaId")
+    fun getTripCount(mapAreaId: Long): Int
+
 }
