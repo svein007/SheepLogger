@@ -16,10 +16,10 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:background="?android:attr/selectableItemBackground"
         android:layout_width="match_parent"
-        android:onClick="@{() -> clickListener.onClick(mapArea)}"
-        android:layout_height="80dp">
+        android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackground"
+        android:onClick="@{() -> clickListener.onClick(mapArea)}">
 
         <TextView
             android:id="@+id/mapAreaName"
@@ -38,7 +38,6 @@
             android:id="@+id/mapAreaDesc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
             android:text="@{`Zoom: ` + mapArea.zoomIntervalString}"
             app:layout_constraintStart_toStartOf="@+id/mapAreaName"
             app:layout_constraintTop_toBottomOf="@+id/mapAreaName"
@@ -62,7 +61,8 @@
             android:id="@+id/mapAreaTripCountTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@+id/mapAreaDesc"
             app:layout_constraintTop_toBottomOf="@+id/mapAreaDesc"
             tools:text="4 trips" />
