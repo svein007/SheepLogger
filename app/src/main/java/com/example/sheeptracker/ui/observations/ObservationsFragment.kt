@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.sheeptracker.R
 import com.example.sheeptracker.database.AppDatabase
 import com.example.sheeptracker.database.entities.Observation
@@ -66,6 +67,7 @@ class ObservationsFragment : Fragment() {
             }
         })
 
+        binding.observationsRV.addItemDecoration(DividerItemDecoration(application, DividerItemDecoration.VERTICAL))
 
         return binding.root
     }
