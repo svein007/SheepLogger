@@ -58,6 +58,8 @@ class TripViewModel(
 
     val latestLocation = MutableLiveData<Location>()
 
+    var motionLayoutProgress = 0.0f
+
     val herdObservationCount = Transformations.map(observations){
         observations.value?.let {
             return@map it.filter { obs -> obs.observationType == Observation.ObservationType.COUNT }.count()

@@ -40,6 +40,7 @@ import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
 import java.lang.Exception
 import java.text.SimpleDateFormat
 import kotlin.collections.ArrayList
+import kotlin.math.roundToInt
 
 class TripFragment : Fragment() {
 
@@ -171,6 +172,8 @@ class TripFragment : Fragment() {
 
         binding.lifecycleOwner = viewLifecycleOwner
         binding.tripViewModel = viewModel
+
+        binding.tripMotionLayout.progress = viewModel.motionLayoutProgress
 
         return binding.root
     }
@@ -370,6 +373,9 @@ class TripFragment : Fragment() {
         binding.tripMapView.overlayManager.remove(gpsTrail)
 
         binding.tripMapView.onPause()
+
+        viewModel.motionLayoutProgress = binding.tripMotionLayout.progress.roundToInt().toFloat()
+
     }
 
     override fun onDestroy() {
