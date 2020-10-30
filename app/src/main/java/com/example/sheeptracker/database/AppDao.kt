@@ -104,7 +104,10 @@ interface AppDao {
     fun getObservationsLD(): LiveData<List<Observation>>
 
     @Query("SELECT * FROM observation_table WHERE observation_owner_trip_id = :tripId ORDER BY observation_id ASC")
-    fun getObservationsForTripLD(tripId: Long): LiveData<List<Observation>>
+    fun getObservationsForTripLDAsc(tripId: Long): LiveData<List<Observation>>
+
+    @Query("SELECT * FROM observation_table WHERE observation_owner_trip_id = :tripId ORDER BY observation_id DESC")
+    fun getObservationsForTripLDDesc(tripId: Long): LiveData<List<Observation>>
 
     @Query("SELECT * FROM observation_table WHERE observation_id = :key")
     fun getObservationLD(key: Long): LiveData<Observation>

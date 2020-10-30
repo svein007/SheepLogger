@@ -50,7 +50,7 @@ class TripViewModel(
     val trip: LiveData<Trip?> = appDao.getTripLD(tripId)
     val mapArea: LiveData<MapArea?> = appDao.getMapAreaLD(mapAreaId)
     val tripMapPoints: LiveData<List<TripMapPoint>> = appDao.getTripMapPointsForTripLD(tripId)
-    val observations: LiveData<List<Observation>> = appDao.getObservationsForTripLD(tripId)
+    val observations: LiveData<List<Observation>> = appDao.getObservationsForTripLDAsc(tripId)
     val isTripFinished: LiveData<Boolean?> = appDao.isTripFinishedLD(tripId)
 
     val isTrackingGPS = MutableLiveData<Boolean>(false)

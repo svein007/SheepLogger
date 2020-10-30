@@ -16,7 +16,7 @@ class ObservationsViewModel(
 
     val trip: LiveData<Trip?> = appDao.getTripLD(tripId)
 
-    val observations: LiveData<List<Observation>> = appDao.getObservationsForTripLD(tripId)
+    val observations: LiveData<List<Observation>> = appDao.getObservationsForTripLDDesc(tripId)
 
     val showEmptyListTextView = Transformations.map(observations) {
         it.isNullOrEmpty()
