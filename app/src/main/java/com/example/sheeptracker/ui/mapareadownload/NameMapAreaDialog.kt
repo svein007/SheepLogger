@@ -40,8 +40,6 @@ class NameMapAreaDialog : DialogFragment() {
 
         binding.downloadButton.setOnClickListener { onStoreMapArea() }
 
-        binding.tileCountTV.text = "${viewModel.tileCount} tiles"
-
         return binding.root
     }
 

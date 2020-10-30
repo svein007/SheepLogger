@@ -9,7 +9,7 @@
     <fragment
         android:id="@+id/mapAreaDownloadFragment"
         android:name="com.example.sheeptracker.ui.mapareadownload.MapAreaDownloadFragment"
-        android:label="@string/map"
+        android:label="@string/download_mapArea"
         tools:layout="@layout/map_area_download_fragment" >
         <action
             android:id="@+id/action_mapAreaDownloadFragment_to_nameMapAreaDialog"

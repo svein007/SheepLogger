@@ -94,5 +94,6 @@
         <item quantity="one">%d trip</item>
         <item quantity="other">%d trips</item>
     </plurals>
+    <string name="tiles_to_download_query">The selected area consists of %d tiles.</string>
 
 </resources>

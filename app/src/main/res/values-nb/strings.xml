@@ -88,4 +88,5 @@
         <item quantity="one">%d tur</item>
         <item quantity="other">%d turer</item>
     </plurals>
+    <string name="tiles_to_download_query">Det valgte områder består av %d tiles.</string>
 </resources>
