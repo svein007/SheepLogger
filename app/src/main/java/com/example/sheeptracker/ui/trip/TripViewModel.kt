@@ -10,6 +10,7 @@ import android.os.Bundle
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import com.example.sheeptracker.database.AppDao
 import com.example.sheeptracker.database.entities.MapArea
 import com.example.sheeptracker.database.entities.Observation
@@ -56,6 +57,29 @@ class TripViewModel(
     val isFollowingGPS = MutableLiveData<Boolean>(true)
 
     val latestLocation = MutableLiveData<Location>()
+
+    var motionLayoutProgress = 0.0f
+
+    val herdObservationCount = Transformations.map(observations){
+        observations.value?.let {
+            return@map it.filter { obs -> obs.observationType == Observation.ObservationType.COUNT }.count()
+        }
+        0
+    }
+
+    val deadObservationCount = Transformations.map(observations){
+        observations.value?.let {
+            return@map it.filter { obs -> obs.observationType == Observation.ObservationType.DEAD }.count()
+        }
+        0
+    }
+
+    val injuredObservationCount = Transformations.map(observations){
+        observations.value?.let {
+            return@map it.filter { obs -> obs.observationType == Observation.ObservationType.INJURED }.count()
+        }
+        0
+    }
 
     init {
         startLocationUpdates()

@@ -9,10 +9,12 @@
             type="com.example.sheeptracker.ui.trip.TripViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.constraintlayout.motion.widget.MotionLayout
+        android:id="@+id/tripMotionLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.trip.TripFragment">
+        tools:context=".ui.trip.TripFragment"
+        app:layoutDescription="@xml/trip_fragment_scene">
 
         <org.osmdroid.views.MapView
             android:id="@+id/tripMapView"
@@ -27,18 +29,18 @@
 
         <ImageButton
             android:id="@+id/gpsFollowButton"
-            android:onClick="@{() -> tripViewModel.toggleFollowGPS()}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
             android:minWidth="54dp"
             android:minHeight="54dp"
-            android:scaleType="fitXY"
+            android:onClick="@{() -> tripViewModel.toggleFollowGPS()}"
             android:padding="8dp"
-            android:background="@android:color/transparent"
+            android:scaleType="fitXY"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tripMapView"
             app:srcCompat="@drawable/ic_baseline_gps_fixed_24"
-            tools:srcCompat="@drawable/ic_baseline_gps_fixed_24"/>
+            tools:srcCompat="@drawable/ic_baseline_gps_fixed_24" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/observationsFAB"
@@ -51,5 +53,74 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:srcCompat="@drawable/ic_baseline_view_list_24" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/tripCountTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/oval_rect"
+            android:drawablePadding="8dp"
+            android:padding="6dp"
+            android:paddingEnd="16dp"
+            android:paddingStart="10dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textStyle="bold"
+            app:drawableLeftCompat="@drawable/ic_baseline_remove_red_eye_24"
+            app:layout_constraintBottom_toBottomOf="@+id/showObsDetailsButtons"
+            app:layout_constraintStart_toEndOf="@+id/showObsDetailsButtons"
+            app:layout_constraintTop_toTopOf="@+id/showObsDetailsButtons"
+            app:textInt="@{tripViewModel.herdObservationCount}"
+            tools:text="7" />
+
+        <TextView
+            android:id="@+id/deadCountTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:background="@drawable/oval_rect"
+            android:drawablePadding="8dp"
+            android:padding="6dp"
+            android:paddingEnd="16dp"
+            android:paddingStart="10dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textStyle="bold"
+            app:drawableLeftCompat="@drawable/ic_baseline_warning_red_24"
+            app:layout_constraintBottom_toBottomOf="@+id/tripCountTV"
+            app:layout_constraintStart_toEndOf="@+id/tripCountTV"
+            app:layout_constraintTop_toTopOf="@+id/tripCountTV"
+            app:textInt="@{tripViewModel.deadObservationCount}"
+            tools:text="2" />
+
+        <TextView
+            android:id="@+id/injuredAnimalCountTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:background="@drawable/oval_rect"
+            android:drawablePadding="8dp"
+            android:padding="6dp"
+            android:paddingEnd="16dp"
+            android:paddingStart="10dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textStyle="bold"
+            app:drawableLeftCompat="@drawable/ic_baseline_report_problem_24"
+            app:layout_constraintBottom_toBottomOf="@+id/deadCountTV"
+            app:layout_constraintStart_toEndOf="@+id/deadCountTV"
+            app:layout_constraintTop_toTopOf="@+id/deadCountTV"
+            app:textInt="@{tripViewModel.injuredObservationCount}"
+            tools:text="3" />
+
+        <ImageButton
+            android:id="@+id/showObsDetailsButtons"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:adjustViewBounds="true"
+            android:background="@drawable/round_ripple_primary"
+            android:padding="8dp"
+            android:scaleType="fitXY"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_baseline_chevron_right_24_white" />
+
+    </androidx.constraintlayout.motion.widget.MotionLayout>
 </layout>
