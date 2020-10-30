@@ -38,11 +38,9 @@ class TripsFragment : Fragment() {
         binding.viewModel = viewModel
 
         val adapter = TripAdapter(TripListItemListener { tripId ->
-            viewModel.trips.value?.firstOrNull { trip -> trip.tripId == tripId }?.tripOwnerMapAreaId?.let {mapAreaId ->
-                findNavController().navigate(
-                    TripsFragmentDirections.actionTripsFragmentToTripFragment(tripId, mapAreaId)
-                )
-            }
+            findNavController().navigate(
+                TripsFragmentDirections.actionTripsFragmentToTripFragment(tripId)
+            )
         })
 
         binding.tripsRecyclerView.adapter = adapter

@@ -18,6 +18,9 @@ interface AppDao {
     @Query("SELECT * FROM map_area_table WHERE map_area_id = :key")
     fun getMapAreaLD(key: Long): LiveData<MapArea?>
 
+    @Query("SELECT map_area_id, map_area_name, map_area_min_zoom, map_area_max_zoom, map_area_bounding_box FROM map_area_table INNER JOIN trip_table ON map_area_id = trip_owner_map_area_id WHERE trip_id = :tripId")
+    fun getMapAreaForTripLD(tripId: Long): LiveData<MapArea?>
+
     @Query("SELECT * FROM map_area_table WHERE map_area_name = :mapName")
     fun getMapArea(mapName: String): MapArea?
 

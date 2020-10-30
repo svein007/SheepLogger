@@ -93,9 +93,6 @@
         <argument
             android:name="tripId"
             app:argType="long" />
-        <argument
-            android:name="mapAreaId"
-            app:argType="long" />
         <action
             android:id="@+id/action_tripFragment_to_addObservationFragment"
             app:destination="@id/addObservationFragment" />

@@ -20,7 +20,6 @@ import kotlinx.coroutines.*
 
 class TripViewModel(
     private val tripId: Long,
-    private val mapAreaId: Long,
     application: Application,
     private val appDao: AppDao
 ) : AndroidViewModel(application) {
@@ -48,7 +47,7 @@ class TripViewModel(
     /** Fields **/
 
     val trip: LiveData<Trip?> = appDao.getTripLD(tripId)
-    val mapArea: LiveData<MapArea?> = appDao.getMapAreaLD(mapAreaId)
+    val mapArea: LiveData<MapArea?> = appDao.getMapAreaForTripLD(tripId)
     val tripMapPoints: LiveData<List<TripMapPoint>> = appDao.getTripMapPointsForTripLD(tripId)
     val observations: LiveData<List<Observation>> = appDao.getObservationsForTripLDAsc(tripId)
     val isTripFinished: LiveData<Boolean?> = appDao.isTripFinishedLD(tripId)

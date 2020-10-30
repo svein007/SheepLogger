@@ -79,8 +79,7 @@ class AddTripFragment : Fragment() {
     private fun addTrip() {
         viewModel.addTrip(
             onSuccess = { tripId ->
-                val mapAreaId = viewModel.mapAreaId.value!!.toLong()
-                findNavController().navigate(AddTripFragmentDirections.actionAddTripFragmentToTripFragment(tripId, mapAreaId))
+                findNavController().navigate(AddTripFragmentDirections.actionAddTripFragmentToTripFragment(tripId))
             },
             onFail = { Toast.makeText(requireContext(), "Invalid MapAreaId", Toast.LENGTH_LONG).show() }
         )

@@ -43,8 +43,7 @@ class StartFragment : Fragment() {
                 if (viewModel.tripIsActive.value!!) {
                     findNavController().navigate(
                         StartFragmentDirections.actionStartFragmentToTripFragment(
-                            viewModel.activeTrip.value!!.tripId,
-                            viewModel.activeTrip.value!!.tripOwnerMapAreaId
+                            viewModel.activeTrip.value!!.tripId
                         )
                     )
                 } else {
@@ -121,8 +120,7 @@ class StartFragment : Fragment() {
                 requestCodeTrip -> {
                     findNavController().navigate(
                         StartFragmentDirections.actionStartFragmentToTripFragment(
-                            viewModel.activeTrip.value!!.tripId,
-                            viewModel.activeTrip.value!!.tripOwnerMapAreaId
+                            viewModel.activeTrip.value!!.tripId
                         )
                     )
                 }

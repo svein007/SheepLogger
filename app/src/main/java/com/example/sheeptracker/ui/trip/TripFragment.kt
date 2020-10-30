@@ -88,9 +88,9 @@ class TripFragment : Fragment() {
         appDao = AppDatabase.getInstance(application).appDatabaseDao
         val viewModelFactory = TripViewModelFactory(
             arguments.tripId,
-            arguments.mapAreaId,
             requireNotNull(this.activity).application,
-            appDao)
+            appDao
+        )
 
         viewModel = ViewModelProvider(
             this, viewModelFactory)[TripViewModel::class.java]
