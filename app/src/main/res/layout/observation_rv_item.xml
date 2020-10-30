@@ -31,8 +31,8 @@
             android:layout_marginStart="8dp"
             app:layout_constraintStart_toEndOf="@+id/imageView"
             app:layout_constraintTop_toBottomOf="@+id/textView12"
-            app:textTime="@{observation.observationDate}"
-            tools:text="42" />
+            app:textDateTime="@{observation.observationDate}"
+            tools:text="12/11/10 14:20" />
 
         <TextView
             android:id="@+id/textView12"

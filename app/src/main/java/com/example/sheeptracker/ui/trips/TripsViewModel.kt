@@ -18,7 +18,7 @@ class TripsViewModel(
 
     /** ViewModel fields **/
 
-    val trips: LiveData<List<Trip>> = appDao.getFinishedTripsLD()
+    val trips: LiveData<List<Trip>> = appDao.getFinishedTripsLDDesc()
 
     val showEmptyListTextView = Transformations.map(trips) {
         it.isNullOrEmpty()
