@@ -70,6 +70,10 @@ class HerdObservationDetailsFragment : Fragment() {
             }
         })
 
+        viewModel.trip.observe(viewLifecycleOwner) {
+            it //HACK: to populate the livedata
+        }
+
         return binding.root
     }
 
@@ -84,6 +88,10 @@ class HerdObservationDetailsFragment : Fragment() {
         menu.forEachIndexed { index, item ->
             if (item.itemId == R.id.mi_delete_secondary_trip_map_point) {
                 item.isVisible = viewModel.observation.value?.observationSecondaryTripMapPointId != null
+            } else if (item.itemId == R.id.mi_set_secondary_trip_map_point) {
+                viewModel.trip.value?.tripFinished?.let {
+                    item.isVisible = !it
+                }
             }
         }
 

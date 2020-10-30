@@ -43,6 +43,8 @@ class HerdObservationDetailsViewModel(
         0
     }
 
+    val trip = appDao.getTripForObservation(observationId)
+
     /** VM Methods **/
 
     fun onUpdateObservation() {
