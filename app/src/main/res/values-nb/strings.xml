@@ -89,4 +89,9 @@
         <item quantity="other">%d turer</item>
     </plurals>
     <string name="tiles_to_download_query">Det valgte områder består av %d tiles.</string>
+    <string name="trip_details">Turdetaljer</string>
+    <string name="date">Dato</string>
+    <string name="trip_information">Turinformasjon</string>
+    <string name="duration">Varighet</string>
+    <string name="n_total">%d totalt</string>
 </resources>

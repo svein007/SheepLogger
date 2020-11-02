@@ -3,6 +3,7 @@ package com.example.sheeptracker.database
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.sheeptracker.database.entities.*
+import java.util.*
 
 @Dao
 interface AppDao {
@@ -74,8 +75,8 @@ interface AppDao {
     @Query("SELECT * FROM trip_table WHERE trip_finished = 0 ORDER BY trip_date DESC LIMIT 1")
     fun getActiveTrip(): LiveData<Trip?>
 
-    @Query("UPDATE trip_table SET trip_finished = 1 WHERE trip_id = :key")
-    fun finishTrip(key: Long)
+    @Query("UPDATE trip_table SET trip_finished = 1, trip_finished_date = :finishDate WHERE trip_id = :key")
+    fun finishTrip(key: Long, finishDate: Date)
 
     @Query("SELECT trip_finished FROM trip_table WHERE trip_id = :key")
     fun isTripFinished(key: Long): Boolean?
@@ -126,6 +127,9 @@ interface AppDao {
 
     @Query("SELECT COUNT(*) FROM observation_table WHERE observation_owner_trip_id = :tripId")
     fun getObservationCountForTrip(tripId: Long): Int
+
+    @Query("SELECT COUNT(*) FROM observation_table WHERE observation_owner_trip_id = :tripId")
+    fun getObservationCountForTripLD(tripId: Long): LiveData<Int>
 
     @Query("SELECT COUNT(*) FROM observation_table WHERE observation_owner_trip_id = (SELECT trip_id FROM trip_table WHERE trip_finished = 0 ORDER BY trip_date DESC LIMIT 1)")
     fun getObservationCountForActiveTrip(): LiveData<Int>

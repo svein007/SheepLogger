@@ -17,6 +17,7 @@ import com.example.sheeptracker.database.entities.Observation
 import com.example.sheeptracker.database.entities.Trip
 import com.example.sheeptracker.database.entities.TripMapPoint
 import kotlinx.coroutines.*
+import java.util.*
 
 class TripViewModel(
     private val tripId: Long,
@@ -148,7 +149,7 @@ class TripViewModel(
 
     private suspend fun finishTrip() {
         withContext(Dispatchers.IO) {
-            appDao.finishTrip(tripId)
+            appDao.finishTrip(tripId, Date())
         }
     }
 

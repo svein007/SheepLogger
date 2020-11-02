@@ -8,7 +8,7 @@ import androidx.room.TypeConverters
 import com.example.sheeptracker.database.entities.*
 
 @Database(entities = [MapArea::class, Trip::class, Observation::class, TripMapPoint::class, Counter::class, AnimalRegistration::class, ImageResource::class],
-    version = 23, exportSchema = false)
+    version = 24, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
 

@@ -32,8 +32,8 @@ fun TextView.setTextTimeFromDate(date: Date?) {
 }
 
 @BindingAdapter("textDate")
-fun TextView.setTextDateForDate(date: Date) {
-    text = dateFormatter.format(date)
+fun TextView.setTextDateForDate(date: Date?) {
+    text = if (date != null) dateFormatter.format(date) else ""
 }
 
 @BindingAdapter("textDateTime")

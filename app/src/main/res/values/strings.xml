@@ -95,5 +95,10 @@
         <item quantity="other">%d trips</item>
     </plurals>
     <string name="tiles_to_download_query">The selected area consists of %d tiles.</string>
+    <string name="trip_details">Trip Details</string>
+    <string name="trip_information">Trip Information</string>
+    <string name="date">Date</string>
+    <string name="duration">Duration</string>
+    <string name="n_total">%d total</string>
 
 </resources>

@@ -71,6 +71,9 @@
         <action
             android:id="@+id/action_tripsFragment_to_tripFragment"
             app:destination="@id/tripFragment" />
+        <action
+            android:id="@+id/action_tripsFragment_to_tripDetailsFragment"
+            app:destination="@id/tripDetailsFragment" />
     </fragment>
     <fragment
         android:id="@+id/addTripFragment"
@@ -227,5 +230,17 @@
         android:name="com.example.sheeptracker.ui.mapareadownload.NameMapAreaDialog"
         android:label="NameMapAreaDialog"
         tools:layout="@layout/name_map_area_dialog" />
+    <fragment
+        android:id="@+id/tripDetailsFragment"
+        android:name="com.example.sheeptracker.ui.tripdetails.TripDetailsFragment"
+        android:label="@string/trip_details"
+        tools:layout="@layout/trip_details_fragment">
+        <argument
+            android:name="tripId"
+            app:argType="long" />
+        <action
+            android:id="@+id/action_tripDetailsFragment_to_tripFragment"
+            app:destination="@id/tripFragment" />
+    </fragment>
 
 </navigation>
