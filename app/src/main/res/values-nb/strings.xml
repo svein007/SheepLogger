@@ -94,4 +94,6 @@
     <string name="trip_information">Turinformasjon</string>
     <string name="duration">Varighet</string>
     <string name="n_total">%d totalt</string>
+    <string name="distance">Distanse</string>
+    <string name="dead_injured">Død / skadd</string>
 </resources>

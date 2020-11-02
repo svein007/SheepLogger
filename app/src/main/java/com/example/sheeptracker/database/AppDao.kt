@@ -178,6 +178,12 @@ interface AppDao {
     @Query("DELETE FROM animal_registration_table WHERE animal_registration_id = :key")
     fun deleteAnimalRegistration(key: Long)
 
+    @Query("SELECT COUNT(*) FROM observation_table INNER JOIN trip_table ON trip_id = observation_owner_trip_id WHERE observation_type = 2 AND trip_id = :tripId")
+    fun getInjuredAnimalCountForTripLD(tripId: Long): LiveData<Int>
+
+    @Query("SELECT COUNT(*) FROM observation_table INNER JOIN trip_table ON trip_id = observation_owner_trip_id WHERE observation_type = 1 AND trip_id = :tripId")
+    fun getDeadAnimalCountForTripLD(tripId: Long): LiveData<Int>
+
 
     /** ImageResource **/
 

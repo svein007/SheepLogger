@@ -6,6 +6,7 @@ import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.math.roundToInt
 
 val timeFormatter = SimpleDateFormat("HH:mm")
 val dateFormatter = SimpleDateFormat("dd/MM/yyyy")
@@ -19,6 +20,16 @@ fun TextView.setTextFromLong(value: Long?) {
 @BindingAdapter("textInt")
 fun TextView.setTextFromInt(value: Int?) {
     text = value?.toString() ?: ""
+}
+
+@BindingAdapter("textDouble")
+fun TextView.setTextFromDouble(value: Double?) {
+    text = value?.toString() ?: ""
+}
+
+@BindingAdapter("textDoubleRound")
+fun TextView.setTextFromDoubleRound(value: Double?) {
+    text = value?.roundToInt()?.toString() ?: ""
 }
 
 @BindingAdapter("textInt")

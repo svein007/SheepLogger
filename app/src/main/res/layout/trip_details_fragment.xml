@@ -161,7 +161,57 @@
             android:text="@string/map"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView54" />
+
+        <TextView
+            android:id="@+id/textView54"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="8dp"
+            android:text="@{viewModel.tripDistance}"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            app:layout_constraintStart_toStartOf="@+id/textView55"
+            app:layout_constraintTop_toBottomOf="@+id/textView55"
+            tools:text="42km" />
+
+        <TextView
+            android:id="@+id/textView55"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:drawablePadding="8dp"
+            android:text="@string/distance"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@android:color/black"
+            app:drawableLeftCompat="@drawable/ic_baseline_directions_walk_24"
+            app:layout_constraintStart_toStartOf="@+id/textView52"
             app:layout_constraintTop_toBottomOf="@+id/textView51" />
+
+        <TextView
+            android:id="@+id/textView56"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:drawablePadding="8dp"
+            android:text="@string/dead_injured"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/black"
+            app:drawableLeftCompat="@drawable/ic_baseline_warning_24"
+            app:layout_constraintStart_toStartOf="@+id/textView50"
+            app:layout_constraintTop_toBottomOf="@+id/textView51" />
+
+        <TextView
+            android:id="@+id/textView57"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="8dp"
+            android:text="@{viewModel.deadAnimalCount + ` / ` + viewModel.injuredAnimalCount}"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            app:layout_constraintStart_toStartOf="@+id/textView56"
+            app:layout_constraintTop_toBottomOf="@+id/textView56"
+            tools:text="1 / 3" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

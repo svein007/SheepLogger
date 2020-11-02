@@ -100,5 +100,7 @@
     <string name="date">Date</string>
     <string name="duration">Duration</string>
     <string name="n_total">%d total</string>
+    <string name="distance">Distance</string>
+    <string name="dead_injured">Dead / Injured</string>
 
 </resources>
