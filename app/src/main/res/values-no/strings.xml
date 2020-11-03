@@ -96,4 +96,5 @@
     <string name="n_total">%d totalt</string>
     <string name="distance">Distanse</string>
     <string name="dead_injured">Død / skadd</string>
+    <string name="show_map">Vis kart</string>
 </resources>
