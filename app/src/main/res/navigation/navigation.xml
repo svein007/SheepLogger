@@ -69,9 +69,6 @@
             android:id="@+id/action_tripsFragment_to_addTripFragment"
             app:destination="@id/addTripFragment" />
         <action
-            android:id="@+id/action_tripsFragment_to_tripFragment"
-            app:destination="@id/tripFragment" />
-        <action
             android:id="@+id/action_tripsFragment_to_tripDetailsFragment"
             app:destination="@id/tripDetailsFragment" />
     </fragment>
