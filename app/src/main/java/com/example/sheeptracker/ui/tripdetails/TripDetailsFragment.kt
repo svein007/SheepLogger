@@ -40,6 +40,14 @@ class TripDetailsFragment : Fragment() {
             )
         }
 
+        binding.mapFAB.setOnClickListener {
+            findNavController().navigate(
+                TripDetailsFragmentDirections.actionTripDetailsFragmentToTripFragment(
+                    TripDetailsFragmentArgs.fromBundle(requireArguments()).tripId
+                )
+            )
+        }
+
         viewModel.mapArea.observe(viewLifecycleOwner) {
             it?.let { mapArea ->
                 val mapAreaString = mapArea.getSqliteFilename()
