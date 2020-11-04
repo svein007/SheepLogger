@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import com.example.sheeptracker.database.AppDao
 import com.example.sheeptracker.database.entities.MapArea
+import com.example.sheeptracker.database.entities.Observation
 import com.example.sheeptracker.database.entities.TripMapPoint
 import kotlin.math.roundToInt
 
@@ -18,8 +19,9 @@ class TripDetailsViewModel(
 
     val trip = appDao.getTripLD(tripId)
     val mapArea: LiveData<MapArea?> = appDao.getMapAreaForTripLD(tripId)
+    val observations: LiveData<List<Observation>> = appDao.getObservationsForTripLDAsc(tripId)
     val observationCount: LiveData<Int> = appDao.getObservationCountForTripLD(tripId)
-    private val tripMapPoints: LiveData<List<TripMapPoint>> = appDao.getTripMapPointsForTripLD(tripId)
+    val tripMapPoints: LiveData<List<TripMapPoint>> = appDao.getTripMapPointsForTripLD(tripId)
     val deadAnimalCount = appDao.getDeadAnimalCountForTripLD(tripId)
     val injuredAnimalCount = appDao.getInjuredAnimalCountForTripLD(tripId)
 
