@@ -9,6 +9,7 @@ import com.example.sheeptracker.R
 import com.example.sheeptracker.database.entities.MapArea
 import com.example.sheeptracker.database.entities.Observation
 import com.example.sheeptracker.database.entities.TripMapPoint
+import com.example.sheeptracker.ui.dateTimeFormatter
 import org.osmdroid.tileprovider.modules.OfflineTileProvider
 import org.osmdroid.tileprovider.tilesource.FileBasedTileSource
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
@@ -22,9 +23,11 @@ import java.lang.Exception
 
 class TripMapView: MapView {
 
-    constructor(context: Context) : super(context)
+    constructor(context: Context, attributeSet: AttributeSet) : super(context, attributeSet) {
 
-    constructor(context: Context, attributeSet: AttributeSet) : super(context, attributeSet)
+    }
+
+    private val defaultZoomLevel = 18.0
 
     private val gpsTrail = Polyline()
     private val gpsStartMarker = Marker(this)
@@ -95,6 +98,9 @@ class TripMapView: MapView {
     fun drawSimpleGPSTrail(geoPoints: List<GeoPoint>) {
         gpsTrail.setPoints(geoPoints)
         if(!overlayManager.contains(gpsTrail)) {
+            gpsTrail.outlinePaint.alpha = 200
+            gpsTrail.outlinePaint.color = Color.parseColor("#404040")
+            gpsTrail.outlinePaint.strokeWidth = 10.0f
             overlayManager.add(gpsTrail)
         }
         if(geoPoints.isNotEmpty() && !overlayManager.contains(gpsStartMarker)) {
@@ -170,6 +176,22 @@ class TripMapView: MapView {
         if(!overlayManager.containsAll(observationPolylines)) {
             overlayManager.removeAll(observationPolylines)
             overlayManager.addAll(observationPolylines)
+        }
+
+    }
+
+    fun drawFullGPSTrail(tripMapPoints: List<TripMapPoint>){
+        val geoPoints = tripMapPoints.map { tripMapPoint -> GeoPoint(tripMapPoint.tripMapPointLat, tripMapPoint.tripMapPointLon) }
+        drawSimpleGPSTrail(geoPoints)
+
+        if(geoPoints.isNotEmpty()) {
+            gpsStartMarker.title = dateTimeFormatter.format(tripMapPoints.first().tripMapPointDate)
+            gpsStartMarker.snippet = this.context.getString(R.string.start)
+        }
+
+        if(geoPoints.size > 1) {
+            gpsEndMarker.title = dateTimeFormatter.format(tripMapPoints.last().tripMapPointDate)
+            gpsEndMarker.snippet = this.context.getString(R.string.end)
         }
 
     }

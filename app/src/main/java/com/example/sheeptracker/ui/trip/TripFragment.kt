@@ -51,8 +51,6 @@ class TripFragment : Fragment() {
     private lateinit var arguments: TripFragmentArgs
     private lateinit var appDao: AppDao
 
-    private val gpsTrail = Polyline() // GPS trail of current trip
-    private val gpsMarkers = ArrayList<Marker>() // To be able to delete old markers
     private val observationMarkers = ArrayList<Marker>() // To be able to delete old markers
     private val observationPolylines = ArrayList<Polyline>()
 
@@ -120,8 +118,8 @@ class TripFragment : Fragment() {
         viewModel.trip.observe(viewLifecycleOwner, {
             it?.let {
                 if (viewModel.tripMapPoints.value?.isNotEmpty() == true) {
-                    drawGpsTrail()
-                    binding.tripMapView.invalidate()
+                    //drawGpsTrail()
+                    //binding.tripMapView.invalidate()
                 }
             }
         })
@@ -129,7 +127,7 @@ class TripFragment : Fragment() {
         viewModel.tripMapPoints.observe(viewLifecycleOwner, {
             it?.let {
                 if (it.isNotEmpty()) {
-                    drawGpsTrail()
+                    binding.tripMapView.drawFullGPSTrail(it)
                     drawObservationLines()
                     binding.tripMapView.invalidate()
                 }
@@ -306,76 +304,18 @@ class TripFragment : Fragment() {
         binding.tripMapView.overlayManager.addAll(observationMarkers)
     }
 
-    private fun drawGpsTrail() {
-        if (viewModel.tripMapPoints.value == null) {
-            return
-        }
-
-        val tripMapPoints = viewModel.tripMapPoints.value!!.map { tripMapPoint ->
-            GeoPoint(tripMapPoint.tripMapPointLat, tripMapPoint.tripMapPointLon)
-        }
-
-        gpsTrail.setPoints(tripMapPoints)
-
-        binding.tripMapView.overlayManager.removeAll(gpsMarkers)
-        gpsMarkers.clear()
-
-        tripMapPoints.forEach { geoPoint ->
-            val marker = Marker(binding.tripMapView)
-            marker.position = geoPoint
-            marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
-            gpsMarkers.add(marker)
-        }
-
-        val tripMapPointDateString = SimpleDateFormat("dd/MM/yyyy HH:mm").format(
-            viewModel.tripMapPoints.value!!.first().tripMapPointDate)
-
-        val endTripMapPointDateString = SimpleDateFormat("dd/MM/yyyy HH:mm").format(
-            viewModel.tripMapPoints.value!!.last().tripMapPointDate)
-
-        gpsMarkers.first().let {marker ->
-            marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
-            marker.icon = ResourcesCompat.getDrawable(resources, R.drawable.ic_baseline_trip_origin_24, null)
-            marker.title = tripMapPointDateString
-            marker.snippet = "Start"
-        }
-
-        viewModel.trip.value?.let { trip ->
-            gpsMarkers.last().let { marker ->
-                if (marker != gpsMarkers.first() && trip.tripFinished) {
-                    marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
-                    marker.icon = ResourcesCompat.getDrawable(resources, R.drawable.ic_baseline_stop_circle_24, null)
-                    marker.title = endTripMapPointDateString
-                    marker.snippet = "End"
-                    binding.tripMapView.overlayManager.add(marker)
-                }
-            }
-        }
-
-        // binding.tripMapView.overlayManager.addAll(gpsMarkers)
-        binding.tripMapView.overlayManager.add(gpsMarkers.first())
-    }
-
     override fun onResume() {
         super.onResume()
 
         binding.tripMapView.onResume()
-
-        gpsTrail.outlinePaint.alpha = 200
-        gpsTrail.outlinePaint.color = Color.parseColor("#404040")
-        gpsTrail.outlinePaint.strokeWidth = 10.0f
-        binding.tripMapView.overlayManager.add(gpsTrail)
     }
 
     override fun onPause() {
         super.onPause()
 
-        binding.tripMapView.overlayManager.remove(gpsTrail)
-
         binding.tripMapView.onPause()
 
         viewModel.motionLayoutProgress = binding.tripMotionLayout.progress.roundToInt().toFloat()
-
     }
 
     override fun onDestroy() {
