@@ -47,7 +47,17 @@ class TripMapView: MapView {
         setupOfflineView(mapAreaName)
     }
 
-    private fun setupOfflineView(mapAreaName: String) {
+    fun setupNormalOfflineView(mapAreaName: String, mapArea: MapArea): Boolean {
+        isTilesScaledToDpi = true
+        setMultiTouchControls(true)
+        isLongClickable = true
+        val result = setupOfflineView(mapAreaName)
+
+        return result
+    }
+
+    private fun setupOfflineView(mapAreaName: String): Boolean {
+        var result = true
         setUseDataConnection(false)
         val mapAreaFile = context?.getDatabasePath(mapAreaName)
         if (mapAreaFile!!.exists()) {
@@ -63,9 +73,13 @@ class TripMapView: MapView {
             } catch (e: Exception) {
                 setTileSource(TileSourceFactory.DEFAULT_TILE_SOURCE)
             }
+        } else {
+            result = false
         }
 
         invalidate()
+
+        return result
     }
 
     /**
@@ -88,6 +102,17 @@ class TripMapView: MapView {
         mapArea.let {
             controller.setZoom(it.mapAreaMinZoom)
             controller.setCenter(it.boundingBox.centerWithDateLine)
+        }
+    }
+
+    fun zoomAndCenterToDefault(mapArea: MapArea) {
+        controller.animateTo(mapArea.boundingBox.centerWithDateLine)
+        if (mapArea.mapAreaMinZoom <= defaultZoomLevel && mapArea.mapAreaMaxZoom >= defaultZoomLevel) {
+            controller.setZoom(defaultZoomLevel)
+        } else if (mapArea.mapAreaMinZoom > defaultZoomLevel) {
+            controller.setZoom(mapArea.mapAreaMinZoom)
+        } else {
+            controller.setZoom(mapArea.mapAreaMaxZoom)
         }
     }
 
@@ -134,6 +159,7 @@ class TripMapView: MapView {
         }
 
         // Observation Markers
+        observationMarkers.clear()
         observationsGeoPoints.forEachIndexed { i, geoPoint ->
             val marker = Marker(this)
 
@@ -146,6 +172,7 @@ class TripMapView: MapView {
         }
 
         // Observation-TripMapPoint lines
+        observationPolylines.clear()
         for (i in observationTripMapGeoPoints.indices) {
             val line = Polyline()
             line.setPoints(listOf(observationTripMapGeoPoints[i], observationsGeoPoints[i]))
@@ -194,6 +221,26 @@ class TripMapView: MapView {
             gpsEndMarker.snippet = this.context.getString(R.string.end)
         }
 
+    }
+
+    fun drawFullObservationLinesAndMarkers(
+        observations: List<Observation>,
+        tripMapPoints: List<TripMapPoint>) {
+        drawSimpleObservationLinesAndMarkers(observations, tripMapPoints)
+
+        observationMarkers.forEachIndexed { i, observationMarker ->
+            observations.getOrNull(i)?.let {
+                observationMarker.title = dateTimeFormatter.format(it.observationDate)
+            }
+        }
+    }
+
+    fun attachObservationMarkerSnippets(observationDescriptions: List<String>) {
+        observationMarkers.forEachIndexed { i, observationMarker ->
+            observationDescriptions.getOrNull(i)?.let {
+                observationMarker.snippet = it
+            }
+        }
     }
 
 }

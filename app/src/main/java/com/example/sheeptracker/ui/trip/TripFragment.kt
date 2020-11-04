@@ -2,13 +2,11 @@ package com.example.sheeptracker.ui.trip
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
-import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.Toast
-import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.forEachIndexed
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
@@ -26,33 +24,20 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.osmdroid.events.*
-import org.osmdroid.tileprovider.modules.OfflineTileProvider
-import org.osmdroid.tileprovider.tilesource.FileBasedTileSource
-import org.osmdroid.tileprovider.tilesource.TileSourceFactory
-import org.osmdroid.tileprovider.util.SimpleRegisterReceiver
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.MapEventsOverlay
-import org.osmdroid.views.overlay.Marker
-import org.osmdroid.views.overlay.Polyline
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
-import java.lang.Exception
-import java.text.SimpleDateFormat
 import kotlin.collections.ArrayList
 import kotlin.math.roundToInt
 
 class TripFragment : Fragment() {
 
-    private val preferedZoomLevel = 18.0
-
     private lateinit var viewModel: TripViewModel
     private lateinit var binding: TripFragmentBinding
     private lateinit var arguments: TripFragmentArgs
     private lateinit var appDao: AppDao
-
-    private val observationMarkers = ArrayList<Marker>() // To be able to delete old markers
-    private val observationPolylines = ArrayList<Polyline>()
 
     private val eventsOverlay = MapEventsOverlay( object : MapEventsReceiver{
         override fun singleTapConfirmedHelper(p: GeoPoint?): Boolean {
@@ -115,20 +100,11 @@ class TripFragment : Fragment() {
             }
         })
 
-        viewModel.trip.observe(viewLifecycleOwner, {
-            it?.let {
-                if (viewModel.tripMapPoints.value?.isNotEmpty() == true) {
-                    //drawGpsTrail()
-                    //binding.tripMapView.invalidate()
-                }
-            }
-        })
-
         viewModel.tripMapPoints.observe(viewLifecycleOwner, {
             it?.let {
                 if (it.isNotEmpty()) {
                     binding.tripMapView.drawFullGPSTrail(it)
-                    drawObservationLines()
+                    drawObservations()
                     binding.tripMapView.invalidate()
                 }
             }
@@ -136,7 +112,7 @@ class TripFragment : Fragment() {
 
         viewModel.observations.observe(viewLifecycleOwner, {
             it?.let {
-                drawObservationLines()
+                drawObservations()
                 binding.tripMapView.invalidate()
             }
         })
@@ -178,27 +154,7 @@ class TripFragment : Fragment() {
 
     @SuppressLint("ClickableViewAccessibility")
     private fun setupMapView(mapView: MapView, mapAreaName: String, mapArea: MapArea) {
-        mapView.setUseDataConnection(false)
-        mapView.isTilesScaledToDpi = true
-        mapView.setMultiTouchControls(true)
-        mapView.isLongClickable = true
-
-        val mapAreaFile = context?.getDatabasePath(mapAreaName)
-
-        if (mapAreaFile!!.exists()) {
-            val offlineTileProvider = OfflineTileProvider(SimpleRegisterReceiver(context), arrayOf(mapAreaFile))
-            mapView.tileProvider = offlineTileProvider
-
-            try {
-                //TODO: Offload to parallel async task
-                val tileSourceString = offlineTileProvider.archives[0].tileSources.iterator().next()
-                val tileSource = FileBasedTileSource.getSource(tileSourceString)
-
-                mapView.setTileSource(tileSource)
-            } catch (e: Exception) {
-                mapView.setTileSource(TileSourceFactory.DEFAULT_TILE_SOURCE)
-            }
-        } else {
+        if (!binding.tripMapView.setupNormalOfflineView(mapAreaName, mapArea)) {
             Toast.makeText(requireContext(), "Could not find MapArea", Toast.LENGTH_LONG).show()
         }
 
@@ -208,16 +164,7 @@ class TripFragment : Fragment() {
 
         mapView.overlayManager.add(eventsOverlay)
 
-        mapArea.let {
-            binding.tripMapView.controller.animateTo(it.boundingBox.centerWithDateLine)
-            if (it.mapAreaMinZoom <= preferedZoomLevel && it.mapAreaMaxZoom >= preferedZoomLevel) {
-                binding.tripMapView.controller.setZoom(preferedZoomLevel)
-            } else if (it.mapAreaMinZoom > preferedZoomLevel) {
-                binding.tripMapView.controller.setZoom(it.mapAreaMinZoom)
-            } else {
-                binding.tripMapView.controller.setZoom(it.mapAreaMaxZoom)
-            }
-        }
+        binding.tripMapView.zoomAndCenterToDefault(mapArea)
 
         mapView.setOnTouchListener { view, motionEvent ->
             if (motionEvent.action == MotionEvent.ACTION_MOVE) {
@@ -232,76 +179,32 @@ class TripFragment : Fragment() {
         mapView.invalidate()
     }
 
-    private fun drawObservationLines() {
-        if (viewModel.tripMapPoints.value == null || viewModel.observations.value == null) {
-            return
-        }
-
-        binding.tripMapView.overlayManager.removeAll(observationMarkers)
-        observationMarkers.clear()
-
-        val observationsGeoPoints = viewModel.observations.value!!.map { observation ->
-            GeoPoint(observation.observationLat, observation.observationLon)
-        }
-
-        val observationTripMapGeoPoints = viewModel.observations.value!!.map { observation ->
-            val tripMapPoint = viewModel.tripMapPoints.value?.first { tripMapPoint ->
-                tripMapPoint.tripMapPointId == observation.observationOwnerTripMapPointId
-            }
-            GeoPoint(tripMapPoint!!.tripMapPointLat, tripMapPoint!!.tripMapPointLon)
-        }
-
-        // Observation Markers
-        observationsGeoPoints.forEachIndexed { i, geoPoint ->
-            val marker = Marker(binding.tripMapView)
-
-            marker.position = geoPoint
-            marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
-
-            val observation = viewModel.observations.value!![i]
-            marker.icon = observation.observationType.getDrawable(resources)
+    private fun drawObservations() {
+        if (viewModel.observations.value != null && viewModel.tripMapPoints.value != null) {
+            binding.tripMapView.drawFullObservationLinesAndMarkers(
+                viewModel.observations.value!!,
+                viewModel.tripMapPoints.value!!
+            )
 
             CoroutineScope(Dispatchers.Main).launch {
-                val observationShortDescription = when (observation.observationType) {
-                    Observation.ObservationType.COUNT -> getCountersDesc(observation)
-                    Observation.ObservationType.DEAD -> "DEAD #${getAnimalRegisterNumber(observation)}"
-                    Observation.ObservationType.INJURED -> "INJURED #${getAnimalRegisterNumber(observation)}"
+                val shortObservationDescriptions = ArrayList<String>()
+                viewModel.observations.value!!.forEachIndexed { i, observation ->
+                    val shortDesc = when(observation.observationType) {
+                        Observation.ObservationType.COUNT -> getCountersDesc(observation)
+                        Observation.ObservationType.DEAD -> {
+                            val deadString = getString(R.string.dead)
+                            "$deadString #${getAnimalRegisterNumber(observation)}"
+                        }
+                        Observation.ObservationType.INJURED -> {
+                            val injuredString = getString(R.string.injured)
+                            "$injuredString #${getAnimalRegisterNumber(observation)}"
+                        }
+                    }
+                    shortObservationDescriptions.add("\n${shortDesc}")
                 }
-                marker.title = SimpleDateFormat("dd/MM/yyyy HH:mm").format(observation.observationDate)
-                marker.snippet = "\n${observationShortDescription}"
-            }
-
-            observationMarkers.add(marker)
-        }
-
-        binding.tripMapView.overlayManager.removeAll(observationPolylines)
-        observationPolylines.clear()
-
-        // Observation-TripMapPoint lines
-        for (i in observationTripMapGeoPoints.indices) {
-            val line = Polyline()
-            line.setPoints(listOf(observationTripMapGeoPoints[i], observationsGeoPoints[i]))
-            line.outlinePaint.color = Color.parseColor("#3399ff")
-            line.outlinePaint.strokeWidth = 6.0f
-            observationPolylines.add(line)
-
-            viewModel.observations.value?.get(i)?.observationSecondaryTripMapPointId?.let {
-                val x = viewModel.getTripMapPoint(it)
-                x?.let { p ->
-                    val line = Polyline()
-                    line.setPoints(listOf(
-                        GeoPoint(p.tripMapPointLat, p.tripMapPointLon),
-                        observationsGeoPoints[i]
-                    ))
-                    line.outlinePaint.color = Color.parseColor("#3399ff")
-                    line.outlinePaint.strokeWidth = 6.0f
-                    observationPolylines.add(line)
-                }
+                binding.tripMapView.attachObservationMarkerSnippets(shortObservationDescriptions)
             }
         }
-
-        binding.tripMapView.overlayManager.addAll(observationPolylines)
-        binding.tripMapView.overlayManager.addAll(observationMarkers)
     }
 
     override fun onResume() {
@@ -449,9 +352,12 @@ class TripFragment : Fragment() {
 
     private suspend fun getCountersDesc(observation: Observation): String {
         return withContext(Dispatchers.IO) {
+            val sheepCount = appDao.getCounter(observation.observationId, Counter.CountType.SHEEP)?.counterValue
+            val lambCount = appDao.getCounter(observation.observationId, Counter.CountType.LAMB)?.counterValue
+            val sheepString = getString(R.string.sheep)
+            val lambString = getString(R.string.lamb)
 
-            "${appDao.getCounter(observation.observationId, Counter.CountType.SHEEP)?.counterValue} sheep" + ", " +
-                "\n${appDao.getCounter(observation.observationId, Counter.CountType.LAMB)?.counterValue} lamb"
+            "$sheepCount $sheepString, \n${lambCount} $lambString"
         }
     }
 
