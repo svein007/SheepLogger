@@ -21,7 +21,19 @@ class ObservationsViewModel(
     val observations: LiveData<List<Observation>> = appDao.getObservationsForTripLDDesc(tripId)
 
     val showEmptyListTextView = Transformations.map(observations) {
-        it.isNullOrEmpty()
+        it.isNullOrEmpty() && (filter.value == null)
+    }
+
+    val showNoHerdObservationsText = Transformations.map(observations) {
+        it.filter { obs -> obs.observationType == Observation.ObservationType.COUNT }.isNullOrEmpty() && (if (filter.value == null) false else filter.value == Observation.ObservationType.COUNT)
+    }
+
+    val showNoDeadObservationsText = Transformations.map(observations) {
+        it.filter { obs -> obs.observationType == Observation.ObservationType.DEAD }.isNullOrEmpty() && (if (filter.value == null) false else filter.value == Observation.ObservationType.DEAD)
+    }
+
+    val showNoInjuredObservationsText = Transformations.map(observations) {
+        it.filter { obs -> obs.observationType == Observation.ObservationType.INJURED }.isNullOrEmpty() && (if (filter.value == null) false else filter.value == Observation.ObservationType.INJURED)
     }
 
 }

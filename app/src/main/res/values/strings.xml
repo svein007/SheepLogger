@@ -106,5 +106,8 @@
     <string name="end">End</string>
     <string name="filter">Filter</string>
     <string name="all">All</string>
+    <string name="no_herds_observed">No herds observed</string>
+    <string name="no_dead_animals_observed">No dead animals observed</string>
+    <string name="no_injured_animals_observed">No injured animals observed</string>
 
 </resources>
