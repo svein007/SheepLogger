@@ -14,7 +14,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.sheeptracker.R
 import com.example.sheeptracker.database.AppDao
 import com.example.sheeptracker.database.AppDatabase
-import com.example.sheeptracker.database.entities.Counter
+import com.example.sheeptracker.utils.*
 import com.example.sheeptracker.database.entities.MapArea
 import com.example.sheeptracker.database.entities.Observation
 import com.example.sheeptracker.databinding.TripFragmentBinding
@@ -22,7 +22,6 @@ import com.example.sheeptracker.service.LocationService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import org.osmdroid.events.*
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
@@ -190,14 +189,14 @@ class TripFragment : Fragment() {
                 val shortObservationDescriptions = ArrayList<String>()
                 viewModel.observations.value!!.forEachIndexed { i, observation ->
                     val shortDesc = when(observation.observationType) {
-                        Observation.ObservationType.COUNT -> getCountersDesc(observation)
+                        Observation.ObservationType.COUNT -> getCountersDesc(appDao, requireContext(), observation)
                         Observation.ObservationType.DEAD -> {
                             val deadString = getString(R.string.dead)
-                            "$deadString #${getAnimalRegisterNumber(observation)}"
+                            "$deadString #${getAnimalRegisterNumber(appDao, observation)}"
                         }
                         Observation.ObservationType.INJURED -> {
                             val injuredString = getString(R.string.injured)
-                            "$injuredString #${getAnimalRegisterNumber(observation)}"
+                            "$injuredString #${getAnimalRegisterNumber(appDao, observation)}"
                         }
                     }
                     shortObservationDescriptions.add("\n${shortDesc}")
@@ -348,26 +347,6 @@ class TripFragment : Fragment() {
         }
 
         observationTypeAlertDialog?.show()
-    }
-
-    private suspend fun getCountersDesc(observation: Observation): String {
-        return withContext(Dispatchers.IO) {
-            val sheepCount = appDao.getCounter(observation.observationId, Counter.CountType.SHEEP)?.counterValue
-            val lambCount = appDao.getCounter(observation.observationId, Counter.CountType.LAMB)?.counterValue
-            val sheepString = getString(R.string.sheep)
-            val lambString = getString(R.string.lamb)
-
-            "$sheepCount $sheepString, \n${lambCount} $lambString"
-        }
-    }
-
-    private suspend fun getAnimalRegisterNumber(observation: Observation): String {
-        return withContext(Dispatchers.IO) {
-            appDao.getAnimalRegistrationForObservation(observation.observationId)?.let {
-                return@withContext it.animalNumber
-            }
-            return@withContext ""
-        }
     }
 
     private fun showDeleteTripDialog() {
