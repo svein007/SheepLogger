@@ -2,6 +2,7 @@ package com.example.sheeptracker.ui.observations
 
 import android.os.Bundle
 import android.view.*
+import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.Fragment
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
@@ -65,8 +66,6 @@ class ObservationsFragment : Fragment() {
 
         viewModel.observations.observe(viewLifecycleOwner, {
             it?.let {
-                //TODO: Filter here based on filter-value
-                //adapter.submitList(it)
                 updateAdapter(it, viewModel.filter.value)
             }
         })
@@ -86,11 +85,13 @@ class ObservationsFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.mi_filter_observations) {
-            viewModel.nextFilter()
-            return true
+        when (item.itemId) {
+            R.id.mi_filter_observations -> {
+                showFilterPopup(requireActivity().findViewById(R.id.mi_filter_observations))
+                return true
+            }
         }
-        return false
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -107,6 +108,42 @@ class ObservationsFragment : Fragment() {
                 adapter.submitList(filteredObservations)
             }
         }
+    }
+
+    private fun showFilterPopup(v: View) {
+        val popup = PopupMenu(requireContext(), v)
+        val inflater: MenuInflater = popup.menuInflater
+
+        popup.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.mi_observation_filter_all -> {
+                    viewModel.filter.value = null
+                    return@setOnMenuItemClickListener true
+                }
+
+                R.id.mi_observation_filter_dead -> {
+                    viewModel.filter.value = Observation.ObservationType.DEAD
+                    return@setOnMenuItemClickListener true
+                }
+
+                R.id.mi_observation_filter_herd -> {
+                    viewModel.filter.value = Observation.ObservationType.COUNT
+                    return@setOnMenuItemClickListener true
+                }
+
+                R.id.mi_observation_filter_injured -> {
+                    viewModel.filter.value = Observation.ObservationType.INJURED
+                    return@setOnMenuItemClickListener true
+                }
+            }
+            false
+        }
+        inflater.inflate(R.menu.observation_type_filter_menu, popup.menu)
+        val checkedItemIndex = if (viewModel.filter.value == null) 0 else (viewModel.filter.value!!.ordinal + 1)
+        if (popup.menu.size() >= checkedItemIndex) {
+            popup.menu.getItem(checkedItemIndex).isChecked = true
+        }
+        popup.show()
     }
 
 }

@@ -99,4 +99,5 @@
     <string name="show_map">Vis kart</string>
     <string name="end">Slutt</string>
     <string name="filter">Filter</string>
+    <string name="all">Alle</string>
 </resources>

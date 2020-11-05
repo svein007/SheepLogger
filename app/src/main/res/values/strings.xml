@@ -105,5 +105,6 @@
     <string name="show_map">Show Map</string>
     <string name="end">End</string>
     <string name="filter">Filter</string>
+    <string name="all">All</string>
 
 </resources>

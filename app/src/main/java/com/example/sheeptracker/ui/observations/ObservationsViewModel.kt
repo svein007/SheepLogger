@@ -14,15 +14,6 @@ class ObservationsViewModel(
     appDao: AppDao,
     application: Application
 ) : AndroidViewModel(application) {
-    fun nextFilter() {
-        filter.value = if (filter.value == null) {
-            Observation.ObservationType.COUNT
-        } else if (filter.value == Observation.ObservationType.INJURED) {
-            null
-        } else {
-            filter.value!!.next()
-        }
-    }
 
     var filter = MutableLiveData<Observation.ObservationType?>(null)
 
