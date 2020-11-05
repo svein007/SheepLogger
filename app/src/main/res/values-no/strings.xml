@@ -98,4 +98,5 @@
     <string name="dead_injured">Død / skadd</string>
     <string name="show_map">Vis kart</string>
     <string name="end">Slutt</string>
+    <string name="filter">Filter</string>
 </resources>

@@ -72,6 +72,13 @@ data class Observation(
                 }
             }
         }
+
+        fun next(): ObservationType {
+            return values()[(this.ordinal+1) % values().size]
+        }
+        fun prev(): ObservationType {
+            return values()[(this.ordinal-1+ values().size) % values().size]
+        }
     }
 
 }

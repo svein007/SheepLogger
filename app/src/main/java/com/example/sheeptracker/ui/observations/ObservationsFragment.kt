@@ -1,10 +1,8 @@
 package com.example.sheeptracker.ui.observations
 
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -20,6 +18,8 @@ class ObservationsFragment : Fragment() {
     private lateinit var binding: ObservationsFragmentBinding
     private lateinit var arguments: ObservationsFragmentArgs
 
+    private lateinit var adapter: ObservationAdapter
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -28,6 +28,8 @@ class ObservationsFragment : Fragment() {
         binding = DataBindingUtil.inflate(
             inflater, R.layout.observations_fragment, container, false
         )
+
+        setHasOptionsMenu(true)
 
         arguments = ObservationsFragmentArgs.fromBundle(requireArguments())
 
@@ -42,7 +44,7 @@ class ObservationsFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
 
-        val adapter = ObservationAdapter(application, ObservationListItemListener { observationId, observationType ->
+        adapter = ObservationAdapter(application, ObservationListItemListener { observationId, observationType ->
 
             when (observationType) {
                 Observation.ObservationType.COUNT -> {
@@ -63,18 +65,48 @@ class ObservationsFragment : Fragment() {
 
         viewModel.observations.observe(viewLifecycleOwner, {
             it?.let {
-                adapter.submitList(it)
+                //TODO: Filter here based on filter-value
+                //adapter.submitList(it)
+                updateAdapter(it, viewModel.filter.value)
             }
         })
+
+        viewModel.filter.observe(viewLifecycleOwner) {
+            updateAdapter(viewModel.observations.value, it)
+        }
 
         binding.observationsRV.addItemDecoration(DividerItemDecoration(application, DividerItemDecoration.VERTICAL))
 
         return binding.root
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.observations_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.mi_filter_observations) {
+            viewModel.nextFilter()
+            return true
+        }
+        return false
+    }
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         // TODO: Use the ViewModel
+    }
+
+    private fun updateAdapter(observations: List<Observation>?, filter: Observation.ObservationType?) {
+        if (observations != null) {
+            if (filter == null) {
+                adapter.submitList(observations)
+            } else {
+                val filteredObservations = observations.filter { obs -> obs.observationType == filter }
+                adapter.submitList(filteredObservations)
+            }
+        }
     }
 
 }
