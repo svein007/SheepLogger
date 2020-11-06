@@ -98,4 +98,9 @@
     <string name="dead_injured">Død / skadd</string>
     <string name="show_map">Vis kart</string>
     <string name="end">Slutt</string>
+    <string name="filter">Filter</string>
+    <string name="all">Alle</string>
+    <string name="no_herds_observed">Ingen flokker observert</string>
+    <string name="no_dead_animals_observed">Ingen døde dyr observert</string>
+    <string name="no_injured_animals_observed">Ingen skadd dyr observert</string>
 </resources>

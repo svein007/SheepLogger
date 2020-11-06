@@ -21,7 +21,7 @@
             android:layout_height="0dp"
             android:layout_marginStart="1dp"
             android:layout_marginEnd="1dp"
-            app:boolVisibilityGone="@{!viewModel.showEmptyListTextView}"
+            app:boolVisibilityGone="@{viewModel.showObservationsRV}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toTopOf="@+id/linearLayout"
             app:layout_constraintEnd_toEndOf="parent"
@@ -38,7 +38,6 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="vertical"
-            app:boolVisibilityGone="@{viewModel.showEmptyListTextView}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -51,6 +50,30 @@
                 android:text="@string/no_observations"
                 android:textAlignment="center"
                 app:boolVisibilityGone="@{viewModel.showEmptyListTextView}" />
+
+            <TextView
+                android:id="@+id/textView58"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:text="@string/no_herds_observed"
+                app:boolVisibilityGone="@{viewModel.showNoHerdObservationsText}"/>
+
+            <TextView
+                android:id="@+id/textView59"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:text="@string/no_dead_animals_observed"
+                app:boolVisibilityGone="@{viewModel.showNoDeadObservationsText}"/>
+
+            <TextView
+                android:id="@+id/textView60"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:text="@string/no_injured_animals_observed"
+                app:boolVisibilityGone="@{viewModel.showNoInjuredObservationsText}"/>
 
             <TextView
                 android:id="@+id/textView35"

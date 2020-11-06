@@ -1,10 +1,9 @@
 package com.example.sheeptracker.ui.observations
 
 import android.os.Bundle
+import android.view.*
+import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -20,6 +19,8 @@ class ObservationsFragment : Fragment() {
     private lateinit var binding: ObservationsFragmentBinding
     private lateinit var arguments: ObservationsFragmentArgs
 
+    private lateinit var adapter: ObservationAdapter
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -28,6 +29,8 @@ class ObservationsFragment : Fragment() {
         binding = DataBindingUtil.inflate(
             inflater, R.layout.observations_fragment, container, false
         )
+
+        setHasOptionsMenu(true)
 
         arguments = ObservationsFragmentArgs.fromBundle(requireArguments())
 
@@ -42,7 +45,7 @@ class ObservationsFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
 
-        val adapter = ObservationAdapter(application, ObservationListItemListener { observationId, observationType ->
+        adapter = ObservationAdapter(application, ObservationListItemListener { observationId, observationType ->
 
             when (observationType) {
                 Observation.ObservationType.COUNT -> {
@@ -63,18 +66,84 @@ class ObservationsFragment : Fragment() {
 
         viewModel.observations.observe(viewLifecycleOwner, {
             it?.let {
-                adapter.submitList(it)
+                updateAdapter(it, viewModel.filter.value)
             }
         })
+
+        viewModel.filter.observe(viewLifecycleOwner) {
+            updateAdapter(viewModel.observations.value, it)
+        }
 
         binding.observationsRV.addItemDecoration(DividerItemDecoration(application, DividerItemDecoration.VERTICAL))
 
         return binding.root
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.observations_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.mi_filter_observations -> {
+                showFilterPopup(requireActivity().findViewById(R.id.mi_filter_observations))
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         // TODO: Use the ViewModel
+    }
+
+    private fun updateAdapter(observations: List<Observation>?, filter: Observation.ObservationType?) {
+        if (observations != null) {
+            if (filter == null) {
+                adapter.submitList(observations)
+            } else {
+                val filteredObservations = observations.filter { obs -> obs.observationType == filter }
+                adapter.submitList(filteredObservations)
+            }
+        }
+    }
+
+    private fun showFilterPopup(v: View) {
+        val popup = PopupMenu(requireContext(), v)
+        val inflater: MenuInflater = popup.menuInflater
+
+        popup.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.mi_observation_filter_all -> {
+                    viewModel.filter.value = null
+                    return@setOnMenuItemClickListener true
+                }
+
+                R.id.mi_observation_filter_dead -> {
+                    viewModel.filter.value = Observation.ObservationType.DEAD
+                    return@setOnMenuItemClickListener true
+                }
+
+                R.id.mi_observation_filter_herd -> {
+                    viewModel.filter.value = Observation.ObservationType.COUNT
+                    return@setOnMenuItemClickListener true
+                }
+
+                R.id.mi_observation_filter_injured -> {
+                    viewModel.filter.value = Observation.ObservationType.INJURED
+                    return@setOnMenuItemClickListener true
+                }
+            }
+            false
+        }
+        inflater.inflate(R.menu.observation_type_filter_menu, popup.menu)
+        val checkedItemIndex = if (viewModel.filter.value == null) 0 else (viewModel.filter.value!!.ordinal + 1)
+        if (popup.menu.size() >= checkedItemIndex) {
+            popup.menu.getItem(checkedItemIndex).isChecked = true
+        }
+        popup.show()
     }
 
 }
