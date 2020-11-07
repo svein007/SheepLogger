@@ -77,7 +77,7 @@ class MapAreaDownloadFragment : Fragment() {
 
         binding.mapView.setMultiTouchControls(true)
 
-        binding.mapView.minZoomLevel = 5.0
+        binding.mapView.minZoomLevel = 4.0
         binding.mapView.maxZoomLevel = 20.0
 
         binding.mapView.isTilesScaledToDpi = true
@@ -86,7 +86,7 @@ class MapAreaDownloadFragment : Fragment() {
         binding.mapView.setScrollableAreaLimitLatitude(72.0, 55.0, 0)
         binding.mapView.setScrollableAreaLimitLongitude(-2.0, 33.0, 0)
 
-        binding.mapView.controller.setZoom(15.0)
+        binding.mapView.controller.setZoom(4.0)
         binding.mapView.controller.setCenter(position)
 
         //textView.text = "Zoom = %.2f".format(binding.mapView.zoomLevelDouble)
@@ -102,14 +102,9 @@ class MapAreaDownloadFragment : Fragment() {
             }
         }))
 
-        val marker = Marker(binding.mapView)
-        marker.position = position
-        marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
-
-        binding.mapView.overlays.add(marker)
-
         MapAreaManager.getLastKnownLocation(requireContext(), requireActivity(), permissionRequestCode)?.let {
             binding.mapView.controller.animateTo(it)
+            binding.mapView.controller.setZoom(12.0)
         }
 
         binding.mapView.overlays.add(locationOverlay)

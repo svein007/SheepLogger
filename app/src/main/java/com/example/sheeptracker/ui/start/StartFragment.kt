@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.sheeptracker.R
 import com.example.sheeptracker.database.AppDatabase
 import com.example.sheeptracker.databinding.StartFragmentBinding
+import com.example.sheeptracker.map.MapAreaManager
 import com.example.sheeptracker.utils.checkHasAllPermissions
 
 class StartFragment : Fragment() {
@@ -34,6 +35,9 @@ class StartFragment : Fragment() {
         binding = DataBindingUtil.inflate(
             inflater, R.layout.start_fragment, container, false
         )
+
+        //HACK: try to prepare GPS location
+        MapAreaManager.getLastKnownLocation(requireContext(), requireActivity(), 0, false)
 
         binding.startViewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner

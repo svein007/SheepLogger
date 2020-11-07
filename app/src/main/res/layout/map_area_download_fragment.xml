@@ -36,7 +36,8 @@
             android:clickable="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:srcCompat="@drawable/ic_baseline_get_app_24" />
+            app:srcCompat="@drawable/ic_baseline_get_app_24"
+            android:focusable="true" />
         <TextView
             android:id="@+id/textView"
             android:layout_width="wrap_content"
