@@ -112,5 +112,6 @@
     <string name="please_select_a_maparea">Please select a MapArea</string>
     <string name="please_enter_trip_name">Please enter a trip name</string>
     <string name="unable_gps">Unable to get GPS location</string>
+    <string name="go_to_my_location">Go to my location</string>
 
 </resources>

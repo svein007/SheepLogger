@@ -5,6 +5,7 @@ import android.content.pm.PackageManager
 import android.location.LocationManager
 import android.os.Bundle
 import android.view.*
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
@@ -45,6 +46,8 @@ class MapAreaDownloadFragment : Fragment() {
         binding = DataBindingUtil.inflate(
             inflater, R.layout.map_area_download_fragment, container, false
         )
+
+        setHasOptionsMenu(true)
 
         val application = requireNotNull(this.activity).application
 
@@ -135,6 +138,25 @@ class MapAreaDownloadFragment : Fragment() {
         }
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.map_area_download_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        if (item.itemId == R.id.mi_map_area_download_go_to_my_location) {
+            val currentLocation = MapAreaManager.getLastKnownLocation(requireContext(), requireActivity(), permissionRequestCode)
+            if (currentLocation != null) {
+                binding.mapView.controller.animateTo(currentLocation)
+            } else {
+                Toast.makeText(requireContext(), getString(R.string.unable_gps), Toast.LENGTH_LONG).show()
+            }
+            return true
+        }
+
+        return super.onOptionsItemSelected(item)
+    }
 
     override fun onResume() {
         super.onResume()

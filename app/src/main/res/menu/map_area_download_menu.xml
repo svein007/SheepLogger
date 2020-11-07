@@ -3,8 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/mi_download_map_area"
-        android:icon="@drawable/ic_baseline_get_app_24"
-        android:title="Save"
+        android:id="@+id/mi_map_area_download_go_to_my_location"
+        android:icon="@drawable/ic_baseline_gps_not_fixed_24_white"
+        android:title="@string/go_to_my_location"
         app:showAsAction="ifRoom" />
 </menu>
