@@ -22,7 +22,6 @@ import org.osmdroid.events.ZoomEvent
 import org.osmdroid.library.BuildConfig
 import org.osmdroid.tileprovider.cachemanager.CacheManager
 import org.osmdroid.util.GeoPoint
-import org.osmdroid.views.overlay.Marker
 import org.osmdroid.views.overlay.ScaleBarOverlay
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
