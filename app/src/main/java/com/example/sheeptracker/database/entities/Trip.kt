@@ -43,8 +43,8 @@ data class Trip (
             val diff = tripFinishedDate!!.time - tripDate.time
             var res = ""
             val days = TimeUnit.MILLISECONDS.toDays(diff)
-            val hours = TimeUnit.MILLISECONDS.toHours(diff)
-            val minutes = TimeUnit.MILLISECONDS.toMinutes(diff)
+            val hours = TimeUnit.MILLISECONDS.toHours(diff - TimeUnit.DAYS.toMillis(days))
+            val minutes = TimeUnit.MILLISECONDS.toMinutes(diff - TimeUnit.DAYS.toMillis(days) - TimeUnit.HOURS.toMillis(hours))
             if (days != 0L) {
                 res += "${days}d"
             }
