@@ -2,9 +2,11 @@ package com.example.sheeptracker.ui.addobservation
 
 import android.app.Application
 import android.database.sqlite.SQLiteConstraintException
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
+import com.example.sheeptracker.R
 import com.example.sheeptracker.database.AppDao
 import com.example.sheeptracker.database.entities.*
 import com.example.sheeptracker.ui.swiper.SwiperViewModel
@@ -80,8 +82,13 @@ class AddObservationViewModel(
                 val observationPoint = getObservedFromPoint(appDao, tripId, currentPosition)
 
                 observation.value?.apply {
-                    observationLat = lat
-                    observationLon = lon
+                    if (!lat.isNaN() && !lon.isNaN()) {
+                        observationLat = lat
+                        observationLon = lon
+                    } else {
+                        Toast.makeText(getApplication(), getApplication<Application>().getString(R.string.unable_gps), Toast.LENGTH_LONG).show()
+                        return@launch
+                    }
                     observationOwnerTripMapPointId = observationPoint.tripMapPointId
                 }
 

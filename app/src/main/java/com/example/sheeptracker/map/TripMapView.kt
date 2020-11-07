@@ -120,7 +120,7 @@ class TripMapView: MapView {
      * Draws the GPS trail of a trip from given List<GeoPoint> with start and stop marker.
      * Does not add marker title or snippet.
      */
-    fun drawSimpleGPSTrail(geoPoints: List<GeoPoint>) {
+    fun drawSimpleGPSTrail(geoPoints: List<GeoPoint>, tripIsFinished: Boolean = false) {
         gpsTrail.setPoints(geoPoints)
         if(!overlayManager.contains(gpsTrail)) {
             gpsTrail.outlinePaint.alpha = 200
@@ -128,13 +128,15 @@ class TripMapView: MapView {
             gpsTrail.outlinePaint.strokeWidth = 10.0f
             overlayManager.add(gpsTrail)
         }
+        overlayManager.remove(gpsStartMarker)
         if(geoPoints.isNotEmpty() && !overlayManager.contains(gpsStartMarker)) {
             gpsStartMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
             gpsStartMarker.position = geoPoints.first()
             gpsStartMarker.icon = ResourcesCompat.getDrawable(resources, R.drawable.ic_baseline_trip_origin_24, null)
             overlayManager.add(gpsStartMarker)
         }
-        if(geoPoints.size > 1 && !overlayManager.contains(gpsEndMarker)) {
+        overlayManager.remove(gpsEndMarker)
+        if(geoPoints.size > 1 && !overlayManager.contains(gpsEndMarker) && tripIsFinished) {
             gpsEndMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
             gpsEndMarker.position = geoPoints.last()
             gpsEndMarker.icon = ResourcesCompat.getDrawable(resources, R.drawable.ic_baseline_stop_circle_24, null)
@@ -207,9 +209,9 @@ class TripMapView: MapView {
 
     }
 
-    fun drawFullGPSTrail(tripMapPoints: List<TripMapPoint>){
+    fun drawFullGPSTrail(tripMapPoints: List<TripMapPoint>, tripIsFinished: Boolean = false){
         val geoPoints = tripMapPoints.map { tripMapPoint -> GeoPoint(tripMapPoint.tripMapPointLat, tripMapPoint.tripMapPointLon) }
-        drawSimpleGPSTrail(geoPoints)
+        drawSimpleGPSTrail(geoPoints, tripIsFinished)
 
         if(geoPoints.isNotEmpty()) {
             gpsStartMarker.title = dateTimeFormatter.format(tripMapPoints.first().tripMapPointDate)

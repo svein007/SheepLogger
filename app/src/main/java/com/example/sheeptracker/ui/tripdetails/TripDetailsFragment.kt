@@ -59,7 +59,7 @@ class TripDetailsFragment : Fragment() {
         viewModel.tripMapPoints.observe(viewLifecycleOwner) {
             it?.let {
                 val geoPoints = it.map { tripMapPoint -> GeoPoint(tripMapPoint.tripMapPointLat, tripMapPoint.tripMapPointLon) }
-                binding.tripDetailsMapView.drawSimpleGPSTrail(geoPoints)
+                binding.tripDetailsMapView.drawSimpleGPSTrail(geoPoints, true)
                 zoomToGeoPoints()
                 drawObservations()
             }

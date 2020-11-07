@@ -102,7 +102,7 @@ class TripFragment : Fragment() {
         viewModel.tripMapPoints.observe(viewLifecycleOwner, {
             it?.let {
                 if (it.isNotEmpty()) {
-                    binding.tripMapView.drawFullGPSTrail(it)
+                    binding.tripMapView.drawFullGPSTrail(it, viewModel.trip.value?.tripFinished ?: false)
                     drawObservations()
                     binding.tripMapView.invalidate()
                 }
@@ -138,6 +138,11 @@ class TripFragment : Fragment() {
             it?.let {
                 if (!it) {
                     startLocationService()
+                }
+                viewModel.tripMapPoints.value?.let { points ->
+                    if (points.isNotEmpty()) {
+                        binding.tripMapView.drawFullGPSTrail(points, it)
+                    }
                 }
                 viewModel.isFollowingGPS.value = !it
             }

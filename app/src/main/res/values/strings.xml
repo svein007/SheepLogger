@@ -111,5 +111,6 @@
     <string name="no_injured_animals_observed">No injured animals observed</string>
     <string name="please_select_a_maparea">Please select a MapArea</string>
     <string name="please_enter_trip_name">Please enter a trip name</string>
+    <string name="unable_gps">Unable to get GPS location</string>
 
 </resources>

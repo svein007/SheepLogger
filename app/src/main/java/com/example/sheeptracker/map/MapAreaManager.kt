@@ -31,7 +31,9 @@ class MapAreaManager {
                     Manifest.permission.ACCESS_COARSE_LOCATION
                 ) == PackageManager.PERMISSION_GRANTED
             ) {
-                return GeoPoint(locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER))
+                locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)?.let {
+                    return GeoPoint(it)
+                }
             } else {
                 if (requestPermissionIfNotGranted) {
                     ActivityCompat.requestPermissions(activity, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION), requestCode)

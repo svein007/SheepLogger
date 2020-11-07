@@ -45,8 +45,8 @@ class AddObservationFragment : Fragment() {
         val viewModelFactory = AddObservationViewModelFactory(
             arguments.tripId,
             TripMapPoint(
-                tripMapPointLat =  currentPosition!!.latitude,
-                tripMapPointLon =  currentPosition!!.longitude,
+                tripMapPointLat =  (currentPosition?.latitude ?: Double.NaN) ,
+                tripMapPointLon =  (currentPosition?.longitude ?: Double.NaN),
                 tripMapPointDate = Date(),
                 tripMapPointOwnerTripId = arguments.tripId
                 )

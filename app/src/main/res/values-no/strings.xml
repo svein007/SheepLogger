@@ -105,4 +105,5 @@
     <string name="no_injured_animals_observed">Ingen skadd dyr observert</string>
     <string name="please_select_a_maparea">Vennligst velg et kartområde</string>
     <string name="please_enter_trip_name">Vennligst skriv et turnavn</string>
+    <string name="unable_gps">Finner ikke GPS posisjon</string>
 </resources>
