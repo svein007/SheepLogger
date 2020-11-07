@@ -103,4 +103,6 @@
     <string name="no_herds_observed">Ingen flokker observert</string>
     <string name="no_dead_animals_observed">Ingen døde dyr observert</string>
     <string name="no_injured_animals_observed">Ingen skadd dyr observert</string>
+    <string name="please_select_a_maparea">Vennligst velg et kartområde</string>
+    <string name="please_enter_trip_name">Vennligst skriv et turnavn</string>
 </resources>

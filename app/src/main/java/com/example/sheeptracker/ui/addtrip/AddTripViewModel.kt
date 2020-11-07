@@ -39,7 +39,7 @@ class AddTripViewModel(
                 if (mapAreaIdLong != null) {
                     try {
                         val trip = Trip(
-                            tripName = it,
+                            tripName = it.trim(),
                             tripDate = Date(),
                             tripOwnerMapAreaId = mapAreaIdLong
                         )

@@ -77,12 +77,18 @@ class AddTripFragment : Fragment() {
     }
 
     private fun addTrip() {
-        viewModel.addTrip(
-            onSuccess = { tripId ->
-                findNavController().navigate(AddTripFragmentDirections.actionAddTripFragmentToTripFragment(tripId))
-            },
-            onFail = { Toast.makeText(requireContext(), "Invalid MapAreaId", Toast.LENGTH_LONG).show() }
-        )
+        if (viewModel.tripName.value.isNullOrBlank()) {
+            Toast.makeText(requireContext(), getString(R.string.please_enter_trip_name), Toast.LENGTH_LONG).show()
+        } else if (viewModel.mapAreas.value?.any { mapArea -> mapArea.mapAreaId.toString() == viewModel.mapAreaId.value } == false) {
+            Toast.makeText(requireContext(), getString(R.string.please_select_a_maparea), Toast.LENGTH_LONG).show()
+        } else {
+            viewModel.addTrip(
+                onSuccess = { tripId ->
+                    findNavController().navigate(AddTripFragmentDirections.actionAddTripFragmentToTripFragment(tripId))
+                },
+                onFail = { }
+            )
+        }
     }
 
 }
