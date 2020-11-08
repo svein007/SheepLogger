@@ -2,6 +2,7 @@ package com.example.sheeptracker.ui.observations
 
 import android.os.Bundle
 import android.view.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.Fragment
 import androidx.databinding.DataBindingUtil
@@ -12,6 +13,7 @@ import com.example.sheeptracker.R
 import com.example.sheeptracker.database.AppDatabase
 import com.example.sheeptracker.database.entities.Observation
 import com.example.sheeptracker.databinding.ObservationsFragmentBinding
+import java.lang.Exception
 
 class ObservationsFragment : Fragment() {
 
@@ -79,6 +81,12 @@ class ObservationsFragment : Fragment() {
         return binding.root
     }
 
+    private fun updateTitlebar(title: String) {
+        try {
+            (requireActivity() as AppCompatActivity).supportActionBar?.title = title
+        } catch (e: Exception) {}
+    }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.observations_menu, menu)
@@ -118,21 +126,25 @@ class ObservationsFragment : Fragment() {
             when (item.itemId) {
                 R.id.mi_observation_filter_all -> {
                     viewModel.filter.value = null
+                    updateTitlebar(getString(R.string.observations))
                     return@setOnMenuItemClickListener true
                 }
 
                 R.id.mi_observation_filter_dead -> {
                     viewModel.filter.value = Observation.ObservationType.DEAD
+                    updateTitlebar(getString(R.string.dead))
                     return@setOnMenuItemClickListener true
                 }
 
                 R.id.mi_observation_filter_herd -> {
                     viewModel.filter.value = Observation.ObservationType.COUNT
+                    updateTitlebar(getString(R.string.herds))
                     return@setOnMenuItemClickListener true
                 }
 
                 R.id.mi_observation_filter_injured -> {
                     viewModel.filter.value = Observation.ObservationType.INJURED
+                    updateTitlebar(getString(R.string.injured))
                     return@setOnMenuItemClickListener true
                 }
             }

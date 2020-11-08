@@ -106,4 +106,6 @@
     <string name="please_select_a_maparea">Vennligst velg et kartområde</string>
     <string name="please_enter_trip_name">Vennligst skriv et turnavn</string>
     <string name="unable_gps">Finner ikke GPS posisjon</string>
+    <string name="go_to_my_location">Gå til min posisjon</string>
+    <string name="herds">Flokker</string>
 </resources>
