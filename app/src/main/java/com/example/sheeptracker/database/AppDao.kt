@@ -60,6 +60,9 @@ interface AppDao {
     @Query("SELECT * FROM trip_table WHERE trip_finished = 1 ORDER BY trip_date ASC")
     fun getFinishedTripsLDAsc(): LiveData<List<Trip>>
 
+    @Query("SELECT * FROM trip_table WHERE trip_finished = 1 ORDER BY trip_date ASC")
+    fun getFinishedTripsAsc(): List<Trip>
+
     @Query("SELECT * FROM trip_table WHERE trip_finished = 1 ORDER BY trip_date DESC")
     fun getFinishedTripsLDDesc(): LiveData<List<Trip>>
 

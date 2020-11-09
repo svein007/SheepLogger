@@ -31,7 +31,7 @@ class SimpleRapportDialog : BottomSheetDialogFragment() {
         CoroutineScope(Dispatchers.Main).launch {
             val rapportText = generateSimpleRapport(requireContext())
 
-            rapportTextView?.text = Html.fromHtml(rapportText)
+            rapportTextView?.text = rapportText
 
             sendEmailRapportFloatingActionButton.setOnClickListener {
                 val exportIntent = Intent(Intent.ACTION_SEND).apply {
@@ -44,7 +44,7 @@ class SimpleRapportDialog : BottomSheetDialogFragment() {
 
                     putExtra(Intent.EXTRA_SUBJECT, "Sheep Tracker Rapport")
                     addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                    putExtra(Intent.EXTRA_TEXT, Html.fromHtml(rapportText))
+                    putExtra(Intent.EXTRA_TEXT, rapportText)
 
                     putExtra(Intent.EXTRA_STREAM, contentFile)
                     type = "application/octet-stream"

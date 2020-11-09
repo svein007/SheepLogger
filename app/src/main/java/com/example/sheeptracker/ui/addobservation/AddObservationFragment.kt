@@ -3,6 +3,7 @@ package com.example.sheeptracker.ui.addobservation
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
@@ -117,7 +118,10 @@ class AddObservationFragment : Fragment() {
             lat = arguments.obsLat.toDouble(),
             lon = arguments.obsLon.toDouble(),
             onSuccess = { findNavController().popBackStack() },
-            onFail = { Log.d("#####", "Can't create observation in DB") }
+            onFail = {
+                Log.d("#####", "Can't create observation in DB. Probably due to getLastKnownLocation() is null.")
+                Toast.makeText(requireContext(), "Can't get your GPS position. Please wait and retry.", Toast.LENGTH_LONG).show()
+            }
         )
     }
 

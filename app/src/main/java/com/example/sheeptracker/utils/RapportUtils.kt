@@ -15,11 +15,23 @@ suspend fun generateSimpleRapport(context: Context): String {
         val deadAnimals = appDao.getDeadAnimalCount()
         val tripCount = appDao.getTripCount()
 
+        val totalKm = appDao.getFinishedTripsAsc().fold(0.0) { acc, trip ->
+            acc + getTotalDistance(appDao.getTripMapPointsForTrip(trip.tripId))
+        }
+
+        val tripDuration = appDao.getFinishedTripsAsc().fold(0L) { acc, trip ->
+            acc + (trip.tripFinishedDate!!.time - trip.tripDate.time)
+        }
+
+        val tripDurationString = durationString(tripDuration)
+
         context.getString(
-            R.string.simple_rapport_text,
+            R.string.rapport_text,
             deadAnimals,
             injuredAnimals,
-            tripCount
+            tripCount,
+            totalKm,
+            tripDurationString
         )
     }
 

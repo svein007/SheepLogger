@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import com.example.sheeptracker.utils.durationString
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -41,15 +42,7 @@ data class Trip (
     get() {
         if (tripFinishedDate != null) {
             val diff = tripFinishedDate!!.time - tripDate.time
-            var res = ""
-            val days = TimeUnit.MILLISECONDS.toDays(diff)
-            val hours = TimeUnit.MILLISECONDS.toHours(diff - TimeUnit.DAYS.toMillis(days))
-            val minutes = TimeUnit.MILLISECONDS.toMinutes(diff - TimeUnit.DAYS.toMillis(days) - TimeUnit.HOURS.toMillis(hours))
-            if (days != 0L) {
-                res += "${days}d"
-            }
-            res += " ${hours}h ${minutes}m"
-            return res
+            return durationString(diff)
         }
         return ""
     }
