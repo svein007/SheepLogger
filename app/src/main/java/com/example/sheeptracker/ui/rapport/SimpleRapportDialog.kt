@@ -6,6 +6,7 @@ import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.FileProvider
 import com.example.sheeptracker.R
 import com.example.sheeptracker.utils.generateSimpleRapport
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -33,13 +34,23 @@ class SimpleRapportDialog : BottomSheetDialogFragment() {
             rapportTextView?.text = Html.fromHtml(rapportText)
 
             sendEmailRapportFloatingActionButton.setOnClickListener {
-                val emailIntent = Intent(Intent.ACTION_SEND).apply {
+                val exportIntent = Intent(Intent.ACTION_SEND).apply {
+
+                    val contentFile = FileProvider.getUriForFile(
+                        requireContext(),
+                        "com.example.sheeptracker.fileprovider",
+                        requireContext().getDatabasePath("sheep_database")
+                    )
+
                     putExtra(Intent.EXTRA_SUBJECT, "Sheep Tracker Rapport")
+                    addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                     putExtra(Intent.EXTRA_TEXT, Html.fromHtml(rapportText))
-                    type = "text/html"
+
+                    putExtra(Intent.EXTRA_STREAM, contentFile)
+                    type = "application/octet-stream"
                 }
 
-                startActivity(emailIntent)
+                startActivity(Intent.createChooser(exportIntent, "Share Rapport"))
             }
         }
 
