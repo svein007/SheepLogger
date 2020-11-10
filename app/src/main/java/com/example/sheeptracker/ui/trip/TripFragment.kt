@@ -360,7 +360,7 @@ class TripFragment : Fragment() {
             .setMessage(getString(R.string.delete_trip_query))
             .setPositiveButton(getString(R.string.delete)) { dialog, which ->
                 viewModel.deleteTrip()
-                findNavController().navigateUp()
+                findNavController().popBackStack(R.id.startFragment, false)
             }
             .setNegativeButton(getString(R.string.cancel)) { dialog, which ->
             }
