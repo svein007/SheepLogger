@@ -74,6 +74,10 @@ class TripsFragment : Fragment() {
             }
         }
 
+        viewModel.filter.value?.let {
+            updateTitlebar(it.second)
+        }
+
         return binding.root
     }
 
