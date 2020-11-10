@@ -4,4 +4,7 @@
     <item
         android:id="@+id/mi_delete_image"
         android:title="@string/delete" />
+    <item
+        android:id="@+id/mi_share_image"
+        android:title="@string/export" />
 </menu>

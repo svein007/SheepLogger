@@ -109,4 +109,5 @@
     <string name="go_to_my_location">Gå til min posisjon</string>
     <string name="herds">Flokker</string>
     <string name="rapport_text">Døde dyr: %1$d \nSkadd dyr: %2$d \nTurer: %3$d \nDistanse: %4$.2f km \nVarighet: %5$s </string>
+    <string name="export">Eksporter</string>
 </resources>

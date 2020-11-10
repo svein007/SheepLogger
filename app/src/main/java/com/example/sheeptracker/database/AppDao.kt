@@ -202,6 +202,9 @@ interface AppDao {
     @Query("SELECT * FROM image_resource_table WHERE image_resource_id = :key")
     fun getImageResource(key: Long): ImageResource
 
+    @Query("SELECT * FROM image_resource_table WHERE image_resource_id = :key")
+    fun getImageResourceLD(key: Long): LiveData<ImageResource>
+
     @Update(onConflict = OnConflictStrategy.REPLACE)
     fun update(imageResource: ImageResource)
 
