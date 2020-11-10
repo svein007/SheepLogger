@@ -74,6 +74,11 @@ class ObservationsFragment : Fragment() {
 
         viewModel.filter.observe(viewLifecycleOwner) {
             updateAdapter(viewModel.observations.value, it)
+            updateTitlebar(it)
+        }
+
+        viewModel.filter.value?.let {
+            updateTitlebar(it)
         }
 
         binding.observationsRV.addItemDecoration(DividerItemDecoration(application, DividerItemDecoration.VERTICAL))
@@ -126,25 +131,21 @@ class ObservationsFragment : Fragment() {
             when (item.itemId) {
                 R.id.mi_observation_filter_all -> {
                     viewModel.filter.value = null
-                    updateTitlebar(getString(R.string.observations))
                     return@setOnMenuItemClickListener true
                 }
 
                 R.id.mi_observation_filter_dead -> {
                     viewModel.filter.value = Observation.ObservationType.DEAD
-                    updateTitlebar(getString(R.string.dead))
                     return@setOnMenuItemClickListener true
                 }
 
                 R.id.mi_observation_filter_herd -> {
                     viewModel.filter.value = Observation.ObservationType.COUNT
-                    updateTitlebar(getString(R.string.herds))
                     return@setOnMenuItemClickListener true
                 }
 
                 R.id.mi_observation_filter_injured -> {
                     viewModel.filter.value = Observation.ObservationType.INJURED
-                    updateTitlebar(getString(R.string.injured))
                     return@setOnMenuItemClickListener true
                 }
             }
@@ -156,6 +157,15 @@ class ObservationsFragment : Fragment() {
             popup.menu.getItem(checkedItemIndex).isChecked = true
         }
         popup.show()
+    }
+
+    private fun updateTitlebar(observationType: Observation.ObservationType?) {
+        when (observationType) {
+            null -> updateTitlebar(getString(R.string.observations))
+            Observation.ObservationType.COUNT -> updateTitlebar(getString(R.string.herds))
+            Observation.ObservationType.DEAD -> updateTitlebar(getString(R.string.dead))
+            Observation.ObservationType.INJURED -> updateTitlebar(getString(R.string.injured))
+        }
     }
 
 }
