@@ -52,7 +52,10 @@ class TripDetailsFragment : Fragment() {
             it?.let { mapArea ->
                 val mapAreaString = mapArea.getSqliteFilename()
                 binding.tripDetailsMapView.setupStaticOfflineView(mapAreaString)
-                binding.tripDetailsMapView.maxZoomLevel = it.mapAreaMaxZoom
+                binding.tripDetailsMapView.maxZoomLevel = it.mapAreaMaxZoom - 1
+                viewModel.tripMapPoints.value?.let {
+                    zoomToGeoPoints()
+                }
             }
         }
 
