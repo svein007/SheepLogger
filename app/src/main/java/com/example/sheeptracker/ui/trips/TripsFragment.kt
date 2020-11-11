@@ -75,7 +75,7 @@ class TripsFragment : Fragment() {
         }
 
         viewModel.filter.value?.let {
-            updateTitlebar(it.second)
+            updateTitlebar(if (it.first == Menu.FIRST) getString(R.string.my_trips) else it.second)
         }
 
         return binding.root
