@@ -161,6 +161,7 @@ class TripMapView: MapView {
         }
 
         // Observation Markers
+        overlayManager.removeAll(observationMarkers)
         observationMarkers.clear()
         observationsGeoPoints.forEachIndexed { i, geoPoint ->
             val marker = Marker(this)
@@ -172,8 +173,10 @@ class TripMapView: MapView {
 
             observationMarkers.add(marker)
         }
+        overlayManager.addAll(observationMarkers)
 
         // Observation-TripMapPoint lines
+        overlayManager.removeAll(observationPolylines)
         observationPolylines.clear()
         for (i in observationTripMapGeoPoints.indices) {
             val line = Polyline()
@@ -196,16 +199,7 @@ class TripMapView: MapView {
                 }
             }
         }
-
-        if(!overlayManager.containsAll(observationMarkers)) {
-            overlayManager.removeAll(observationMarkers)
-            overlayManager.addAll(observationMarkers)
-        }
-
-        if(!overlayManager.containsAll(observationPolylines)) {
-            overlayManager.removeAll(observationPolylines)
-            overlayManager.addAll(observationPolylines)
-        }
+        overlayManager.addAll(observationPolylines)
 
     }
 
