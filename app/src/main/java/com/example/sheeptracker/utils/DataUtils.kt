@@ -11,6 +11,20 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.util.concurrent.TimeUnit
 
+suspend fun getObservationShortDesc(appDao: AppDao, context: Context, observation: Observation): String {
+    return when(observation.observationType) {
+        Observation.ObservationType.COUNT -> getCountersDesc(appDao, context, observation)
+        Observation.ObservationType.DEAD -> {
+            val deadString = context.getString(R.string.dead)
+            "$deadString #${getAnimalRegisterNumber(appDao, observation)}"
+        }
+        Observation.ObservationType.INJURED -> {
+            val injuredString = context.getString(R.string.injured)
+            "$injuredString #${getAnimalRegisterNumber(appDao, observation)}"
+        }
+    }
+}
+
 suspend fun getCountersDesc(appDao: AppDao, context: Context, observation: Observation): String {
     return withContext(Dispatchers.IO) {
         val sheepCount = appDao.getCounter(observation.observationId, Counter.CountType.SHEEP)?.counterValue

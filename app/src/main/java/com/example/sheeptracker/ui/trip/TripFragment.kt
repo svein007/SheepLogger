@@ -193,18 +193,8 @@ class TripFragment : Fragment() {
             CoroutineScope(Dispatchers.Main).launch {
                 val shortObservationDescriptions = ArrayList<String>()
                 viewModel.observations.value!!.forEachIndexed { i, observation ->
-                    val shortDesc = when(observation.observationType) {
-                        Observation.ObservationType.COUNT -> getCountersDesc(appDao, requireContext(), observation)
-                        Observation.ObservationType.DEAD -> {
-                            val deadString = getString(R.string.dead)
-                            "$deadString #${getAnimalRegisterNumber(appDao, observation)}"
-                        }
-                        Observation.ObservationType.INJURED -> {
-                            val injuredString = getString(R.string.injured)
-                            "$injuredString #${getAnimalRegisterNumber(appDao, observation)}"
-                        }
-                    }
-                    shortObservationDescriptions.add("\n${shortDesc}")
+                    val observationShortDescription = getObservationShortDesc(appDao, binding.root.context, observation).replace("\n", "")
+                    shortObservationDescriptions.add("\n${observationShortDescription}")
                 }
                 binding.tripMapView.attachObservationMarkerSnippets(shortObservationDescriptions)
             }

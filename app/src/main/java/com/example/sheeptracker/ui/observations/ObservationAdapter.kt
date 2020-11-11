@@ -7,12 +7,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.sheeptracker.R
 import com.example.sheeptracker.database.AppDatabase
 import com.example.sheeptracker.database.entities.Observation
 import com.example.sheeptracker.databinding.ObservationRvItemBinding
-import com.example.sheeptracker.utils.getAnimalRegisterNumber
-import com.example.sheeptracker.utils.getCountersDesc
+import com.example.sheeptracker.utils.getObservationShortDesc
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -46,17 +44,7 @@ class ObservationAdapter (
             binding.observationTypeIcon = icon
             binding.clickListener = clickListener
             CoroutineScope(Dispatchers.Main).launch {
-                val observationShortDescription = when (item.observationType) {
-                    Observation.ObservationType.COUNT -> getCountersDesc(appDao, binding.root.context, item).replace("\n", "")
-                    Observation.ObservationType.DEAD -> {
-                        val deadString = binding.root.context.getString(R.string.dead)
-                        "$deadString #${getAnimalRegisterNumber(appDao, item)}"
-                    }
-                    Observation.ObservationType.INJURED -> {
-                        val injuredString = binding.root.context.getString(R.string.injured)
-                        "$injuredString #${getAnimalRegisterNumber(appDao, item)}"
-                    }
-                }
+                val observationShortDescription = getObservationShortDesc(appDao, binding.root.context, item).replace("\n", "")
                 binding.obsShortDesc = observationShortDescription
             }
             binding.executePendingBindings()
