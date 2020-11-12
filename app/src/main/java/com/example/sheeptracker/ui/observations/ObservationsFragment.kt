@@ -13,6 +13,9 @@ import com.example.sheeptracker.R
 import com.example.sheeptracker.database.AppDatabase
 import com.example.sheeptracker.database.entities.Observation
 import com.example.sheeptracker.databinding.ObservationsFragmentBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.lang.Exception
 
 class ObservationsFragment : Fragment() {
@@ -131,44 +134,42 @@ class ObservationsFragment : Fragment() {
     }
 
     private fun showFilterPopup(v: View) {
-        val popup = PopupMenu(requireContext(), v)
-        val inflater: MenuInflater = popup.menuInflater
+        CoroutineScope(Dispatchers.Main).launch {
+            val popup = PopupMenu(requireContext(), v)
 
-        popup.setOnMenuItemClickListener { item ->
-            when (item.itemId) {
-                R.id.mi_observation_filter_all -> {
-                    viewModel.filter.value = null
-                    return@setOnMenuItemClickListener true
-                }
+            popup.menu.clear()
+            popup.menu.add(Menu.FIRST, Menu.FIRST, Menu.FIRST, R.string.all).isCheckable = true
 
-                R.id.mi_observation_filter_dead -> {
-                    viewModel.filter.value = Observation.ObservationType.DEAD
-                    return@setOnMenuItemClickListener true
-                }
+            val obsTypes = Observation.ObservationType.values()
+            val obsTypeStrings = obsTypes.map { observationType -> observationType.getString(requireContext()) }
 
-                R.id.mi_observation_filter_herd -> {
-                    viewModel.filter.value = Observation.ObservationType.COUNT
-                    return@setOnMenuItemClickListener true
-                }
-
-                R.id.mi_observation_filter_injured -> {
-                    viewModel.filter.value = Observation.ObservationType.INJURED
-                    return@setOnMenuItemClickListener true
-                }
-
-                R.id.mi_observation_filter_predator -> {
-                    viewModel.filter.value = Observation.ObservationType.PREDATOR
-                    return@setOnMenuItemClickListener true
+            for ((i, obsTypeStr) in obsTypeStrings.withIndex()) {
+                popup.menu.add(Menu.FIRST, Menu.FIRST+1+i, Menu.FIRST+1+i, obsTypeStr).apply {
+                    isCheckable = true
                 }
             }
-            false
+
+            popup.setOnMenuItemClickListener { item ->
+                when (item.itemId) {
+                    Menu.FIRST -> {
+                        viewModel.filter.value = null
+                    }
+                    else -> {
+                        viewModel.filter.value = Observation.ObservationType.values()[item.itemId-2]
+                    }
+                }
+                updateTitlebar(viewModel.filter.value)
+                return@setOnMenuItemClickListener true
+            }
+
+            popup.menu.setGroupCheckable(Menu.FIRST, true, true)
+
+            var checkedItemId = Menu.FIRST
+            viewModel.filter.value?.ordinal?.let { checkedItemId += (it + 1) }
+            popup.menu.findItem(checkedItemId)?.isChecked = true
+
+            popup.show()
         }
-        inflater.inflate(R.menu.observation_type_filter_menu, popup.menu)
-        val checkedItemIndex = if (viewModel.filter.value == null) 0 else (viewModel.filter.value!!.ordinal + 1)
-        if (popup.menu.size() >= checkedItemIndex) {
-            popup.menu.getItem(checkedItemIndex).isChecked = true
-        }
-        popup.show()
     }
 
     private fun updateTitlebar(observationType: Observation.ObservationType?) {
