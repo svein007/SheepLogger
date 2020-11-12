@@ -18,6 +18,7 @@ import com.example.sheeptracker.utils.*
 import com.example.sheeptracker.database.entities.MapArea
 import com.example.sheeptracker.database.entities.Observation
 import com.example.sheeptracker.databinding.TripFragmentBinding
+import com.example.sheeptracker.map.MapAreaManager
 import com.example.sheeptracker.service.LocationService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -307,6 +308,18 @@ class TripFragment : Fragment() {
             builder.apply {
                 setTitle(getString(R.string.select_observation_type))
                 setItems(observationTypes.toTypedArray()){ dialogInterface, index ->
+
+                    val location = MapAreaManager.getLastKnownLocation(
+                        context,
+                        null,
+                        1
+                    )
+
+                    if (location == null) {
+                        Toast.makeText(requireContext(), getString(R.string.unable_gps), Toast.LENGTH_LONG).show()
+                        return@setItems
+                    }
+
                     when (index) {
                         0 -> {
                             findNavController().navigate(
