@@ -116,5 +116,7 @@
     <string name="herds">Herds</string>
     <string name="rapport_text">Dead animals: %1$d \nInjured animals: %2$d \nTrips: %3$d \nDistance: %4$.2f km \nDuration: %5$s </string>
     <string name="export">Export</string>
+    <string name="predator">Predator</string>
+    <string name="herd">Herd</string>
 
 </resources>

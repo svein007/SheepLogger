@@ -28,7 +28,7 @@ class AddObservationViewModel(
     val trip: LiveData<Trip?> = appDao.getTripLD(tripId)
 
     private val _observation = MutableLiveData<Observation>()
-    override val observation: LiveData<Observation>
+    override val observation: LiveData<Observation?>
         get() = _observation
 
     private val _counters = MutableLiveData<List<Counter>>()

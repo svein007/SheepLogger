@@ -20,7 +20,7 @@ class MapAreaManager {
 
     companion object {
 
-        fun getLastKnownLocation(context: Context, activity: Activity, requestCode: Int, requestPermissionIfNotGranted: Boolean = true): GeoPoint? {
+        fun getLastKnownLocation(context: Context, activity: Activity?, requestCode: Int, requestPermissionIfNotGranted: Boolean = true): GeoPoint? {
             val locationManager = context.applicationContext.getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
             if (ActivityCompat.checkSelfPermission(
@@ -35,7 +35,7 @@ class MapAreaManager {
                     return GeoPoint(it)
                 }
             } else {
-                if (requestPermissionIfNotGranted) {
+                if (requestPermissionIfNotGranted && activity != null) {
                     ActivityCompat.requestPermissions(activity, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION), requestCode)
                 }
             }

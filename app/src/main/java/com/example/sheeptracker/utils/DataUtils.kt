@@ -1,10 +1,13 @@
 package com.example.sheeptracker.utils
 
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.location.Location
+import android.net.Uri
 import com.example.sheeptracker.R
 import com.example.sheeptracker.database.AppDao
 import com.example.sheeptracker.database.entities.Counter
+import com.example.sheeptracker.database.entities.ImageResource
 import com.example.sheeptracker.database.entities.Observation
 import com.example.sheeptracker.database.entities.TripMapPoint
 import kotlinx.coroutines.Dispatchers
@@ -22,6 +25,48 @@ suspend fun getObservationShortDesc(appDao: AppDao, context: Context, observatio
             val injuredString = context.getString(R.string.injured)
             "$injuredString #${getAnimalRegisterNumber(appDao, observation)}"
         }
+        Observation.ObservationType.PREDATOR -> {
+            val predatorString = context.getString(R.string.predator)
+            "$predatorString: ${observation.observationNote.substring(0, minOf(observation.observationNote.length, 10))}"
+        }
+    }
+}
+
+
+/**
+ * Creates and stores a copy of the given file, and creates a ImageResource entry in DB.
+ */
+suspend fun addImgResUriToDB(
+    context: Context, imgUri: String, obsId: Long, dao: AppDao
+) {
+    withContext(Dispatchers.IO) {
+        val drawable = getDrawableFromUri(context, Uri.parse(imgUri))
+        val newImgRes = ImageResource(imageResourceObservationId = obsId)
+        val newId = dao.insert(newImgRes)
+        val uriString = storeDrawableWithName(context, drawable!!, "img_${obsId}_$newId")
+        val imgRes = dao.getImageResource(newId)
+
+        imgRes.imageResourceUri = uriString
+
+        dao.update(imgRes)
+    }
+}
+
+suspend fun addImgResDrawableToDB(
+    context: Context,
+    drawable: Drawable,
+    dao: AppDao,
+    obsId: Long
+) {
+    withContext(Dispatchers.IO) {
+        val newImgRes = ImageResource(imageResourceObservationId = obsId)
+        val newId = dao.insert(newImgRes)
+        val uriString = storeDrawableWithName(context, drawable, "img_${obsId}_$newId")
+        val imgRes = dao.getImageResource(newId)
+
+        imgRes.imageResourceUri = uriString
+
+        dao.update(imgRes)
     }
 }
 

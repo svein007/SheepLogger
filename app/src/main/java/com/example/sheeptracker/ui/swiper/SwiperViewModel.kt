@@ -10,7 +10,7 @@ import com.example.sheeptracker.database.entities.Observation
 abstract class SwiperViewModel(
     application: Application) : AndroidViewModel(application) {
 
-    abstract val observation: LiveData<Observation>
+    abstract val observation: LiveData<Observation?>
     abstract val countType: MutableLiveData<Counter.CountType>
     abstract val counters: LiveData<List<Counter>>
 

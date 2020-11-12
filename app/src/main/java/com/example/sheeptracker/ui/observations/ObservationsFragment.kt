@@ -55,7 +55,14 @@ class ObservationsFragment : Fragment() {
                         ObservationsFragmentDirections.actionObservationsFragmentToAnimalCountersDetailsFragment(observationId)
                     )
                 }
-                else -> {
+                Observation.ObservationType.PREDATOR -> {
+                    findNavController().navigate(
+                        ObservationsFragmentDirections.actionObservationsFragmentToPredatorRegistrationFragment(
+                            null, null
+                        ).setObsId(observationId)
+                    )
+                }
+                Observation.ObservationType.DEAD, Observation.ObservationType.INJURED -> {
                     findNavController().navigate(
                         ObservationsFragmentDirections.actionObservationsFragmentToAnimalRegistrationDetailsFragment(observationId)
                     )
@@ -148,6 +155,11 @@ class ObservationsFragment : Fragment() {
                     viewModel.filter.value = Observation.ObservationType.INJURED
                     return@setOnMenuItemClickListener true
                 }
+
+                R.id.mi_observation_filter_predator -> {
+                    viewModel.filter.value = Observation.ObservationType.PREDATOR
+                    return@setOnMenuItemClickListener true
+                }
             }
             false
         }
@@ -162,9 +174,7 @@ class ObservationsFragment : Fragment() {
     private fun updateTitlebar(observationType: Observation.ObservationType?) {
         when (observationType) {
             null -> updateTitlebar(getString(R.string.observations))
-            Observation.ObservationType.COUNT -> updateTitlebar(getString(R.string.herds))
-            Observation.ObservationType.DEAD -> updateTitlebar(getString(R.string.dead))
-            Observation.ObservationType.INJURED -> updateTitlebar(getString(R.string.injured))
+            else -> updateTitlebar(observationType.getString(requireContext()))
         }
     }
 

@@ -117,7 +117,7 @@ interface AppDao {
     fun getObservationsForTripLDDesc(tripId: Long): LiveData<List<Observation>>
 
     @Query("SELECT * FROM observation_table WHERE observation_id = :key")
-    fun getObservationLD(key: Long): LiveData<Observation>
+    fun getObservationLD(key: Long): LiveData<Observation?>
 
     @Query("SELECT * FROM observation_table WHERE observation_id = :key")
     fun getObservation(key: Long): Observation?

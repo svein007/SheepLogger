@@ -1,5 +1,6 @@
 package com.example.sheeptracker.database.entities
 
+import android.content.Context
 import android.content.res.Resources
 import android.graphics.drawable.Drawable
 import androidx.core.content.res.ResourcesCompat
@@ -57,7 +58,7 @@ data class Observation(
 ) {
 
     enum class ObservationType {
-        COUNT, DEAD, INJURED;
+        COUNT, DEAD, INJURED, PREDATOR;
 
         fun getDrawable(resources: Resources): Drawable? {
             return when (this) {
@@ -67,8 +68,28 @@ data class Observation(
                 INJURED -> {
                     ResourcesCompat.getDrawable(resources, R.drawable.ic_baseline_report_problem_24, null)
                 }
+                PREDATOR -> {
+                    ResourcesCompat.getDrawable(resources, R.drawable.ic_baseline_report_24, null)
+                }
                 else -> {
                     ResourcesCompat.getDrawable(resources, R.drawable.ic_baseline_remove_red_eye_24, null)
+                }
+            }
+        }
+
+        fun getString(context: Context): String {
+            return when (this) {
+                DEAD -> {
+                    context.getString(R.string.dead)
+                }
+                INJURED -> {
+                    context.getString(R.string.injured)
+                }
+                PREDATOR -> {
+                    context.getString(R.string.predator)
+                }
+                else -> {
+                    context.getString(R.string.herd)
                 }
             }
         }

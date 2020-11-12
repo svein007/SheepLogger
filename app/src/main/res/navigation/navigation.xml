@@ -102,6 +102,9 @@
         <action
             android:id="@+id/action_tripFragment_to_addDeadAnimalFragment"
             app:destination="@id/addDeadAnimalFragment" />
+        <action
+            android:id="@+id/action_tripFragment_to_predatorRegistrationFragment"
+            app:destination="@id/predatorRegistrationFragment" />
     </fragment>
     <fragment
         android:id="@+id/observationsFragment"
@@ -117,6 +120,9 @@
         <action
             android:id="@+id/action_observationsFragment_to_animalRegistrationDetailsFragment"
             app:destination="@id/animalRegistrationDetailsFragment" />
+        <action
+            android:id="@+id/action_observationsFragment_to_predatorRegistrationFragment"
+            app:destination="@id/predatorRegistrationFragment" />
     </fragment>
     <fragment
         android:id="@+id/addObservationFragment"
@@ -238,6 +244,30 @@
         <action
             android:id="@+id/action_tripDetailsFragment_to_tripFragment"
             app:destination="@id/tripFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/predatorRegistrationFragment"
+        android:name="com.example.sheeptracker.ui.predatorregistration.PredatorRegistrationFragment"
+        android:label="@string/predator" >
+        <argument
+            android:name="tripId"
+            app:argType="long"
+            android:defaultValue="-1L" />
+        <argument
+            android:name="obsLat"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="obsLon"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="obsId"
+            app:argType="long"
+            android:defaultValue="-1L" />
+        <action
+            android:id="@+id/action_predatorRegistrationFragment_to_imageResourceFragment"
+            app:destination="@id/imageResourceFragment" />
     </fragment>
 
 </navigation>

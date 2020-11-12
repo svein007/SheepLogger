@@ -48,8 +48,8 @@ fun TextView.setTextDateForDate(date: Date?) {
 }
 
 @BindingAdapter("textDateTime")
-fun TextView.setTextDateTimeForDate(date: Date) {
-    text = dateTimeFormatter.format(date)
+fun TextView.setTextDateTimeForDate(date: Date?) {
+    text = if (date != null)  dateTimeFormatter.format(date) else ""
 }
 
 @BindingAdapter("boolVisibility")

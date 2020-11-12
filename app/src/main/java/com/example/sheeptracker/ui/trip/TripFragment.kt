@@ -300,11 +300,13 @@ class TripFragment : Fragment() {
     }
 
     private fun showNewObservationDialog(geoPoint: GeoPoint?) {
+        val observationTypes = Observation.ObservationType.values().map { obsType -> obsType.getString(requireContext()) }
+
         val observationTypeAlertDialog = activity?.let {
             val builder = AlertDialog.Builder(it)
             builder.apply {
                 setTitle(getString(R.string.select_observation_type))
-                setItems(arrayOf(getString(R.string.count), getString(R.string.dead), getString(R.string.injured))){ dialogInterface, index ->
+                setItems(observationTypes.toTypedArray()){ dialogInterface, index ->
                     when (index) {
                         0 -> {
                             findNavController().navigate(
@@ -333,6 +335,14 @@ class TripFragment : Fragment() {
                                     "${geoPoint?.longitude}",
                                     Observation.ObservationType.INJURED.ordinal
                                 )
+                            )
+                        }
+                        3 -> {
+                            findNavController().navigate(
+                                TripFragmentDirections.actionTripFragmentToPredatorRegistrationFragment(
+                                    "${geoPoint?.latitude}",
+                                    "${geoPoint?.longitude}",
+                                ).setTripId(arguments.tripId)
                             )
                         }
                     }

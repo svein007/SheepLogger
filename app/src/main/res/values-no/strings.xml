@@ -110,4 +110,6 @@
     <string name="herds">Flokker</string>
     <string name="rapport_text">Døde dyr: %1$d \nSkadd dyr: %2$d \nTurer: %3$d \nDistanse: %4$.2f km \nVarighet: %5$s </string>
     <string name="export">Eksporter</string>
+    <string name="predator">Rovdyr</string>
+    <string name="herd">Flokk</string>
 </resources>
