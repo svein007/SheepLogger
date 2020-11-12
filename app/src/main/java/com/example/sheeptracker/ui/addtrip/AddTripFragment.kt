@@ -48,6 +48,10 @@ class AddTripFragment : Fragment() {
         viewModel.mapAreas.observe(viewLifecycleOwner, {
             it?.let {
                 adapter.submitList(it)
+                if (viewModel.mapAreaId.value.isNullOrBlank()) {
+                    viewModel.mapAreaId.value = it.first().mapAreaId.toString()
+                    adapter.notifyItemChanged(0)
+                }
             }
         })
 

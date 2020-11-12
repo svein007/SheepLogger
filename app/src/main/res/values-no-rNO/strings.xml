@@ -114,4 +114,5 @@
     <string name="herd">Flokk</string>
     <string name="environment">Omgivelse</string>
     <string name="observation">Observasjon</string>
+    <string name="no_map_areas_query">Ingen kartområder tilgjengelig</string>
 </resources>

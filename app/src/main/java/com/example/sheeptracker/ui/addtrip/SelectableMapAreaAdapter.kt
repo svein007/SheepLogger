@@ -12,7 +12,7 @@ import com.example.sheeptracker.databinding.SelectableMapAreaRvItemBinding
 class SelectableMapAreaAdapter (val clickListener: SelectableMapAreaListItemListener)
     : ListAdapter<MapArea, SelectableMapAreaAdapter.ViewHolder>(MapAreaDiffCallback()) {
 
-    private var selectedPosition: Int = -1
+    private var selectedPosition: Int = 0
 
     class ViewHolder private constructor(val binding: SelectableMapAreaRvItemBinding) :
             RecyclerView.ViewHolder(binding.root) {

@@ -22,6 +22,8 @@ class StartFragment : Fragment() {
     private val requestCodeAddTrip = 3
     private val requestCodeTrip = 4
 
+    private var toast: Toast? = null
+
     private val viewModel: StartViewModel by viewModels {
         StartViewModelFactory(AppDatabase.getInstance(requireContext().applicationContext).appDatabaseDao, requireActivity().application)
     }
@@ -51,9 +53,15 @@ class StartFragment : Fragment() {
                         )
                     )
                 } else {
-                    findNavController().navigate(
-                        StartFragmentDirections.actionStartFragmentToAddTripFragment()
-                    )
+                    if (viewModel.mapAreaCount > 0) {
+                        findNavController().navigate(
+                            StartFragmentDirections.actionStartFragmentToAddTripFragment()
+                        )
+                    } else {
+                        toast?.cancel()
+                        toast = Toast.makeText(requireContext(), getString(R.string.no_map_areas_query), Toast.LENGTH_LONG)
+                        toast?.show()
+                    }
                 }
             } else {
                 performRequestPermissions(

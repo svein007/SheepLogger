@@ -40,6 +40,9 @@ interface AppDao {
     @Query("SELECT map_area_name FROM map_area_table ORDER BY map_area_name ASC")
     fun getMapAreaNames(): List<String>
 
+    @Query("SELECT COUNT(*) FROM map_area_table")
+    fun getMapAreaCount(): Int
+
     /** Trip **/
 
     @Insert
