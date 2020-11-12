@@ -75,8 +75,8 @@
 
     <!-- Sync Preferences -->
     <string name="gps" translatable="false">GPS</string>
-    <string name="gps_dist">GPS Tracking - Location Distance Interval</string>
-    <string name="gps_time">GPS Tracking - Location Time Interval</string>
+    <string name="gps_dist">Distance Interval</string>
+    <string name="gps_time">Time Interval</string>
     <string name="rapport">Rapport</string>
     <string name="simple_rapport_text"><![CDATA[<p>Dead animals: %1$d <br/> Injured animals: %2$d <br/> Trips: %3$d </p>]]></string>
     <string name="other">Other</string>

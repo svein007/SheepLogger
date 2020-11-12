@@ -69,8 +69,8 @@
     <string name="secondary_trip_map_point_added">Sekundært Observasjonspunkt Lagret</string>
     <string name="secondary_trip_map_point_deleted">Sekundært Observasjonspunkt Slettet</string>
     <string name="settings">Innstillinger</string>
-    <string name="gps_dist">GPS - Distanseinterval</string>
-    <string name="gps_time">GPS - Tidsinterval</string>
+    <string name="gps_dist">Distanseinterval</string>
+    <string name="gps_time">Tidsinterval</string>
     <string name="rapport">Rapport</string>
     <string name="simple_rapport_text"><![CDATA[<p>Døde dyr: %1$d<br/> Skadd dyr: %2$d <br/> Turer: %3$d </p>]]></string>
     <string name="other">Annet</string>
