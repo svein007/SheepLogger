@@ -58,7 +58,7 @@ data class Observation(
 ) {
 
     enum class ObservationType {
-        COUNT, DEAD, INJURED, PREDATOR;
+        COUNT, DEAD, INJURED, PREDATOR, ENVIRONMENT;
 
         fun getDrawable(resources: Resources): Drawable? {
             return when (this) {
@@ -71,8 +71,11 @@ data class Observation(
                 PREDATOR -> {
                     ResourcesCompat.getDrawable(resources, R.drawable.ic_baseline_report_24, null)
                 }
-                else -> {
+                COUNT -> {
                     ResourcesCompat.getDrawable(resources, R.drawable.ic_baseline_remove_red_eye_24, null)
+                }
+                ENVIRONMENT -> {
+                    ResourcesCompat.getDrawable(resources, R.drawable.ic_baseline_nature_24, null)
                 }
             }
         }
@@ -88,8 +91,11 @@ data class Observation(
                 PREDATOR -> {
                     context.getString(R.string.predator)
                 }
-                else -> {
+                COUNT -> {
                     context.getString(R.string.herd)
+                }
+                ENVIRONMENT -> {
+                    context.getString(R.string.environment)
                 }
             }
         }

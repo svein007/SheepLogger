@@ -15,26 +15,26 @@
         tools:context=".ui.predatorregistration.PredatorRegistrationFragment">
 
         <ImageView
-            android:id="@+id/imageView7"
+            android:id="@+id/observationTypeIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            app:srcCompat="@drawable/ic_baseline_report_24"
+            tools:srcCompat="@drawable/ic_baseline_report_24"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textView61"
+            android:id="@+id/obsTypeTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:text="@string/predator"
+            tools:text="@string/predator"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView7"
-            app:layout_constraintStart_toEndOf="@+id/imageView7"
-            app:layout_constraintTop_toTopOf="@+id/imageView7" />
+            app:layout_constraintBottom_toBottomOf="@+id/observationTypeIcon"
+            app:layout_constraintStart_toEndOf="@+id/observationTypeIcon"
+            app:layout_constraintTop_toTopOf="@+id/observationTypeIcon" />
 
         <TextView
             android:id="@+id/textView62"
@@ -45,7 +45,7 @@
             android:text="@string/notes"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView7" />
+            app:layout_constraintTop_toBottomOf="@+id/observationTypeIcon" />
 
         <EditText
             android:id="@+id/editTextTextPersonName9"

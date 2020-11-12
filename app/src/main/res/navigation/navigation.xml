@@ -248,11 +248,11 @@
     <fragment
         android:id="@+id/predatorRegistrationFragment"
         android:name="com.example.sheeptracker.ui.predatorregistration.PredatorRegistrationFragment"
-        android:label="@string/predator" >
+        android:label="@string/observation">
         <argument
             android:name="tripId"
-            app:argType="long"
-            android:defaultValue="-1L" />
+            android:defaultValue="-1L"
+            app:argType="long" />
         <argument
             android:name="obsLat"
             app:argType="string"
@@ -263,11 +263,15 @@
             app:nullable="true" />
         <argument
             android:name="obsId"
-            app:argType="long"
-            android:defaultValue="-1L" />
+            android:defaultValue="-1L"
+            app:argType="long" />
         <action
             android:id="@+id/action_predatorRegistrationFragment_to_imageResourceFragment"
             app:destination="@id/imageResourceFragment" />
+        <argument
+            android:name="obsType"
+            app:argType="integer"
+            android:defaultValue="-1" />
     </fragment>
 
 </navigation>

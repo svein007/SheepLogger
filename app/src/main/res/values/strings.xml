@@ -118,5 +118,7 @@
     <string name="export">Export</string>
     <string name="predator">Predator</string>
     <string name="herd">Herd</string>
+    <string name="environment">Environment</string>
+    <string name="observation">Observation</string>
 
 </resources>

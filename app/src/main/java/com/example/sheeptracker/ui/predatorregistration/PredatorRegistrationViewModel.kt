@@ -22,6 +22,7 @@ class PredatorRegistrationViewModel(
     private val tripId: Long,
     private val obsLat: Double,
     private val obsLon: Double,
+    private val obsType: Int,
     application: Application,
     private val appDao: AppDao
 ) : AndroidViewModel(application) {
@@ -68,7 +69,7 @@ class PredatorRegistrationViewModel(
                         observationDate = Date(),
                         observationOwnerTripId = tripId,
                         observationOwnerTripMapPointId = observationPoint.tripMapPointId,
-                        observationType = Observation.ObservationType.PREDATOR
+                        observationType = Observation.ObservationType.values()[obsType]
                     )
 
                     obsIdLD.value = insert(newObservation)

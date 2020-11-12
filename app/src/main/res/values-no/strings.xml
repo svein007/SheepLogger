@@ -112,4 +112,6 @@
     <string name="export">Eksporter</string>
     <string name="predator">Rovdyr</string>
     <string name="herd">Flokk</string>
+    <string name="environment">Omgivelse</string>
+    <string name="observation">Observasjon</string>
 </resources>

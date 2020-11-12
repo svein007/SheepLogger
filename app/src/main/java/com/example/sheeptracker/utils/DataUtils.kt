@@ -29,6 +29,10 @@ suspend fun getObservationShortDesc(appDao: AppDao, context: Context, observatio
             val predatorString = context.getString(R.string.predator)
             "$predatorString: ${observation.observationNote.substring(0, minOf(observation.observationNote.length, 10))}"
         }
+        Observation.ObservationType.ENVIRONMENT -> {
+            val environmentString = context.getString(R.string.environment)
+            "$environmentString: ${observation.observationNote.substring(0, minOf(observation.observationNote.length, 10))}"
+        }
     }
 }
 

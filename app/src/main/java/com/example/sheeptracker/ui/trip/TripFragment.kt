@@ -337,12 +337,12 @@ class TripFragment : Fragment() {
                                 )
                             )
                         }
-                        3 -> {
+                        3, 4 -> {
                             findNavController().navigate(
                                 TripFragmentDirections.actionTripFragmentToPredatorRegistrationFragment(
                                     "${geoPoint?.latitude}",
                                     "${geoPoint?.longitude}",
-                                ).setTripId(arguments.tripId)
+                                ).setTripId(arguments.tripId).setObsType(index)
                             )
                         }
                     }

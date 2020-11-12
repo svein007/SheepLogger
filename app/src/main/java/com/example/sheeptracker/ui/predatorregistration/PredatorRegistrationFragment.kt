@@ -41,6 +41,7 @@ class PredatorRegistrationFragment : Fragment() {
             tripId = args.tripId,
             obsLat = args.obsLat?.toDoubleOrNull() ?: -1.0,
             obsLon = args.obsLon?.toDoubleOrNull() ?: -1.0,
+            obsType = args.obsType,
             application = requireActivity().application,
             appDao = AppDatabase.getInstance(requireContext()).appDatabaseDao
         )
@@ -62,10 +63,6 @@ class PredatorRegistrationFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
 
-        viewModel.observation.observe(viewLifecycleOwner){
-            it
-        }
-
         val imagesAdapter = ImageResourceAdapter(
             ImgResourceListItemListener { imgResId: Long, imgResUri: String ->
                 findNavController().navigate(
@@ -82,6 +79,13 @@ class PredatorRegistrationFragment : Fragment() {
         viewModel.imageResources.observe(viewLifecycleOwner) {
             it?.let {
                 imagesAdapter.submitList(it)
+            }
+        }
+
+        viewModel.observation.observe(viewLifecycleOwner){
+            it?.let {
+                binding.observationTypeIcon.setImageDrawable(it.observationType.getDrawable(resources))
+                binding.obsTypeTitle.text = it.observationType.getString(requireContext())
             }
         }
 

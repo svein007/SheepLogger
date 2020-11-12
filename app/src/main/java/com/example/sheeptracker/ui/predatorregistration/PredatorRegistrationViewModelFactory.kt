@@ -10,6 +10,7 @@ class PredatorRegistrationViewModelFactory(
     private val tripId: Long,
     private val obsLat: Double,
     private val obsLon: Double,
+    private val obsType: Int,
     private val application: Application,
     private val appDao: AppDao
 ): ViewModelProvider.Factory {
@@ -22,6 +23,7 @@ class PredatorRegistrationViewModelFactory(
                 tripId,
                 obsLat,
                 obsLon,
+                obsType,
                 application,
                 appDao
             ) as T
