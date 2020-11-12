@@ -6,12 +6,14 @@ import android.location.Location
 import android.net.Uri
 import com.example.sheeptracker.R
 import com.example.sheeptracker.database.AppDao
+import com.example.sheeptracker.database.AppDatabase
 import com.example.sheeptracker.database.entities.Counter
 import com.example.sheeptracker.database.entities.ImageResource
 import com.example.sheeptracker.database.entities.Observation
 import com.example.sheeptracker.database.entities.TripMapPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.util.*
 import java.util.concurrent.TimeUnit
 
 suspend fun getObservationShortDesc(appDao: AppDao, context: Context, observation: Observation): String {
@@ -91,6 +93,17 @@ suspend fun getAnimalRegisterNumber(appDao: AppDao, observation: Observation): S
             return@withContext it.animalNumber
         }
         return@withContext ""
+    }
+}
+
+suspend fun getTripYears(context: Context): List<String> {
+    return withContext(Dispatchers.IO) {
+        AppDatabase.getInstance(context).appDatabaseDao.getFinishedTripsAsc().map { trip ->
+            val cal = Calendar.getInstance().apply{
+                time = trip.tripDate
+            }
+            cal.get(Calendar.YEAR).toString()
+        }.distinct().sortedDescending()
     }
 }
 

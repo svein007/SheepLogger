@@ -14,10 +14,10 @@ import com.example.sheeptracker.database.AppDao
 import com.example.sheeptracker.database.AppDatabase
 import com.example.sheeptracker.database.entities.Trip
 import com.example.sheeptracker.databinding.TripsFragmentBinding
+import com.example.sheeptracker.utils.getTripYears
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.lang.Exception
 import java.util.*
 
@@ -101,7 +101,7 @@ class TripsFragment : Fragment() {
             popup.menu.clear()
             popup.menu.add(Menu.FIRST, Menu.FIRST, Menu.FIRST, R.string.all).isCheckable = true
 
-            val tripYears = getTripYears()
+            val tripYears = getTripYears(requireContext())
 
             for ((i, year) in tripYears.withIndex()) {
                 popup.menu.add(Menu.FIRST, Menu.FIRST+1+i, Menu.FIRST+1+i, year).apply {
@@ -130,17 +130,6 @@ class TripsFragment : Fragment() {
             popup.menu.findItem(checkedItemId)?.isChecked = true
 
             popup.show()
-        }
-    }
-
-    private suspend fun getTripYears(): List<String> {
-        return withContext(Dispatchers.IO) {
-            appDao.getFinishedTripsAsc().map { trip ->
-                val cal = Calendar.getInstance().apply{
-                    time = trip.tripDate
-                }
-                cal.get(Calendar.YEAR).toString()
-            }.distinct().sortedDescending()
         }
     }
 

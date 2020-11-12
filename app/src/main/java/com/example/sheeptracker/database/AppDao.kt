@@ -187,6 +187,11 @@ interface AppDao {
     @Query("SELECT COUNT(*) FROM observation_table INNER JOIN trip_table ON trip_id = observation_owner_trip_id WHERE observation_type = 1 AND trip_id = :tripId")
     fun getDeadAnimalCountForTripLD(tripId: Long): LiveData<Int>
 
+    @Query("SELECT * FROM observation_table WHERE observation_type = 2")
+    fun getInjuredAnimals(): List<Observation>
+
+    @Query("SELECT * FROM observation_table WHERE observation_type = 1")
+    fun getDeadAnimals(): List<Observation>
 
     /** ImageResource **/
 
