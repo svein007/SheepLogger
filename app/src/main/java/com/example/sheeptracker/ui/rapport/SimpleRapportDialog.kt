@@ -11,6 +11,7 @@ import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.FileProvider
 import com.example.sheeptracker.R
 import com.example.sheeptracker.utils.generateSimpleRapport
+import com.example.sheeptracker.utils.getJSONRapport
 import com.example.sheeptracker.utils.getTripYears
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.synthetic.main.simple_rapport_dialog.*
@@ -23,6 +24,7 @@ class SimpleRapportDialog : BottomSheetDialogFragment() {
     var rapportText = ""
     var checkedItemIndex = Menu.FIRST
     var year = ""
+    var rapportJSON = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,6 +38,8 @@ class SimpleRapportDialog : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         CoroutineScope(Dispatchers.Main).launch {
+            rapportJSON = getJSONRapport(requireContext())
+
             rapportText = generateSimpleRapport(requireContext())
 
             rapportTextView?.text = rapportText
@@ -95,9 +99,11 @@ class SimpleRapportDialog : BottomSheetDialogFragment() {
                 CoroutineScope(Dispatchers.Main).launch {
                     rapportText = if (item.title.toString().toIntOrNull() != null) {
                         year = item.title as String
+                        rapportJSON = getJSONRapport(requireContext(), item.title.toString().toInt())
                         generateSimpleRapport(requireContext(), item.title.toString().toInt())
                     } else {
                         year = ""
+                        rapportJSON = getJSONRapport(requireContext())
                         generateSimpleRapport(requireContext())
                     }
                     rapportTextView?.text = rapportText
