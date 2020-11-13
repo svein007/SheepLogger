@@ -1,8 +1,6 @@
 package com.example.sheeptracker.ui.rapport
 
 import android.content.Intent
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -33,8 +31,6 @@ class SimpleRapportDialog : BottomSheetDialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        setStyle(STYLE_NORMAL, R.style.AppBottomSheetDialogTheme)
-        dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         return inflater.inflate(R.layout.simple_rapport_dialog, container, false)
     }
 
@@ -107,9 +103,8 @@ class SimpleRapportDialog : BottomSheetDialogFragment() {
 
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        (view?.parent as View).setBackgroundColor(Color.TRANSPARENT)
+    override fun getTheme(): Int {
+        return R.style.AppBottomSheetDialogTheme
     }
 
     private fun showFilterPopup(v: View) {
