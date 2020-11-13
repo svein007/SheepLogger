@@ -121,5 +121,6 @@
     <string name="environment">Environment</string>
     <string name="observation">Observation</string>
     <string name="no_map_areas_query">No MapAreas, please download one</string>
+    <string name="year_selected">Year</string>
 
 </resources>
