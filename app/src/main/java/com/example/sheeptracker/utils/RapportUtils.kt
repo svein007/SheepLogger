@@ -1,6 +1,7 @@
 package com.example.sheeptracker.utils
 
 import android.content.Context
+import android.net.Uri
 import com.example.sheeptracker.R
 import com.example.sheeptracker.database.AppDao
 import com.example.sheeptracker.database.AppDatabase
@@ -54,6 +55,25 @@ suspend fun getJSONRapport(context: Context, year: Int = -1): String {
         json.put("deadAnimals", JSONArray(deadAnimalNumbers))
 
         json.toString()
+    }
+}
+
+suspend fun getImageUris(appDao: AppDao, year: Int = -1): List<Uri> {
+    return withContext(Dispatchers.IO) {
+        val aniRegObservations = appDao.getInjuredAnimals() + appDao.getDeadAnimals()
+
+        aniRegObservations.filter {
+            Calendar.getInstance().apply{
+                time = it.observationDate
+            }.get(Calendar.YEAR) == year || year < 0
+        }.map { obs ->
+            obs.observationId
+        }.flatMap { obsId ->
+            appDao.getImageResources(obsId)
+        }.map { imgRes ->
+            imgRes.getImgUri()
+        }
+
     }
 }
 

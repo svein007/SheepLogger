@@ -2,6 +2,8 @@ package com.example.sheeptracker.ui.rapport
 
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
@@ -9,10 +11,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.FileProvider
+import androidx.core.net.toFile
 import com.example.sheeptracker.R
-import com.example.sheeptracker.utils.generateSimpleRapport
-import com.example.sheeptracker.utils.getJSONRapport
-import com.example.sheeptracker.utils.getTripYears
+import com.example.sheeptracker.database.AppDatabase
+import com.example.sheeptracker.utils.*
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.synthetic.main.simple_rapport_dialog.*
 import kotlinx.coroutines.CoroutineScope
@@ -31,6 +33,8 @@ class SimpleRapportDialog : BottomSheetDialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        setStyle(STYLE_NORMAL, R.style.AppBottomSheetDialogTheme)
+        dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         return inflater.inflate(R.layout.simple_rapport_dialog, container, false)
     }
 
@@ -45,24 +49,54 @@ class SimpleRapportDialog : BottomSheetDialogFragment() {
             rapportTextView?.text = rapportText
 
             sendEmailRapportFloatingActionButton.setOnClickListener {
-                val exportIntent = Intent(Intent.ACTION_SEND).apply {
+                CoroutineScope(Dispatchers.Main).launch {
+                    val files = ArrayList<Uri>()
 
-                    val contentFile = FileProvider.getUriForFile(
-                        requireContext(),
-                        "com.example.sheeptracker.fileprovider",
-                        requireContext().getDatabasePath("sheep_database")
-                    )
+                    val exportIntent = Intent(Intent.ACTION_SEND_MULTIPLE).apply {
 
-                    val subjectYear = if (year.isBlank()) year else " - ${getString(R.string.year_selected)}: $year"
-                    putExtra(Intent.EXTRA_SUBJECT, "Sheep Tracker Rapport$subjectYear")
-                    addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                    putExtra(Intent.EXTRA_TEXT, rapportText)
+                        if (rapportJSONChip.isChecked) {
+                            val jsonFile = FileProvider.getUriForFile(
+                                requireContext(),
+                                "com.example.sheeptracker.fileprovider",
+                                createFileAndWrite(requireContext(), rapportJSON)
+                            )
+                            files.add(jsonFile)
+                        }
 
-                    putExtra(Intent.EXTRA_STREAM, contentFile)
-                    type = "application/octet-stream"
+                        if (rapportDBFileChip.isChecked) {
+                            val dbFile = FileProvider.getUriForFile(
+                                requireContext(),
+                                "com.example.sheeptracker.fileprovider",
+                                requireContext().getDatabasePath("sheep_database")
+                            )
+                            files.add(dbFile)
+                        }
+
+                        if (rapportImagesChip.isEnabled) {
+                            val appDao = AppDatabase.getInstance(requireContext()).appDatabaseDao
+
+                            getImageUris(appDao, year.toIntOrNull() ?: -1).forEach {
+                                val imgFile = FileProvider.getUriForFile(
+                                    requireContext(),
+                                    "com.example.sheeptracker.fileprovider",
+                                    it.toFile()
+                                )
+                                files.add(imgFile)
+                            }
+                        }
+
+                        val subjectYear =
+                            if (year.isBlank()) year else " - ${getString(R.string.year_selected)}: $year"
+                        putExtra(Intent.EXTRA_SUBJECT, "Sheep Tracker Rapport$subjectYear")
+                        addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                        putExtra(Intent.EXTRA_TEXT, rapportText)
+
+                        putParcelableArrayListExtra(Intent.EXTRA_STREAM, files)
+                        type = "application/octet-stream"
+                    }
+
+                    startActivity(Intent.createChooser(exportIntent, "Share Rapport"))
                 }
-
-                startActivity(Intent.createChooser(exportIntent, "Share Rapport"))
             }
 
             filterTV.setOnClickListener {

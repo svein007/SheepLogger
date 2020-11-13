@@ -116,4 +116,6 @@
     <string name="observation">Observasjon</string>
     <string name="no_map_areas_query">Ingen kartområder tilgjengelig</string>
     <string name="year_selected">År</string>
+    <string name="db_file">DB Fil</string>
+    <string name="json_file">JSON Fil</string>
 </resources>

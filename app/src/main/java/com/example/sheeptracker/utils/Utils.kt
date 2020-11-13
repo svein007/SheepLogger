@@ -89,6 +89,16 @@ fun createImageFile(context: Context): File {
     )
 }
 
+fun createFileAndWrite(context: Context, strContent: String): File {
+    val wrapper = ContextWrapper(context.applicationContext)
+    val dir = wrapper.getDir("rapports", Context.MODE_PRIVATE)
+    val file = File(dir, "generated_rapport.json")
+
+    file.writeText(strContent)
+
+    return file
+}
+
 fun checkHasAllPermissions(context: Context): Boolean {
     return ActivityCompat.checkSelfPermission(
         context,

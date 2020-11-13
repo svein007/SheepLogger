@@ -122,5 +122,7 @@
     <string name="observation">Observation</string>
     <string name="no_map_areas_query">No MapAreas, please download one</string>
     <string name="year_selected">Year</string>
+    <string name="db_file">DB File</string>
+    <string name="json_file">JSON File</string>
 
 </resources>
