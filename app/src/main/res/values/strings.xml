@@ -122,8 +122,12 @@
     <string name="observation">Observation</string>
     <string name="no_map_areas_query">No MapAreas, please download one</string>
     <string name="year_selected">Year</string>
-    <string name="db_file">DB File</string>
-    <string name="json_file">JSON File</string>
+    <string name="db_file">DB-file</string>
+    <string name="json_file">JSON-file</string>
+    <string name="export_files">Export Files</string>
+    <string name="select_files_to_export">Select files to export</string>
+    <string name="observation_images">Observation Images</string>
+    <string name="text_rapport">Text Rapport</string>
     <string name="dead_and_injured_count">%1$d dead / %2$d injured</string>
 
 </resources>

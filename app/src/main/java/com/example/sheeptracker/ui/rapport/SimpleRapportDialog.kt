@@ -44,17 +44,26 @@ class SimpleRapportDialog : BottomSheetDialogFragment() {
 
             rapportTextView?.text = rapportText
 
-            sendEmailRapportFloatingActionButton.setOnClickListener {
+            rapportExportFilesButton.setOnClickListener {
                 CoroutineScope(Dispatchers.Main).launch {
                     val files = ArrayList<Uri>()
 
                     val exportIntent = Intent(Intent.ACTION_SEND_MULTIPLE).apply {
 
+                        if (rapportTextChip.isChecked) {
+                            val textRapportFile = FileProvider.getUriForFile(
+                                requireContext(),
+                                "com.example.sheeptracker.fileprovider",
+                                createFileAndWrite(requireContext(), rapportText, "generated_rapport.txt")
+                            )
+                            files.add(textRapportFile)
+                        }
+
                         if (rapportJSONChip.isChecked) {
                             val jsonFile = FileProvider.getUriForFile(
                                 requireContext(),
                                 "com.example.sheeptracker.fileprovider",
-                                createFileAndWrite(requireContext(), rapportJSON)
+                                createFileAndWrite(requireContext(), rapportJSON, "generated_rapport.json")
                             )
                             files.add(jsonFile)
                         }
@@ -68,7 +77,7 @@ class SimpleRapportDialog : BottomSheetDialogFragment() {
                             files.add(dbFile)
                         }
 
-                        if (rapportImagesChip.isEnabled) {
+                        if (rapportImagesChip.isChecked) {
                             val appDao = AppDatabase.getInstance(requireContext()).appDatabaseDao
 
                             getImageUris(appDao, year.toIntOrNull() ?: -1).forEach {
@@ -82,7 +91,7 @@ class SimpleRapportDialog : BottomSheetDialogFragment() {
                         }
 
                         val subjectYear =
-                            if (year.isBlank()) year else " - ${getString(R.string.year_selected)}: $year"
+                            if (year.isBlank()) "" else " - ${getString(R.string.year_selected)}: $year"
                         putExtra(Intent.EXTRA_SUBJECT, "Sheep Tracker Rapport$subjectYear")
                         addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                         putExtra(Intent.EXTRA_TEXT, rapportText)

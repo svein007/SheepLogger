@@ -89,10 +89,10 @@ fun createImageFile(context: Context): File {
     )
 }
 
-fun createFileAndWrite(context: Context, strContent: String): File {
+fun createFileAndWrite(context: Context, strContent: String, fileName: String): File {
     val wrapper = ContextWrapper(context.applicationContext)
     val dir = wrapper.getDir("rapports", Context.MODE_PRIVATE)
-    val file = File(dir, "generated_rapport.json")
+    val file = File(dir, fileName)
 
     file.writeText(strContent)
 

@@ -116,7 +116,11 @@
     <string name="observation">Observasjon</string>
     <string name="no_map_areas_query">Ingen kartområder tilgjengelig</string>
     <string name="year_selected">År</string>
-    <string name="db_file">DB Fil</string>
-    <string name="json_file">JSON Fil</string>
+    <string name="db_file">DB-fil</string>
+    <string name="json_file">JSON-fil</string>
+    <string name="export_files">Eksporter filer</string>
+    <string name="select_files_to_export">Velg filer som skal eksporteres</string>
+    <string name="observation_images">Observasjonsbilder</string>
+    <string name="text_rapport">Tekstrapport</string>
     <string name="dead_and_injured_count">%1$d død / %2$d skadd</string>
 </resources>
