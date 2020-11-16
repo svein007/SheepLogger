@@ -1,4 +1,4 @@
-package com.example.sheeptracker.ui.animalregistrationdetails
+package com.example.sheeptracker.ui.imageresource
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

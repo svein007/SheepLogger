@@ -19,8 +19,8 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.sheeptracker.R
 import com.example.sheeptracker.database.AppDatabase
 import com.example.sheeptracker.databinding.PredatorRegistrationFragmentBinding
-import com.example.sheeptracker.ui.animalregistrationdetails.ImageResourceAdapter
-import com.example.sheeptracker.ui.animalregistrationdetails.ImgResourceListItemListener
+import com.example.sheeptracker.ui.imageresource.ImageResourceAdapter
+import com.example.sheeptracker.ui.imageresource.ImgResourceListItemListener
 import com.example.sheeptracker.utils.createImageFile
 import java.io.File
 import java.io.IOException

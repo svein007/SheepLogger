@@ -100,9 +100,6 @@
             android:id="@+id/action_tripFragment_to_observationsFragment"
             app:destination="@id/observationsFragment" />
         <action
-            android:id="@+id/action_tripFragment_to_addDeadAnimalFragment"
-            app:destination="@id/addDeadAnimalFragment" />
-        <action
             android:id="@+id/action_tripFragment_to_predatorRegistrationFragment"
             app:destination="@id/predatorRegistrationFragment" />
     </fragment>
@@ -117,9 +114,6 @@
         <action
             android:id="@+id/action_observationsFragment_to_animalCountersDetailsFragment"
             app:destination="@id/animalCountersDetailsFragment" />
-        <action
-            android:id="@+id/action_observationsFragment_to_animalRegistrationDetailsFragment"
-            app:destination="@id/animalRegistrationDetailsFragment" />
         <action
             android:id="@+id/action_observationsFragment_to_predatorRegistrationFragment"
             app:destination="@id/predatorRegistrationFragment" />
@@ -145,39 +139,6 @@
                 android:name="navFromFragment"
                 android:defaultValue="add" />
         </action>
-    </fragment>
-    <fragment
-        android:id="@+id/addDeadAnimalFragment"
-        android:name="com.example.sheeptracker.ui.addanimalregistration.AddAnimalRegistrationFragment"
-        android:label="@string/register_animal_info"
-        tools:layout="@layout/add_animal_registration_fragment">
-        <argument
-            android:name="tripId"
-            app:argType="long" />
-        <argument
-            android:name="obsLat"
-            app:argType="string" />
-        <argument
-            android:name="obsLon"
-            app:argType="string" />
-        <argument
-            android:name="obsType"
-            app:argType="integer" />
-        <action
-            android:id="@+id/action_addDeadAnimalFragment_to_imageResourceFragment"
-            app:destination="@id/imageResourceFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/animalRegistrationDetailsFragment"
-        android:name="com.example.sheeptracker.ui.animalregistrationdetails.AnimalRegistrationDetailsFragment"
-        android:label="@string/animal_registration"
-        tools:layout="@layout/animal_registration_details_fragment">
-        <argument
-            android:name="observationId"
-            app:argType="long" />
-        <action
-            android:id="@+id/action_animalRegistrationDetailsFragment_to_imageResourceFragment"
-            app:destination="@id/imageResourceFragment" />
     </fragment>
     <fragment
         android:id="@+id/imageResourceFragment"
