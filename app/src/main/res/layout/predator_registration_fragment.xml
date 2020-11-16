@@ -37,15 +37,42 @@
             app:layout_constraintTop_toTopOf="@+id/observationTypeIcon" />
 
         <TextView
+            android:id="@+id/textView512"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/animal_id"
+            android:textStyle="bold"
+            app:boolVisibilityGone="@{viewModel.animalRegistration != null}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/observationTypeIcon" />
+
+        <EditText
+            android:id="@+id/editTextTextPersonName4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:ems="10"
+            android:hint="@string/animal_identification_number"
+            android:inputType="numberSigned"
+            android:text="@={viewModel.animalRegistration.animalNumber}"
+            app:boolVisibilityGone="@{viewModel.animalRegistration != null}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView512" />
+
+        <TextView
             android:id="@+id/textView62"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:text="@string/notes"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/observationTypeIcon" />
+            app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName4" />
 
         <EditText
             android:id="@+id/editTextTextPersonName9"

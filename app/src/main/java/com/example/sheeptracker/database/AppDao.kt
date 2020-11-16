@@ -172,6 +172,9 @@ interface AppDao {
     @Query("SELECT * FROM animal_registration_table WHERE animal_registration_owner_observation_id = :observationId")
     fun getAnimalRegistrationForObservation(observationId: Long): AnimalRegistration?
 
+    @Query("SELECT * FROM animal_registration_table WHERE animal_registration_owner_observation_id = :observationId")
+    fun getAnimalRegistrationForObservationLD(observationId: Long): LiveData<AnimalRegistration?>
+
     @Query("SELECT * FROM animal_registration_table WHERE animal_registration_id = :key")
     fun getAnimalRegistration(key: Long): AnimalRegistration?
 

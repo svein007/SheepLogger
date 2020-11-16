@@ -330,27 +330,7 @@ class TripFragment : Fragment() {
                                 )
                             )
                         }
-                        1 -> {
-                            findNavController().navigate(
-                                TripFragmentDirections.actionTripFragmentToAddDeadAnimalFragment(
-                                    arguments.tripId,
-                                    "${geoPoint?.latitude}",
-                                    "${geoPoint?.longitude}",
-                                    Observation.ObservationType.DEAD.ordinal
-                                )
-                            )
-                        }
-                        2 -> {
-                            findNavController().navigate(
-                                TripFragmentDirections.actionTripFragmentToAddDeadAnimalFragment(
-                                    arguments.tripId,
-                                    "${geoPoint?.latitude}",
-                                    "${geoPoint?.longitude}",
-                                    Observation.ObservationType.INJURED.ordinal
-                                )
-                            )
-                        }
-                        3, 4 -> {
+                        in Observation.ObservationType.DEAD.ordinal .. Observation.ObservationType.ENVIRONMENT.ordinal -> {
                             findNavController().navigate(
                                 TripFragmentDirections.actionTripFragmentToPredatorRegistrationFragment(
                                     "${geoPoint?.latitude}",

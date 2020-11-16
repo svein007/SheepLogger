@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.example.sheeptracker.database.AppDao
+import com.example.sheeptracker.database.entities.AnimalRegistration
 import com.example.sheeptracker.database.entities.Observation
 import com.example.sheeptracker.database.entities.TripMapPoint
 import com.example.sheeptracker.map.MapAreaManager
@@ -36,6 +37,10 @@ class PredatorRegistrationViewModel(
         appDao.getObservationLD(it)
     }
 
+    val animalRegistration: LiveData<AnimalRegistration?> = Transformations.switchMap(obsIdLD) {
+        appDao.getAnimalRegistrationForObservationLD(it)
+    }
+
     val imageResources = Transformations.switchMap(obsIdLD) {
         appDao.getImageResourcesLD(it)
     }
@@ -62,6 +67,8 @@ class PredatorRegistrationViewModel(
 
                     val observationPoint = getObservedFromPoint(appDao, tripId, currentPosition)
 
+                    val observationType = Observation.ObservationType.values()[obsType]
+
                     val newObservation = Observation(
                         observationLat = obsLat,
                         observationLon = obsLon,
@@ -69,10 +76,19 @@ class PredatorRegistrationViewModel(
                         observationDate = Date(),
                         observationOwnerTripId = tripId,
                         observationOwnerTripMapPointId = observationPoint.tripMapPointId,
-                        observationType = Observation.ObservationType.values()[obsType]
+                        observationType = observationType
                     )
 
-                    obsIdLD.value = insert(newObservation)
+                    val obsId = insert(newObservation)
+                    obsIdLD.value = obsId
+
+                    if (observationType == Observation.ObservationType.DEAD
+                        || observationType == Observation.ObservationType.INJURED) {
+                        val newAnimalRegistration = AnimalRegistration(
+                            ownerObservationId = obsId
+                        )
+                        insert(newAnimalRegistration)
+                    }
                 }
             }
         }
@@ -125,14 +141,22 @@ class PredatorRegistrationViewModel(
         }
     }
 
+    private suspend fun insert(animalRegistration: AnimalRegistration): Long {
+        return withContext(Dispatchers.IO) {
+            appDao.insert(animalRegistration)
+        }
+    }
+
     private suspend fun update() {
         withContext(Dispatchers.IO){
             observation.value?.let {
                 appDao.update(it)
             }
+            animalRegistration.value?.let {
+                appDao.update(it)
+            }
         }
     }
-
 
     private suspend fun delete() {
         withContext(Dispatchers.IO) {
@@ -142,9 +166,14 @@ class PredatorRegistrationViewModel(
                 }
             }
 
+            animalRegistration.value?.let {
+                appDao.deleteAnimalRegistration(it.id)
+            }
+
             observation.value?.let {
                 appDao.deleteObservation(it.observationId)
             }
+
         }
     }
 

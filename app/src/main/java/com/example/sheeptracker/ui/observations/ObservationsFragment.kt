@@ -58,16 +58,12 @@ class ObservationsFragment : Fragment() {
                         ObservationsFragmentDirections.actionObservationsFragmentToAnimalCountersDetailsFragment(observationId)
                     )
                 }
+                Observation.ObservationType.DEAD, Observation.ObservationType.INJURED,
                 Observation.ObservationType.PREDATOR, Observation.ObservationType.ENVIRONMENT -> {
                     findNavController().navigate(
                         ObservationsFragmentDirections.actionObservationsFragmentToPredatorRegistrationFragment(
                             null, null
                         ).setObsId(observationId).setObsType(observationType.ordinal)
-                    )
-                }
-                Observation.ObservationType.DEAD, Observation.ObservationType.INJURED -> {
-                    findNavController().navigate(
-                        ObservationsFragmentDirections.actionObservationsFragmentToAnimalRegistrationDetailsFragment(observationId)
                     )
                 }
             }
