@@ -124,5 +124,6 @@
     <string name="year_selected">Year</string>
     <string name="db_file">DB File</string>
     <string name="json_file">JSON File</string>
+    <string name="dead_and_injured_count">%1$d dead / %2$d injured</string>
 
 </resources>
