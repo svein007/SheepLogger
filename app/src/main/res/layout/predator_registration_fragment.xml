@@ -55,6 +55,7 @@
                 android:layout_height="wrap_content"
                 android:digits="0123456789"
                 android:inputType="numberSigned"
+                android:imeOptions="actionNext"
                 android:text="@={viewModel.animalRegistration.animalNumber}" />
 
         </com.google.android.material.textfield.TextInputLayout>
