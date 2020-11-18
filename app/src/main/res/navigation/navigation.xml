@@ -198,7 +198,8 @@
     <fragment
         android:id="@+id/predatorRegistrationFragment"
         android:name="com.example.sheeptracker.ui.predatorregistration.PredatorRegistrationFragment"
-        android:label="@string/observation">
+        android:label="@string/observation"
+        tools:layout="@layout/predator_registration_fragment">
         <argument
             android:name="tripId"
             android:defaultValue="-1L"
