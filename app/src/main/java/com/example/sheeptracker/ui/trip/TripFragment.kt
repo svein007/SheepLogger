@@ -323,11 +323,10 @@ class TripFragment : Fragment() {
                     when (index) {
                         0 -> {
                             findNavController().navigate(
-                                TripFragmentDirections.actionTripFragmentToAddObservationFragment(
-                                    arguments.tripId,
+                                TripFragmentDirections.actionTripFragmentToAnimalCountersDetailsFragment(
                                     "${geoPoint?.latitude}",
                                     "${geoPoint?.longitude}"
-                                )
+                                ).setTripId(arguments.tripId)
                             )
                         }
                         in Observation.ObservationType.DEAD.ordinal .. Observation.ObservationType.ENVIRONMENT.ordinal -> {

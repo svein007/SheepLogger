@@ -43,6 +43,9 @@ interface AppDao {
     @Query("SELECT COUNT(*) FROM map_area_table")
     fun getMapAreaCount(): Int
 
+    @Query("SELECT COUNT(*) FROM map_area_table")
+    fun getMapAreaCountLD(): LiveData<Int>
+
     /** Trip **/
 
     @Insert

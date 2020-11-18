@@ -28,8 +28,12 @@ class PredatorRegistrationViewModel(
     private val appDao: AppDao
 ) : AndroidViewModel(application) {
 
+    /** Private fields **/
+
     private var viewModelJob = Job()
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
+
+    /** VM fields **/
 
     private val obsIdLD = MutableLiveData(observationId)
 

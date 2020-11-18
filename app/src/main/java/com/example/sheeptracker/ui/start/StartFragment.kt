@@ -14,6 +14,10 @@ import com.example.sheeptracker.database.AppDatabase
 import com.example.sheeptracker.databinding.StartFragmentBinding
 import com.example.sheeptracker.map.MapAreaManager
 import com.example.sheeptracker.utils.checkHasAllPermissions
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class StartFragment : Fragment() {
 
@@ -41,6 +45,11 @@ class StartFragment : Fragment() {
         //HACK: try to prepare GPS location
         MapAreaManager.getLastKnownLocation(requireContext(), requireActivity(), 0, false)
 
+        //HACK: populate mapAreaCount
+        viewModel.mapAreaCount.observe(viewLifecycleOwner) {
+            it
+        }
+
         binding.startViewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
@@ -53,14 +62,19 @@ class StartFragment : Fragment() {
                         )
                     )
                 } else {
-                    if (viewModel.mapAreaCount > 0) {
-                        findNavController().navigate(
-                            StartFragmentDirections.actionStartFragmentToAddTripFragment()
-                        )
-                    } else {
-                        toast?.cancel()
-                        toast = Toast.makeText(requireContext(), getString(R.string.no_map_areas_query), Toast.LENGTH_LONG)
-                        toast?.show()
+                    CoroutineScope(Dispatchers.Main).launch {
+                        val mapAreaCount = withContext(Dispatchers.IO) {
+                            AppDatabase.getInstance(requireContext()).appDatabaseDao.getMapAreaCount()
+                        }
+                        if (mapAreaCount > 0) {
+                            findNavController().navigate(
+                                StartFragmentDirections.actionStartFragmentToAddTripFragment()
+                            )
+                        } else {
+                            toast?.cancel()
+                            toast = Toast.makeText(requireContext(), getString(R.string.no_map_areas_query), Toast.LENGTH_LONG)
+                            toast?.show()
+                        }
                     }
                 }
             } else {

@@ -1,4 +1,4 @@
-package com.example.sheeptracker.ui.addobservation
+package com.example.sheeptracker.ui.herdobservationdetails
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -10,7 +10,8 @@ import com.example.sheeptracker.databinding.CounterRvItemBinding
 
 class CounterAdapter(
     val incClickListener: CounterListItemListener,
-    val decClickListener: CounterListItemListener)
+    val decClickListener: CounterListItemListener
+)
     : ListAdapter<Counter, CounterAdapter.ViewHolder>(CounterDiffCallback()) {
 
     class ViewHolder private constructor(val binding: CounterRvItemBinding):

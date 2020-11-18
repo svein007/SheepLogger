@@ -6,23 +6,31 @@ import android.view.*
 import androidx.core.view.forEachIndexed
 import androidx.fragment.app.Fragment
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.example.sheeptracker.R
-import com.example.sheeptracker.database.AppDao
 import com.example.sheeptracker.database.AppDatabase
 import com.example.sheeptracker.databinding.HerdObservationDetailsFragmentBinding
 import com.example.sheeptracker.map.MapAreaManager
-import com.example.sheeptracker.ui.addobservation.CounterAdapter
-import com.example.sheeptracker.ui.addobservation.CounterListItemListener
 import com.google.android.material.snackbar.Snackbar
 
 class HerdObservationDetailsFragment : Fragment() {
 
-    private lateinit var viewModel: HerdObservationDetailsViewModel
     private lateinit var binding: HerdObservationDetailsFragmentBinding
-    private lateinit var arguments: HerdObservationDetailsFragmentArgs
-    private lateinit var appDao: AppDao
+    private val arguments: HerdObservationDetailsFragmentArgs by navArgs()
+    private val viewModel: HerdObservationDetailsViewModel by viewModels {
+        HerdObservationDetailsViewModelFactory(
+            arguments.observationId,
+            arguments.tripId,
+            arguments.obsLat.toDoubleOrNull() ?: 0.0,
+            arguments.obsLon.toDoubleOrNull() ?: 0.0,
+            requireActivity().application,
+            AppDatabase.getInstance(requireContext()).appDatabaseDao
+        )
+    }
+
+    private var shouldDeleteObservation = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,18 +41,7 @@ class HerdObservationDetailsFragment : Fragment() {
             inflater, R.layout.herd_observation_details_fragment, container, false
         )
 
-        arguments = HerdObservationDetailsFragmentArgs.fromBundle(requireArguments())
-
         setHasOptionsMenu(true)
-
-        val application = requireNotNull(this.activity).application
-
-        appDao = AppDatabase.getInstance(application).appDatabaseDao
-        val viewModelFactory = HerdObservationDetailsViewModelFactory(arguments.observationId, application, appDao)
-
-        viewModel = ViewModelProvider(
-            requireActivity(), viewModelFactory
-        )[HerdObservationDetailsViewModel::class.java]
 
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
@@ -74,6 +71,8 @@ class HerdObservationDetailsFragment : Fragment() {
             it //HACK: to populate the livedata
         }
 
+        shouldDeleteObservation = arguments.observationId < 0
+
         return binding.root
     }
 
@@ -86,11 +85,17 @@ class HerdObservationDetailsFragment : Fragment() {
         super.onPrepareOptionsMenu(menu)
 
         menu.forEachIndexed { index, item ->
-            if (item.itemId == R.id.mi_delete_secondary_trip_map_point) {
-                item.isVisible = viewModel.observation.value?.observationSecondaryTripMapPointId != null
-            } else if (item.itemId == R.id.mi_set_secondary_trip_map_point) {
-                viewModel.trip.value?.tripFinished?.let {
-                    item.isVisible = !it
+            when (item.itemId) {
+                R.id.mi_delete_secondary_trip_map_point -> {
+                    item.isVisible = viewModel.observation.value?.observationSecondaryTripMapPointId != null
+                }
+                R.id.mi_set_secondary_trip_map_point -> {
+                    viewModel.trip.value?.tripFinished?.let {
+                        item.isVisible = !it
+                    }
+                }
+                R.id.mi_add_herd_obs -> {
+                    item.title = if (arguments.observationId < 0) getString(R.string.add) else getString(R.string.save)
                 }
             }
         }
@@ -99,9 +104,17 @@ class HerdObservationDetailsFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
+            R.id.mi_add_herd_obs -> {
+                shouldDeleteObservation = false
+                viewModel.onUpdateObservation()
+                findNavController().navigateUp()
+                return true
+            }
             R.id.mi_swiper -> {
                 findNavController().navigate(
-                    HerdObservationDetailsFragmentDirections.actionAnimalCountersDetailsFragmentToSwiperFragment()
+                    HerdObservationDetailsFragmentDirections.actionAnimalCountersDetailsFragmentToSwiperFragment(
+                        viewModel.obsId
+                    )
                 )
                 return true
             }
@@ -127,7 +140,9 @@ class HerdObservationDetailsFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        viewModel.onUpdateObservation()
+        if (shouldDeleteObservation) {
+            viewModel.onDeleteObservation()
+        }
         if (!requireActivity().isChangingConfigurations) {
             requireActivity().viewModelStore.clear() // DANGEROUS??
         }

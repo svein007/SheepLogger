@@ -17,20 +17,12 @@ class StartViewModel(
 
     val activeTrip: LiveData<Trip?> = appDao.getActiveTrip()
 
-    var mapAreaCount: Int = 0
+    var mapAreaCount = appDao.getMapAreaCountLD()
 
     val observationCount = appDao.getObservationCountForActiveTrip()
 
     val tripIsActive = Transformations.map(activeTrip) {
         it != null && !it.tripFinished
-    }
-
-    init {
-        CoroutineScope(Dispatchers.Main).launch {
-            withContext(Dispatchers.IO) {
-                mapAreaCount = appDao.getMapAreaCount()
-            }
-        }
     }
 
 }

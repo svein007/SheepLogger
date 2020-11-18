@@ -55,7 +55,10 @@ class ObservationsFragment : Fragment() {
             when (observationType) {
                 Observation.ObservationType.COUNT -> {
                     findNavController().navigate(
-                        ObservationsFragmentDirections.actionObservationsFragmentToAnimalCountersDetailsFragment(observationId)
+                        ObservationsFragmentDirections.actionObservationsFragmentToAnimalCountersDetailsFragment(
+                            "",
+                            ""
+                        ).setObservationId(observationId)
                     )
                 }
                 Observation.ObservationType.DEAD, Observation.ObservationType.INJURED,

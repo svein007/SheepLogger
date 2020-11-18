@@ -12,10 +12,10 @@
             type="String" />
         <variable
             name="incClickListener"
-            type="com.example.sheeptracker.ui.addobservation.CounterListItemListener" />
+            type="com.example.sheeptracker.ui.herdobservationdetails.CounterListItemListener" />
         <variable
             name="decClickListener"
-            type="com.example.sheeptracker.ui.addobservation.CounterListItemListener" />
+            type="com.example.sheeptracker.ui.herdobservationdetails.CounterListItemListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

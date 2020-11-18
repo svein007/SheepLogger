@@ -94,14 +94,14 @@
             android:name="tripId"
             app:argType="long" />
         <action
-            android:id="@+id/action_tripFragment_to_addObservationFragment"
-            app:destination="@id/addObservationFragment" />
-        <action
             android:id="@+id/action_tripFragment_to_observationsFragment"
             app:destination="@id/observationsFragment" />
         <action
             android:id="@+id/action_tripFragment_to_predatorRegistrationFragment"
             app:destination="@id/predatorRegistrationFragment" />
+        <action
+            android:id="@+id/action_tripFragment_to_animalCountersDetailsFragment"
+            app:destination="@id/animalCountersDetailsFragment" />
     </fragment>
     <fragment
         android:id="@+id/observationsFragment"
@@ -117,28 +117,6 @@
         <action
             android:id="@+id/action_observationsFragment_to_predatorRegistrationFragment"
             app:destination="@id/predatorRegistrationFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/addObservationFragment"
-        android:name="com.example.sheeptracker.ui.addobservation.AddObservationFragment"
-        android:label="@string/register_observation"
-        tools:layout="@layout/add_observation_fragment">
-        <argument
-            android:name="tripId"
-            app:argType="long" />
-        <argument
-            android:name="obsLat"
-            app:argType="string" />
-        <argument
-            android:name="obsLon"
-            app:argType="string" />
-        <action
-            android:id="@+id/action_addObservationFragment_to_swiperFragment"
-            app:destination="@id/swiperFragment">
-            <argument
-                android:name="navFromFragment"
-                android:defaultValue="add" />
-        </action>
     </fragment>
     <fragment
         android:id="@+id/imageResourceFragment"
@@ -159,7 +137,8 @@
         tools:layout="@layout/herd_observation_details_fragment">
         <argument
             android:name="observationId"
-            app:argType="long" />
+            app:argType="long"
+            android:defaultValue="-1L" />
         <action
             android:id="@+id/action_animalCountersDetailsFragment_to_swiperFragment"
             app:destination="@id/swiperFragment">
@@ -167,6 +146,16 @@
                 android:name="navFromFragment"
                 android:defaultValue="details" />
         </action>
+        <argument
+            android:name="tripId"
+            app:argType="long"
+            android:defaultValue="-1L" />
+        <argument
+            android:name="obsLat"
+            app:argType="string" />
+        <argument
+            android:name="obsLon"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/swiperFragment"
@@ -174,8 +163,8 @@
         android:label="@string/swiper"
         tools:layout="@layout/swiper_fragment">
         <argument
-            android:name="navFromFragment"
-            app:argType="string" />
+            android:name="obsId"
+            app:argType="long" />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"

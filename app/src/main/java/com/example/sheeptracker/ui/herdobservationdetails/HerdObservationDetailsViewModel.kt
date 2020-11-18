@@ -1,13 +1,16 @@
 package com.example.sheeptracker.ui.herdobservationdetails
 
 import android.app.Application
+import android.widget.Toast
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
+import com.example.sheeptracker.R
 import com.example.sheeptracker.database.AppDao
 import com.example.sheeptracker.database.entities.Counter
 import com.example.sheeptracker.database.entities.Observation
 import com.example.sheeptracker.database.entities.TripMapPoint
-import com.example.sheeptracker.ui.swiper.SwiperViewModel
+import com.example.sheeptracker.map.MapAreaManager
 import com.example.sheeptracker.utils.getObservedFromPoint
 import kotlinx.coroutines.*
 import org.osmdroid.util.GeoPoint
@@ -15,9 +18,12 @@ import java.util.*
 
 class HerdObservationDetailsViewModel(
     private val observationId: Long,
+    private val tripId: Long,
+    private val obsLat: Double,
+    private val obsLon: Double,
     app: Application,
     private val appDao: AppDao
-) : SwiperViewModel(app) {
+) : AndroidViewModel(app) {
 
     /** Private fields **/
 
@@ -26,11 +32,17 @@ class HerdObservationDetailsViewModel(
 
     /** VM fields **/
 
-    override val observation = appDao.getObservationLD(observationId)
+    private val obsIdLD = MutableLiveData<Long>(observationId)
 
-    override val counters = appDao.getCountersLD(observationId)
+    var obsId = observationId
 
-    override val countType = MutableLiveData<Counter.CountType>(Counter.CountType.SHEEP)
+    val observation = Transformations.switchMap(obsIdLD) {
+        appDao.getObservationLD(it)
+    }
+
+    val counters = Transformations.switchMap(obsIdLD) {
+        appDao.getCountersLD(it)
+    }
 
     val expectedLambCount = Transformations.map(counters) {
         it.sumBy { counter -> counter.sheepChildCount() }
@@ -43,7 +55,60 @@ class HerdObservationDetailsViewModel(
         0
     }
 
-    val trip = appDao.getTripForObservation(observationId)
+    val trip = Transformations.switchMap(obsIdLD) {
+        appDao.getTripForObservation(observationId)
+    }
+
+    init {
+        uiScope.launch {
+            val newObs = observationId < 0
+            if (newObs) {
+                if (obsLat.isNaN() || obsLon.isNaN()) {
+                    Toast.makeText(getApplication(), getApplication<Application>().getString(R.string.unable_gps), Toast.LENGTH_LONG).show()
+                    return@launch
+                }
+
+                MapAreaManager.getLastKnownLocation(
+                    getApplication<Application>().applicationContext,
+                    null,
+                    1
+                )?.let {
+                    val currentPosition = TripMapPoint(
+                        tripMapPointLon =  it.longitude,
+                        tripMapPointLat = it.latitude ,
+                        tripMapPointDate = Date(),
+                        tripMapPointOwnerTripId = tripId
+                    )
+
+                    val observationPoint = getObservedFromPoint(appDao, tripId, currentPosition)
+
+                    val observationType = Observation.ObservationType.COUNT
+
+                    val newObservation = Observation(
+                        observationLat = obsLat,
+                        observationLon = obsLon,
+                        observationNote = "",
+                        observationDate = Date(),
+                        observationOwnerTripId = tripId,
+                        observationOwnerTripMapPointId = observationPoint.tripMapPointId,
+                        observationType = observationType
+                    )
+
+                    val insertedObsId = insert(newObservation)
+                    obsIdLD.value = insertedObsId
+                    obsId = insertedObsId
+
+                    for (countType in Counter.CountType.values()) {
+                        val counter = Counter(
+                            counterOwnerObservationId = insertedObsId,
+                            counterType = countType
+                        )
+                        insert(counter)
+                    }
+                }
+            }
+        }
+    }
 
     /** VM Methods **/
 
@@ -113,6 +178,18 @@ class HerdObservationDetailsViewModel(
             observation.value?.let {
                 appDao.deleteObservation(it.observationId)
             }
+        }
+    }
+
+    private suspend fun insert(observation: Observation): Long {
+        return withContext(Dispatchers.IO) {
+            appDao.insert(observation)
+        }
+    }
+
+    private suspend fun insert(counter: Counter): Long {
+        return withContext(Dispatchers.IO) {
+            appDao.insert(counter)
         }
     }
 

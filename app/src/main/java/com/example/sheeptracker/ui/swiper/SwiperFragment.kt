@@ -10,17 +10,24 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.navArgs
 import com.example.sheeptracker.R
+import com.example.sheeptracker.database.AppDatabase
 import com.example.sheeptracker.database.entities.Counter
 import com.example.sheeptracker.databinding.SwiperFragmentBinding
 import com.example.sheeptracker.ui.OnSwipeTouchListener
-import com.example.sheeptracker.ui.addobservation.AddObservationViewModel
-import com.example.sheeptracker.ui.herdobservationdetails.HerdObservationDetailsViewModel
 
 class SwiperFragment : Fragment() {
 
-    private lateinit var swiperViewModel: SwiperViewModel
+    private val args: SwiperFragmentArgs by navArgs()
+    private val swiperViewModel: SwiperViewModel by viewModels {
+        SwiperViewModelFactory(
+            args.obsId,
+            AppDatabase.getInstance(requireContext()).appDatabaseDao,
+            requireActivity().application
+        )
+    }
     private lateinit var binding: SwiperFragmentBinding
 
     private lateinit var textToSpeech: TextToSpeech
@@ -33,12 +40,6 @@ class SwiperFragment : Fragment() {
     ): View? {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.swiper_fragment, container, false)
-
-        val args = SwiperFragmentArgs.fromBundle(requireArguments())
-
-        swiperViewModel = if (args.navFromFragment == "add") ViewModelProvider(
-            requireActivity())[AddObservationViewModel::class.java] else ViewModelProvider(
-            requireActivity())[HerdObservationDetailsViewModel::class.java]
 
         textToSpeech = TextToSpeech(requireContext()){}
 
@@ -80,6 +81,10 @@ class SwiperFragment : Fragment() {
 
         binding.lifecycleOwner = viewLifecycleOwner
 
+        swiperViewModel.counters.observe(viewLifecycleOwner){
+            updateTypeCountText()
+        }
+
         return binding.root
     }
 
@@ -92,6 +97,11 @@ class SwiperFragment : Fragment() {
         }
 
         updateTypeCountText()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        swiperViewModel.onUpdateObservation()
     }
 
     override fun onDestroy() {
