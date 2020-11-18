@@ -2,6 +2,7 @@ package com.example.sheeptracker.ui.herdobservationdetails
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -10,7 +11,8 @@ import com.example.sheeptracker.databinding.CounterRvItemBinding
 
 class CounterAdapter(
     val incClickListener: CounterListItemListener,
-    val decClickListener: CounterListItemListener
+    val decClickListener: CounterListItemListener,
+    val onCounterEnterListener: CounterListItemListener
 )
     : ListAdapter<Counter, CounterAdapter.ViewHolder>(CounterDiffCallback()) {
 
@@ -29,9 +31,18 @@ class CounterAdapter(
             item: Counter,
             countTypeName: String,
             incClickListener: CounterListItemListener,
-            decClickListener: CounterListItemListener
-
+            decClickListener: CounterListItemListener,
+            onCounterEnterListener: CounterListItemListener
         ) {
+            binding.countEditText.setOnEditorActionListener { v, actionId, event ->
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    item.counterValue = binding.countEditText.text.toString().toInt()
+                    onCounterEnterListener.onClick(item)
+                    return@setOnEditorActionListener true
+                }
+                return@setOnEditorActionListener false
+            }
+
             binding.counter = item
             binding.countTypeName = countTypeName
             binding.incClickListener = incClickListener
@@ -46,7 +57,8 @@ class CounterAdapter(
             item,
             item.getStr(holder.itemView.context),
             incClickListener,
-            decClickListener
+            decClickListener,
+            onCounterEnterListener
         )
     }
 

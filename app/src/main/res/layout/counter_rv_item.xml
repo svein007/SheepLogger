@@ -39,7 +39,7 @@
             android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/editTextNumberSigned9"
+            app:layout_constraintEnd_toStartOf="@+id/countEditText"
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
@@ -72,7 +72,7 @@
             tools:text="Sheep" />
 
         <EditText
-            android:id="@+id/editTextNumberSigned9"
+            android:id="@+id/countEditText"
             android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="4dp"
@@ -83,6 +83,7 @@
             android:text="@={``+counter.counterValue}"
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:imeOptions="actionDone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/button5"
             app:layout_constraintTop_toTopOf="parent"
