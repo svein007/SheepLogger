@@ -4,10 +4,14 @@
 
     <item
         android:id="@+id/mi_start_tracking"
-        android:title="@string/start_tracking" />
+        android:enabled="false"
+        android:title="@string/start_tracking"
+        android:visible="false" />
     <item
         android:id="@+id/mi_stop_tracking"
+        android:enabled="false"
         android:title="@string/stop_tracking"
+        android:visible="false"
         app:showAsAction="never" />
     <item
         android:id="@+id/mi_finish_trip"

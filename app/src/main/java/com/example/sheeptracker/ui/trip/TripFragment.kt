@@ -230,20 +230,20 @@ class TripFragment : Fragment() {
         super.onPrepareOptionsMenu(menu)
         menu.forEachIndexed { index, item ->
             when (item.itemId) {
-                R.id.mi_start_tracking -> {
-                    viewModel.isTripFinished.value?.let { tripFinished ->
-                        viewModel.isTrackingGPS.value?.let {
-                            item.setVisible(!tripFinished && !it)
-                        }
-                    }
-                }
-                R.id.mi_stop_tracking -> {
-                    viewModel.isTripFinished.value?.let { tripFinished ->
-                        viewModel.isTrackingGPS.value?.let {
-                            item.setVisible(!tripFinished && it)
-                        }
-                    }
-                }
+//                R.id.mi_start_tracking -> {
+//                    viewModel.isTripFinished.value?.let { tripFinished ->
+//                        viewModel.isTrackingGPS.value?.let {
+//                            item.setVisible(!tripFinished && !it)
+//                        }
+//                    }
+//                }
+//                R.id.mi_stop_tracking -> {
+//                    viewModel.isTripFinished.value?.let { tripFinished ->
+//                        viewModel.isTrackingGPS.value?.let {
+//                            item.setVisible(!tripFinished && it)
+//                        }
+//                    }
+//                }
                 R.id.mi_finish_trip -> {
                     viewModel.isTripFinished.value?.let {
                         item.setVisible(!it)
