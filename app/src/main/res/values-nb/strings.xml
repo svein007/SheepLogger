@@ -123,4 +123,5 @@
     <string name="observation_images">Observasjonsbilder</string>
     <string name="text_rapport">Tekstrapport</string>
     <string name="dead_and_injured_count">%1$d død / %2$d skadd</string>
+    <string name="animals">Dyr</string>
 </resources>
