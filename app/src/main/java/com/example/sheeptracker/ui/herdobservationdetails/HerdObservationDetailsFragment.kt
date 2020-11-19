@@ -77,7 +77,7 @@ class HerdObservationDetailsFragment : Fragment() {
         }
 
         viewModel.observation.observe(viewLifecycleOwner) {
-            drawObservations()
+            drawObservation()
             zoomToGeoPoints()
         }
 
@@ -85,7 +85,7 @@ class HerdObservationDetailsFragment : Fragment() {
             it?.let {
                 val geoPoints = it.map { tripMapPoint -> GeoPoint(tripMapPoint.tripMapPointLat, tripMapPoint.tripMapPointLon) }
                 binding.herdObservationMapView.drawSimpleGPSTrail(geoPoints, true)
-                drawObservations()
+                drawObservation()
                 zoomToGeoPoints()
             }
         }
@@ -201,7 +201,7 @@ class HerdObservationDetailsFragment : Fragment() {
             .show()
     }
 
-    private fun drawObservations() {
+    private fun drawObservation() {
         if (viewModel.observation.value != null && viewModel.tripMapPoints.value != null) {
             binding.herdObservationMapView.drawSimpleObservationLinesAndMarkers(
                 arrayListOf(viewModel.observation.value!!),

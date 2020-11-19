@@ -49,6 +49,18 @@ class PredatorRegistrationViewModel(
         appDao.getImageResourcesLD(it)
     }
 
+    val mapArea = Transformations.switchMap(obsIdLD) {
+        appDao.getMapAreaForObservationLD(it)
+    }
+
+    val trip = Transformations.switchMap(obsIdLD) {
+        appDao.getTripForObservation(it)
+    }
+
+    val tripMapPoints: LiveData<List<TripMapPoint>> = Transformations.switchMap(trip) {
+        appDao.getTripMapPointsForTripLD(it?.tripId ?: 0)
+    }
+
     val showEmptyImageListTextView = Transformations.map(imageResources) {
         it.isNullOrEmpty()
     }

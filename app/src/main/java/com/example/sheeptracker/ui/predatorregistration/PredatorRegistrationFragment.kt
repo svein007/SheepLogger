@@ -22,6 +22,7 @@ import com.example.sheeptracker.databinding.PredatorRegistrationFragmentBinding
 import com.example.sheeptracker.ui.imageresource.ImageResourceAdapter
 import com.example.sheeptracker.ui.imageresource.ImgResourceListItemListener
 import com.example.sheeptracker.utils.createImageFile
+import org.osmdroid.util.GeoPoint
 import java.io.File
 import java.io.IOException
 import java.lang.Exception
@@ -86,6 +87,26 @@ class PredatorRegistrationFragment : Fragment() {
             it?.let {
                 binding.observationTypeIcon.setImageDrawable(it.observationType.getDrawable(resources))
                 binding.obsTypeTitle.text = it.observationType.getString(requireContext())
+                drawObservation()
+                zoomToGeoPoints()
+            }
+        }
+
+        viewModel.mapArea.observe(viewLifecycleOwner) {
+            it?.let { mapArea ->
+                val mapAreaString = mapArea.getSqliteFilename()
+                binding.predatorObservationMapView.setupStaticOfflineView(mapAreaString)
+                binding.predatorObservationMapView.maxZoomLevel = it.mapAreaMaxZoom - 1
+                binding.predatorObservationMapView.zoomOutAndCenter(mapArea)
+            }
+        }
+
+        viewModel.tripMapPoints.observe(viewLifecycleOwner) {
+            it?.let {
+                val geoPoints = it.map { tripMapPoint -> GeoPoint(tripMapPoint.tripMapPointLat, tripMapPoint.tripMapPointLon) }
+                binding.predatorObservationMapView.drawSimpleGPSTrail(geoPoints, true)
+                drawObservation()
+                zoomToGeoPoints()
             }
         }
 
@@ -232,6 +253,30 @@ class PredatorRegistrationFragment : Fragment() {
         }
 
         observationTypeAlertDialog?.show()
+    }
+
+    private fun drawObservation() {
+        if (viewModel.observation.value != null && viewModel.tripMapPoints.value != null) {
+            binding.predatorObservationMapView.drawSimpleObservationLinesAndMarkers(
+                arrayListOf(viewModel.observation.value!!),
+                viewModel.tripMapPoints.value!!
+            )
+        }
+    }
+
+    private fun zoomToGeoPoints() {
+        val geoPoints = ArrayList<GeoPoint>()
+        viewModel.observation.value?.let { obs ->
+            viewModel.tripMapPoints.value?.let { points ->
+                geoPoints.addAll(
+                    points
+                        .filter { p -> p.tripMapPointId == obs.observationOwnerTripMapPointId || p.tripMapPointId == obs.observationSecondaryTripMapPointId }
+                        .map { p -> GeoPoint(p.tripMapPointLat, p.tripMapPointLon) }
+                )
+            }
+            geoPoints.add(GeoPoint(obs.observationLat, obs.observationLon))
+        }
+        binding.predatorObservationMapView.zoomToGeoPoints(geoPoints)
     }
 
 

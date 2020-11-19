@@ -46,7 +46,7 @@ class HerdObservationDetailsViewModel(
     }
 
     val trip = Transformations.switchMap(obsIdLD) {
-        appDao.getTripForObservation(observationId)
+        appDao.getTripForObservation(it)
     }
 
     val tripMapPoints: LiveData<List<TripMapPoint>> = Transformations.switchMap(trip) {

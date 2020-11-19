@@ -36,26 +36,37 @@
             app:layout_constraintStart_toEndOf="@+id/observationTypeIcon"
             app:layout_constraintTop_toTopOf="@+id/observationTypeIcon" />
 
+        <com.example.sheeptracker.map.TripMapView
+            android:id="@+id/predatorObservationMapView"
+            android:layout_width="wrap_content"
+            android:layout_height="200dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/round_ripple"
+            android:clickable="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/obsTypeTitle" />
+
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textInputLayoutAnimalId"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:hint="@string/animal_identification_number"
             app:boolVisibilityGone="@{viewModel.animalRegistration != null}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/observationTypeIcon">
+            app:layout_constraintTop_toBottomOf="@+id/predatorObservationMapView">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/textInputEditTextAnimalId"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:digits="0123456789"
-                android:inputType="numberSigned"
                 android:imeOptions="actionNext"
+                android:inputType="numberSigned"
                 android:text="@={viewModel.animalRegistration.animalNumber}" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -78,7 +89,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPersonName|textMultiLine"
-                android:maxLines="5"
+                android:maxLines="3"
                 android:text="@={viewModel.observation.observationNote}" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -105,13 +116,12 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/predatorsImageRV"
+            boolVisibilityGone="@{!viewModel.showEmptyImageListTextView}"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginStart="1dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="1dp"
-            android:layout_marginBottom="174dp"
-            boolVisibilityGone="@{!viewModel.showEmptyImageListTextView}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toTopOf="@+id/textView64"
             app:layout_constraintEnd_toEndOf="parent"

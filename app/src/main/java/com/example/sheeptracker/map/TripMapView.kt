@@ -153,11 +153,13 @@ class TripMapView: MapView {
             GeoPoint(observation.observationLat, observation.observationLon)
         }
 
-        val observationTripMapGeoPoints = observations.map { observation ->
-            val tripMapPoint = tripMapPoints.first { tripMapPoint ->
+        val observationTripMapGeoPoints = observations.mapNotNull { observation ->
+            val tripMapPoint = tripMapPoints.firstOrNull { tripMapPoint ->
                 tripMapPoint.tripMapPointId == observation.observationOwnerTripMapPointId
             }
-            GeoPoint(tripMapPoint.tripMapPointLat, tripMapPoint.tripMapPointLon)
+            tripMapPoint?.let {
+               GeoPoint(it.tripMapPointLat, it.tripMapPointLon)
+            }
         }
 
         // Observation Markers
