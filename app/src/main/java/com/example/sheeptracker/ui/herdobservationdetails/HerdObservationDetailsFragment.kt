@@ -14,6 +14,7 @@ import com.example.sheeptracker.database.AppDatabase
 import com.example.sheeptracker.databinding.HerdObservationDetailsFragmentBinding
 import com.example.sheeptracker.map.MapAreaManager
 import com.google.android.material.snackbar.Snackbar
+import org.osmdroid.util.GeoPoint
 
 class HerdObservationDetailsFragment : Fragment() {
 
@@ -73,6 +74,29 @@ class HerdObservationDetailsFragment : Fragment() {
 
         viewModel.trip.observe(viewLifecycleOwner) {
             it //HACK: to populate the livedata
+        }
+
+        viewModel.observation.observe(viewLifecycleOwner) {
+            drawObservations()
+            zoomToGeoPoints()
+        }
+
+        viewModel.tripMapPoints.observe(viewLifecycleOwner) {
+            it?.let {
+                val geoPoints = it.map { tripMapPoint -> GeoPoint(tripMapPoint.tripMapPointLat, tripMapPoint.tripMapPointLon) }
+                binding.herdObservationMapView.drawSimpleGPSTrail(geoPoints, true)
+                drawObservations()
+                zoomToGeoPoints()
+            }
+        }
+
+        viewModel.mapArea.observe(viewLifecycleOwner) {
+            it?.let { mapArea ->
+                val mapAreaString = mapArea.getSqliteFilename()
+                binding.herdObservationMapView.setupStaticOfflineView(mapAreaString)
+                binding.herdObservationMapView.maxZoomLevel = it.mapAreaMaxZoom - 1
+                binding.herdObservationMapView.zoomOutAndCenter(mapArea)
+            }
         }
 
         shouldDeleteObservation = arguments.observationId < 0
@@ -175,6 +199,30 @@ class HerdObservationDetailsFragment : Fragment() {
         Snackbar
             .make(binding.root, getString(R.string.secondary_trip_map_point_added), Snackbar.LENGTH_LONG)
             .show()
+    }
+
+    private fun drawObservations() {
+        if (viewModel.observation.value != null && viewModel.tripMapPoints.value != null) {
+            binding.herdObservationMapView.drawSimpleObservationLinesAndMarkers(
+                arrayListOf(viewModel.observation.value!!),
+                viewModel.tripMapPoints.value!!
+            )
+        }
+    }
+
+    private fun zoomToGeoPoints() {
+        val geoPoints = ArrayList<GeoPoint>()
+        viewModel.observation.value?.let { obs ->
+            viewModel.tripMapPoints.value?.let { points ->
+                geoPoints.addAll(
+                    points
+                        .filter { p -> p.tripMapPointId == obs.observationOwnerTripMapPointId || p.tripMapPointId == obs.observationSecondaryTripMapPointId }
+                        .map { p -> GeoPoint(p.tripMapPointLat, p.tripMapPointLon) }
+                )
+            }
+            geoPoints.add(GeoPoint(obs.observationLat, obs.observationLon))
+        }
+        binding.herdObservationMapView.zoomToGeoPoints(geoPoints)
     }
 
 }

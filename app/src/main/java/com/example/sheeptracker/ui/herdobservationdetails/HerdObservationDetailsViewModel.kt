@@ -3,6 +3,7 @@ package com.example.sheeptracker.ui.herdobservationdetails
 import android.app.Application
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.example.sheeptracker.R
@@ -40,6 +41,18 @@ class HerdObservationDetailsViewModel(
         appDao.getObservationLD(it)
     }
 
+    val mapArea = Transformations.switchMap(obsIdLD) {
+        appDao.getMapAreaForObservationLD(it)
+    }
+
+    val trip = Transformations.switchMap(obsIdLD) {
+        appDao.getTripForObservation(observationId)
+    }
+
+    val tripMapPoints: LiveData<List<TripMapPoint>> = Transformations.switchMap(trip) {
+        appDao.getTripMapPointsForTripLD(it?.tripId ?: 0)
+    }
+
     val counters = Transformations.switchMap(obsIdLD) {
         appDao.getCountersLD(it)
     }
@@ -53,10 +66,6 @@ class HerdObservationDetailsViewModel(
             return@map counter.counterValue
         }
         0
-    }
-
-    val trip = Transformations.switchMap(obsIdLD) {
-        appDao.getTripForObservation(observationId)
     }
 
     init {
