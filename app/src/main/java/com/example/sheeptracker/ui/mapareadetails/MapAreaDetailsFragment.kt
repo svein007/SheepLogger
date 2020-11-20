@@ -1,10 +1,9 @@
 package com.example.sheeptracker.ui.mapareadetails
 
+import android.app.AlertDialog
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -27,12 +26,16 @@ class MapAreaDetailsFragment : Fragment() {
         )
     }
 
+    /** Lifecycle **/
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.map_area_details_fragment, container, false)
+
+        setHasOptionsMenu(true)
 
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
@@ -53,6 +56,34 @@ class MapAreaDetailsFragment : Fragment() {
         }
 
         return binding.root
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.map_area_details_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.mi_delete_map_area) {
+            showDeleteMapAreaDialog()
+            return true
+        }
+        return false
+    }
+
+    /** Helpers **/
+
+    private fun showDeleteMapAreaDialog() {
+        AlertDialog.Builder(requireContext())
+            .setTitle(getString(R.string.delete_map_area))
+            .setMessage(getString(R.string.delete_map_area_query))
+            .setPositiveButton(getString(R.string.delete)) { dialog, which ->
+                viewModel.deleteMapArea()
+                findNavController().popBackStack()
+            }
+            .setNegativeButton(getString(R.string.cancel)) { dialog, which ->
+            }
+            .show()
     }
 
 }

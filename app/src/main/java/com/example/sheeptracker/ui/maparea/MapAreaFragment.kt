@@ -1,6 +1,5 @@
 package com.example.sheeptracker.ui.maparea
 
-import android.app.AlertDialog
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -8,7 +7,6 @@ import androidx.fragment.app.Fragment
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import com.example.sheeptracker.R
 import com.example.sheeptracker.database.AppDatabase
 import com.example.sheeptracker.databinding.MapAreaFragmentBinding
@@ -83,19 +81,6 @@ class MapAreaFragment : Fragment() {
         binding.mapAreaMapView.onResume()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.map_area_menu, menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.mi_delete_map_area) {
-            showDeleteMapAreaDialog()
-            return true
-        }
-        return false
-    }
-
     private fun setupMapView(mapView: MapView, mapAreaName: String) {
         mapView.setUseDataConnection(false)
         mapView.isTilesScaledToDpi = true
@@ -130,19 +115,6 @@ class MapAreaFragment : Fragment() {
             mapView.setScrollableAreaLimitLongitude(it.boundingBox.lonWest, it.boundingBox.lonEast, 500)
         }
 
-    }
-
-    private fun showDeleteMapAreaDialog() {
-        AlertDialog.Builder(requireContext())
-            .setTitle(getString(R.string.delete_map_area))
-            .setMessage(getString(R.string.delete_map_area_query))
-            .setPositiveButton(getString(R.string.delete)) { dialog, which ->
-                viewModel.deleteMapArea()
-                findNavController().popBackStack()
-            }
-            .setNegativeButton(getString(R.string.cancel)) { dialog, which ->
-            }
-            .show()
     }
 
 }
