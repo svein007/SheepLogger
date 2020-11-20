@@ -205,6 +205,34 @@ class TripMapView: MapView {
 
     }
 
+    fun drawObservationMarkers(observations: List<Observation>) {
+        val observationsGeoPoints = observations.map { observation ->
+            GeoPoint(observation.observationLat, observation.observationLon)
+        }
+
+        // Observation Markers
+        overlayManager.removeAll(observationMarkers)
+        observationMarkers.clear()
+        observationsGeoPoints.forEachIndexed { i, geoPoint ->
+            val marker = Marker(this)
+
+            marker.position = geoPoint
+            marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
+
+            marker.icon = observations[i].observationType.getDrawable(resources)
+
+            observationMarkers.add(marker)
+        }
+        overlayManager.addAll(observationMarkers)
+
+        observationMarkers.forEachIndexed { i, observationMarker ->
+            observations.getOrNull(i)?.let {
+                observationMarker.title = dateTimeFormatter.format(it.observationDate)
+            }
+        }
+
+    }
+
     fun drawFullGPSTrail(tripMapPoints: List<TripMapPoint>, tripIsFinished: Boolean = false){
         val geoPoints = tripMapPoints.map { tripMapPoint -> GeoPoint(tripMapPoint.tripMapPointLat, tripMapPoint.tripMapPointLon) }
         drawSimpleGPSTrail(geoPoints, tripIsFinished)

@@ -149,6 +149,9 @@ interface AppDao {
     @Query("SELECT COUNT(*) FROM observation_table INNER JOIN trip_table ON observation_owner_trip_id = trip_id WHERE trip_owner_map_area_id = :mapAreaId")
     fun getObservationCountForMapAreaLD(mapAreaId: Long): LiveData<Int>
 
+    @Query("SELECT observation_id, observation_note, observation_lat, observation_lon, observation_date_time, observation_type, observation_owner_trip_map_point_id, observation_secondary_trip_map_point_id, observation_owner_trip_id FROM observation_table INNER JOIN trip_table ON observation_owner_trip_id = trip_id WHERE trip_owner_map_area_id = :mapAreaId")
+    fun getObservationsForMapAreaLD(mapAreaId: Long): LiveData<List<Observation>>
+
     /** Counter **/
 
     @Insert

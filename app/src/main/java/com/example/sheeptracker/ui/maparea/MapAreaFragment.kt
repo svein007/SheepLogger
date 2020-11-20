@@ -10,6 +10,10 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.sheeptracker.R
 import com.example.sheeptracker.database.AppDatabase
 import com.example.sheeptracker.databinding.MapAreaFragmentBinding
+import com.example.sheeptracker.utils.getObservationShortDesc
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.osmdroid.tileprovider.modules.OfflineTileProvider
 import org.osmdroid.tileprovider.tilesource.FileBasedTileSource
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
@@ -60,6 +64,20 @@ class MapAreaFragment : Fragment() {
                 setupMapView(binding.mapAreaMapView, mapAreaString)
             }
         })
+
+        viewModel.observations.observe(viewLifecycleOwner) {
+            it?.let {
+                binding.mapAreaMapView.drawObservationMarkers(it)
+                CoroutineScope(Dispatchers.Main).launch {
+                    val shortObservationDescriptions = ArrayList<String>()
+                    viewModel.observations.value!!.forEachIndexed { i, observation ->
+                        val observationShortDescription = getObservationShortDesc(appDao, binding.root.context, observation).replace("\n", "")
+                        shortObservationDescriptions.add("\n${observationShortDescription}")
+                    }
+                    binding.mapAreaMapView.attachObservationMarkerSnippets(shortObservationDescriptions)
+                }
+            }
+        }
 
         binding.lifecycleOwner = viewLifecycleOwner
 
