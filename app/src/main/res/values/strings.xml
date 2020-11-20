@@ -130,5 +130,6 @@
     <string name="text_rapport">Text Rapport</string>
     <string name="dead_and_injured_count">%1$d dead / %2$d injured</string>
     <string name="animals">Animals</string>
+    <string name="maparea_details">Map Area Details</string>
 
 </resources>

@@ -26,6 +26,9 @@
         <action
             android:id="@+id/action_mapAreasFragment_to_mainFragment"
             app:destination="@id/mapAreaDownloadFragment" />
+        <action
+            android:id="@+id/action_mapAreasFragment_to_mapAreaDetailsFragment"
+            app:destination="@id/mapAreaDetailsFragment" />
     </fragment>
     <fragment
         android:id="@+id/startFragment"
@@ -223,6 +226,18 @@
             android:name="obsType"
             app:argType="integer"
             android:defaultValue="-1" />
+    </fragment>
+    <fragment
+        android:id="@+id/mapAreaDetailsFragment"
+        android:name="com.example.sheeptracker.ui.mapareadetails.MapAreaDetailsFragment"
+        android:label="@string/maparea_details"
+        tools:layout="@layout/map_area_details_fragment">
+        <argument
+            android:name="mapAreaId"
+            app:argType="long" />
+        <action
+            android:id="@+id/action_mapAreaDetailsFragment_to_mapAreaFragment"
+            app:destination="@id/mapAreaFragment" />
     </fragment>
 
 </navigation>

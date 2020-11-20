@@ -146,6 +146,9 @@ interface AppDao {
     @Query("SELECT COUNT(*) FROM observation_table WHERE observation_owner_trip_id = (SELECT trip_id FROM trip_table WHERE trip_finished = 0 ORDER BY trip_date DESC LIMIT 1)")
     fun getObservationCountForActiveTrip(): LiveData<Int>
 
+    @Query("SELECT COUNT(*) FROM observation_table INNER JOIN trip_table ON observation_owner_trip_id = trip_id WHERE trip_owner_map_area_id = :mapAreaId")
+    fun getObservationCountForMapAreaLD(mapAreaId: Long): LiveData<Int>
+
     /** Counter **/
 
     @Insert
@@ -205,6 +208,12 @@ interface AppDao {
     @Query("SELECT * FROM observation_table WHERE observation_type = 1")
     fun getDeadAnimals(): List<Observation>
 
+    @Query("SELECT COUNT(*) FROM observation_table INNER JOIN trip_table ON trip_id = observation_owner_trip_id WHERE observation_type = 2 AND trip_owner_map_area_id = :mapAreaId")
+    fun getInjuredAnimalCountForMapAreaLD(mapAreaId: Long): LiveData<Int>
+
+    @Query("SELECT COUNT(*) FROM observation_table INNER JOIN trip_table ON trip_id = observation_owner_trip_id WHERE observation_type = 1 AND trip_owner_map_area_id = :mapAreaId")
+    fun getDeadAnimalCountForMapAreaLD(mapAreaId: Long): LiveData<Int>
+
     /** ImageResource **/
 
     @Insert
@@ -242,5 +251,8 @@ interface AppDao {
 
     @Query("SELECT COUNT(*) FROM trip_table WHERE trip_owner_map_area_id = :mapAreaId")
     fun getTripCount(mapAreaId: Long): Int
+
+    @Query("SELECT COUNT(*) FROM trip_table WHERE trip_owner_map_area_id = :mapAreaId")
+    fun getTripCountLD(mapAreaId: Long): LiveData<Int>
 
 }
