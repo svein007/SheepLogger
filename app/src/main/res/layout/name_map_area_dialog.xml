@@ -50,7 +50,7 @@
             android:autofillHints=""
             android:ems="10"
             android:hint="@string/map_area_name"
-            android:inputType="textPersonName"
+            android:inputType="textPersonName|textCapSentences"
             android:text="@={viewModel.mapAreaName}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

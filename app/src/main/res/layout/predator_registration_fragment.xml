@@ -88,7 +88,7 @@
                 android:id="@+id/textInputEditTextObservationNote"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPersonName|textMultiLine"
+                android:inputType="textMultiLine|textPersonName|textCapSentences"
                 android:maxLines="3"
                 android:text="@={viewModel.observation.observationNote}" />
 

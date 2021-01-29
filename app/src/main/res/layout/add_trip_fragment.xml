@@ -31,8 +31,8 @@
                 android:id="@+id/editTextTextPersonName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@={viewModel.tripName}"
-                />
+                android:inputType="textCapSentences"
+                android:text="@={viewModel.tripName}" />
 
         </com.google.android.material.textfield.TextInputLayout>
 

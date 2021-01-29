@@ -131,5 +131,6 @@
     <string name="dead_and_injured_count">%1$d dead / %2$d injured</string>
     <string name="animals">Animals</string>
     <string name="maparea_details">Map Area Details</string>
+    <string name="no_offline_map_areas">No offline map areas</string>
 
 </resources>
