@@ -131,7 +131,8 @@ class MapAreaManager {
                     }
 
                     override fun onTaskFailed(errors: Int) {
-                        Toast.makeText(context, "ERROR: Download failed!", Toast.LENGTH_LONG).show()
+                        Toast.makeText(context, "Downloaded with errors.", Toast.LENGTH_LONG).show()
+                        onDownloaded()
                     }
                 }
             )
