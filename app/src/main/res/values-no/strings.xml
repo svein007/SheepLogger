@@ -83,7 +83,7 @@
     <string name="finish_trip">Avslutt tur</string>
     <string name="finish">Avslutt</string>
     <string name="finish_trip_query">Er du sikker på at du ønsker å avslutte turen?</string>
-    <string name="longpress_create_verdict">Hold ned på et område på kartet for å gjøre en observasjon.</string>
+    <string name="longpress_create_verdict">Trykk og hold på et område på kartet for å gjøre en observasjon.</string>
     <plurals name="num_trips">
         <item quantity="one">%d tur</item>
         <item quantity="other">%d turer</item>
@@ -126,4 +126,5 @@
     <string name="animals">Dyr</string>
     <string name="maparea_details">Kartområde detaljer</string>
     <string name="no_offline_map_areas">Ingen offline kartområder</string>
+    <string name="turn_on_gps">Feil: Skru på GPS</string>
 </resources>

@@ -2,6 +2,8 @@ package com.example.sheeptracker.ui.trip
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
+import android.content.Context
+import android.location.LocationManager
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -316,7 +318,14 @@ class TripFragment : Fragment() {
                     )
 
                     if (location == null) {
-                        Toast.makeText(requireContext(), getString(R.string.unable_gps), Toast.LENGTH_LONG).show()
+                        val locationManager = context.applicationContext.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+
+                        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                            Toast.makeText(requireContext(), getString(R.string.turn_on_gps), Toast.LENGTH_LONG).show()
+                        } else {
+                            Toast.makeText(requireContext(), getString(R.string.unable_gps), Toast.LENGTH_LONG).show()
+                        }
+
                         return@setItems
                     }
 
