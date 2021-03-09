@@ -127,4 +127,5 @@
     <string name="maparea_details">Kartområde detaljer</string>
     <string name="no_offline_map_areas">Ingen offline kartområder</string>
     <string name="turn_on_gps">Feil: Skru på GPS</string>
+    <string name="export_trip_data">Eksporter turdata</string>
 </resources>

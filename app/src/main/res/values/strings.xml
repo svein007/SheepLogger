@@ -133,5 +133,6 @@
     <string name="maparea_details">Map Area Details</string>
     <string name="no_offline_map_areas">No offline map areas</string>
     <string name="turn_on_gps">Error: Turn on GPS</string>
+    <string name="export_trip_data">Export Trip Data</string>
 
 </resources>

@@ -60,7 +60,7 @@ suspend fun getJSONRapport(context: Context, year: Int = -1): String {
 
 suspend fun getImageUris(appDao: AppDao, year: Int = -1): List<Uri> {
     return withContext(Dispatchers.IO) {
-        val aniRegObservations = appDao.getInjuredAnimals() + appDao.getDeadAnimals()
+        val aniRegObservations = appDao.getObservationsWithImages()
 
         aniRegObservations.filter {
             Calendar.getInstance().apply{
@@ -74,6 +74,22 @@ suspend fun getImageUris(appDao: AppDao, year: Int = -1): List<Uri> {
             imgRes.getImgUri()
         }
 
+    }
+}
+
+suspend fun getImageUrisForTrip(appDao: AppDao, tripId: Long = -1): List<Uri> {
+    return withContext(Dispatchers.IO) {
+        val aniRegObservations = appDao.getObservationsWithImages()
+
+        aniRegObservations.filter {
+            it.observationOwnerTripId == tripId
+        }.map { obs ->
+            obs.observationId
+        }.flatMap { obsId ->
+            appDao.getImageResources(obsId)
+        }.map { imgRes ->
+            imgRes.getImgUri()
+        }
     }
 }
 

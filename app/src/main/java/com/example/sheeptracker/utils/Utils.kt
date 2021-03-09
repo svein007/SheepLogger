@@ -99,6 +99,18 @@ fun createFileAndWrite(context: Context, strContent: String, fileName: String): 
     return file
 }
 
+fun copyFile(context: Context, originalFile: File, newFilePrefix: String,  newFileSuffix: String): File{
+    val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+
+    val wrapper = ContextWrapper(context.applicationContext)
+    val dir = wrapper.getDir("temp", Context.MODE_PRIVATE)
+    val file = File(dir, "${newFilePrefix}_$timeStamp$newFileSuffix")
+
+    originalFile.copyTo(file)
+
+    return file
+}
+
 fun checkHasAllPermissions(context: Context): Boolean {
     return ActivityCompat.checkSelfPermission(
         context,

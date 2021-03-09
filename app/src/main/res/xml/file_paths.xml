@@ -5,4 +5,5 @@
     <files-path name="my_databases" path="../databases/" />
     <files-path name="my_app_images" path="../app_images/" />
     <files-path name="my_app_rapports" path="../app_rapports/" />
+    <files-path name="my_app_temp" path="../app_temp/" />
 </paths>
